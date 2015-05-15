@@ -1,0 +1,40 @@
+SET foreign_key_checks = 0;
+drop table if exists Users;
+drop table if exists Status;
+drop table if exists Friends;
+SET foreign_key_checks = 1;
+
+CREATE TABLE Status (
+	status VARCHAR(32),
+	PRIMARY KEY(status)
+);
+
+CREATE TABLE Users(
+	uid VARCHAR(64),
+	pwd VARCHAR(64),
+	status VARCHAR(32), 
+	FOREIGN KEY (status) REFERENCES Status(status),
+	PRIMARY KEY(uid)
+);
+
+CREATE TABLE Friends (
+	uid_1 VARCHAR(64),
+	uid_2 VARCHAR(64), 
+	FOREIGN KEY (uid_1) REFERENCES Users(uid),
+	FOREIGN KEY (uid_1) REFERENCES Users(uid),
+	PRIMARY KEY(uid_1, uid_2)
+);
+
+INSERT INTO Status (status) VALUES ('Online');
+INSERT INTO Status (status) VALUES ('Away');
+INSERT INTO Status (status) VALUES ('Offline');
+
+INSERT INTO Users (uid, pwd, status) VALUES ('Hampus', 'password1', 'Online');
+INSERT INTO Users (uid, pwd, status) VALUES ('David', 'password2', 'Away');
+INSERT INTO Users (uid, pwd, status) VALUES ('Joel', 'password3', 'Offline');
+INSERT INTO Users (uid, pwd, status) VALUES ('Natali', 'password4', 'Online');
+
+INSERT INTO Friends (uid_1, uid_2) VALUES ('Hampus', 'David');
+INSERT INTO Friends (uid_1, uid_2) VALUES ('David', 'Joel');
+INSERT INTO Friends (uid_1, uid_2) VALUES ('Joel', 'Natali');
+INSERT INTO Friends (uid_1, uid_2) VALUES ('Natali', 'Hampus');

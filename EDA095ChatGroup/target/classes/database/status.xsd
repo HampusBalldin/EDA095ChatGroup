@@ -1,0 +1,11 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<xsd:element name="Status" type="Status" />
+	
+	<xsd:simpleType name="Status">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Online" />
+			<xsd:enumeration value="Offline" />
+			<xsd:enumeration value="Away" />
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>
