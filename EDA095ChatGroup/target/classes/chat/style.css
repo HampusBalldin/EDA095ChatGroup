@@ -1,0 +1,26 @@
+html {
+	text-align: center;
+	font-family: helvetica, Comic Sans MS;
+
+}
+
+img {
+	margin: auto;
+}
+
+body {
+	background-color: #FFFFFF;
+}
+
+#header {
+	color: #66CCFF;
+}
+
+#border {
+	color: #66CCFF;
+}
+
+#copyright {
+
+	font-size: 11px;
+}

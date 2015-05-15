@@ -16,8 +16,8 @@ public class Database {
 
 	public boolean openConnection(String user, String pass, int nbrConnections) {
 		try {
-			conn = DriverManager.getConnection(
-					"jdbc:mysql://127.0.0.1/test", user, pass);
+			conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1/test",
+					user, pass);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
