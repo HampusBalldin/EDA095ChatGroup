@@ -22,6 +22,10 @@ public class LoginHandler extends AsyncHandler {
 	public void handle(HttpExchange exchange) {
 		System.out.println("LoginHandler: " + exchange.getRequestURI());
 		Message msg = getMessage(exchange);
+//		System.out.println(msg.getType());
+		User origin = msg.getOrigin();
+		System.out.println(origin.getPwd()+origin.getUid() +origin.getStatus());
+		
 		createContext(msg.getOrigin());
 		notifyOnlineFriends(msg.getOrigin());
 		setCookie(msg.getOrigin(), exchange);

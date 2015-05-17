@@ -31,3 +31,41 @@ HXML.postXMLDoc = function (filename, callback, data){
 	xhttp.open("POST", filename, true);
 	xhttp.send(data);
 }
+
+HXML.MESSAGE_TYPE = {
+	Request_Receive_Data:"Request_Receive_Data",
+	Request_Send_Data:"Request_Send_Data",
+	Login:"Login",
+	Logout:"Logout"
+}
+
+HXML.STATUS = {
+	Online:"Online",
+	Offline:"Offline",
+	Away:"Away",
+}
+
+HXML.createMessage = function (type, origin, data){
+	var msg = 
+	{Message: 
+		{'type': type,
+		origin,
+		'data': data}};
+	return msg;
+}
+
+HXML.createUser = function (uid, pwd, status){
+	var usr = 
+	{'uid': uid,
+	'pwd': pwd,
+	'status': status};
+	return usr;
+}
+
+HXML.createFriend = function (uid_1, uid_2){
+	var friend = 
+	{'uid_1': uid_1,
+	'uid_2': uid_2
+	};
+	return friend;
+}

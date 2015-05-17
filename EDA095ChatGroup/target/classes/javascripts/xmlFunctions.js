@@ -31,3 +31,20 @@ HXML.postXMLDoc = function (filename, callback, data){
 	xhttp.open("POST", filename, true);
 	xhttp.send(data);
 }
+
+HXML.messageType = {
+	Request_Receive_Data:"Request_Receive_Data",
+	Request_Send_Data:"Request_Send_Data",
+	Login:"Login",
+	Logout:"Logout"
+}
+
+HXML.createMessage = function (type, origin, data){
+
+	var msg = 
+	{Message: 
+		{'type': type,
+		origin,
+		'data': data}};
+	return msg;
+}

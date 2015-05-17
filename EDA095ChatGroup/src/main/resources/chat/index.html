@@ -7,7 +7,10 @@
 			<script src="../javascripts/cookies.js"></script>
 			<script>
 			function onBodyLoaded() {
-
+				var origin = HXML.createUser("hampus", "password", HXML.STATUS.Online);
+				var msg = HXML.createMessage(HXML.MESSAGE_TYPE.Login, origin, "");
+				HXML.postXMLDoc("../async/login/", {}, JSON.stringify(msg))
+/*
 				var j={"Users":{"User": {"uid": "hampus",
 				"pwd":"pasword1",
 			    "Status":"Online"}}};
@@ -16,7 +19,9 @@
 						console.log("Sent Login to server ...")
 					}, 
 					JSON.stringify(j));
+					*/
 				}
+				
 			</script>
 		</head>
 		<body onload="onBodyLoaded()">
