@@ -7,11 +7,16 @@
 			<script src="../javascripts/cookies.js"></script>
 			<script>
 			function onBodyLoaded() {
+
+				var j={"User": {"uid": "hampus",
+
+				"pwd":"pasword1",
+			    "status":"online"}};
 				HXML.postXMLDoc("../asynchronous/login/", 
 					function(xhttp){
-						console.log("Unloaded Page")
+						console.log("Sent Login to server ...")
 					}, 
-					"some data ... ");
+					JSON.stringify(j));
 				}
 			</script>
 			

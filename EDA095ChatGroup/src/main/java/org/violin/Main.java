@@ -6,9 +6,10 @@ import org.violin.database.DBFriends;
 import org.violin.database.Database;
 import org.violin.database.generated.Friends;
 
+
 public class Main {
 	public static void main(String[] args) {
-
+		
 		System.out.println("------- Connecting to Database --------");
 		Database db = new Database();
 		db.openConnection("root", "password");

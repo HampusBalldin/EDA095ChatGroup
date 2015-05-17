@@ -51,7 +51,7 @@ public abstract class DBObject<T> {
 		try {
 			PreparedStatement prep = conn.prepareStatement(sql);
 			ResultSet rs = prep.executeQuery();
-			Document doc = XML.toDocument(rs);
+			Document doc = XMLUtilities.documentify(rs);
 			t = unmarshal(doc);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -65,7 +65,7 @@ public abstract class DBObject<T> {
 
 	public void marshal(T t, OutputStream out) {
 		try {
-			XML.marshal(new JAXBElement<T>(new QName(t.getClass()
+			XMLUtilities.marshal(new JAXBElement<T>(new QName(t.getClass()
 					.getCanonicalName(), t.getClass().getSimpleName()),
 					rootType(), t), factoryType(), out);
 		} catch (JAXBException e) {
@@ -76,7 +76,7 @@ public abstract class DBObject<T> {
 	public T unmarshal(Document doc) {
 		T t = null;
 		try {
-			t = (T) XML.unmarshal(doc, rootType(), factoryType(), rootName(),
+			t = (T) XMLUtilities.unmarshal(doc, rootType(), factoryType(), rootName(),
 					rowName());
 		} catch (JAXBException e) {
 			e.printStackTrace();

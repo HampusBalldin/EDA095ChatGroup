@@ -1,21 +1,14 @@
 package org.violin;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.InputStream;
 import java.net.URI;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.violin.database.Database;
-import org.violin.database.XML;
+import org.violin.database.XMLUtilities;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -56,8 +49,8 @@ public class HTTPUtilities {
 				String path = System.getProperty("user.dir")
 						+ "/src/main/resources/mimetypes.xml";
 				try {
-					Document document = XML.getDocument(new FileInputStream(
-							new File(path)));
+					Document document = XMLUtilities
+							.documentify(new FileInputStream(new File(path)));
 					findEntries(document.getDocumentElement());
 				} catch (Exception e) {
 					e.printStackTrace();
