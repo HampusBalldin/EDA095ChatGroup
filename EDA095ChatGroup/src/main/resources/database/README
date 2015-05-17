@@ -1,1 +1,8 @@
-För att skapa en ny database: "CREATE DATABASE EDA095;"
+--För att skapa en ny database: 
+CREATE DATABASE EDA095;
+
+--För att lägga till användare:
+--DROP USER 'eda095user'@'localhost';
+CREATE USER 'eda095user'@'localhost' IDENTIFIED BY 'bestpassword';
+GRANT ALL PRIVILEGES ON EDA095.* TO 'eda095user'@'localhost' WITH GRANT OPTION;
+FLUSH PRIVILEGES;

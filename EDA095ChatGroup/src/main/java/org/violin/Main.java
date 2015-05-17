@@ -18,7 +18,7 @@ public class Main {
 
 		System.out.println("------- Connecting to Database --------");
 		Database db = new Database();
-		db.openConnection("root", "password");
+		db.openConnection("eda095user", "bestpassword");
 
 		DBFriends dbFriends = new DBFriends(db);
 		Friends friends = dbFriends.query("SELECT * FROM Friends");
