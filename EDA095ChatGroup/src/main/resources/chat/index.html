@@ -3,10 +3,32 @@
 		<head>
 			<title>Joels hemsida</title>
 			<link rel="stylesheet" type="text/css" href="style.css" />	
-	
+			<script src="../javascripts/xmlFunctions.js"></script>
+			<script src="../javascripts/cookies.js"></script>
+			<script>
+				function getCookie(cname) {
+				    var name = cname + "=";
+				    var ca = document.cookie.split(';');
+				    for(var i=0; i < ca.length; i++) {
+				        var c = ca[i];
+				        while (c.charAt(0)==' ') c = c.substring(1);
+				        if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
+				    }
+				    return "";
+				}
+				
+				onBodyLoaded = function(){
+				
+				docCookies.setItem("uid", "hampus");
+					HXML.getXMLDoc(	HXML.getXMLDoc("../asynchronous/login/", function(xhttp){
+						console.log("Test Get XML Doc")
+					} ) );
+				}
+			</script>
+			
 		</head>
 		
-		<body>
+		<body onload="onBodyLoaded()">
 			<div id="header">
 				<h1>Joels hemsida</h1>
 			</div>
