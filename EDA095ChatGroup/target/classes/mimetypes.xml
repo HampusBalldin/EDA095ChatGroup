@@ -14,7 +14,7 @@
 		<file-ending>css</file-ending>
 		<content-type>text/css</content-type>
 	</mime>
-	
+
 	<mime>
 		<file-ending>xml</file-ending>
 		<content-type>application/xml</content-type>

@@ -22,5 +22,4 @@ public class Server {
 		server.start();
 		// server.createContext(arg0, arg1);
 	}
-
 }

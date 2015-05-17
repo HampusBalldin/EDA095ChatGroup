@@ -32,7 +32,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 public class XMLUtilities {
-	public static String toString(Document doc) {
+	public static String stringify(Document doc) {
 		try {
 			DOMSource domSource = new DOMSource(doc);
 			StringWriter writer = new StringWriter();
@@ -51,18 +51,7 @@ public class XMLUtilities {
 			Class<T2> jaxbFactory, String rootName, String rowName)
 			throws JAXBException, ParserConfigurationException, SQLException {
 		Document doc = XMLUtilities.documentify(rs);
-		Node root = doc.getFirstChild();
-		doc.renameNode(root, null, rootName);
-		NodeList nodes = doc.getElementsByTagName("Row");
-		for (int i = 0; i < nodes.getLength(); i++) {
-			doc.renameNode(nodes.item(i), null, rowName);
-		}
-		JAXBContext jaxbContext = JAXBContext.newInstance(jaxbFactory);
-		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-		@SuppressWarnings("unchecked")
-		JAXBElement<T1> element = (JAXBElement<T1>) jaxbUnmarshaller
-				.unmarshal(doc);
-		return element.getValue();
+		return unmarshal(doc, type, jaxbFactory, rootName, rowName);
 	}
 
 	public static <T1, T2> T1 unmarshal(Document doc, Class<T1> type,
@@ -74,6 +63,12 @@ public class XMLUtilities {
 		for (int i = 0; i < nodes.getLength(); i++) {
 			doc.renameNode(nodes.item(i), null, rowName);
 		}
+		return unmarshal(doc, type, jaxbFactory);
+	}
+
+	public static <T1, T2> T1 unmarshal(Document doc, Class<T1> type,
+			Class<T2> jaxbFactory) throws JAXBException,
+			ParserConfigurationException {
 		JAXBContext jaxbContext = JAXBContext.newInstance(jaxbFactory);
 		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 		@SuppressWarnings("unchecked")

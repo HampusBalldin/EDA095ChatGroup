@@ -8,10 +8,10 @@
 			<script>
 			function onBodyLoaded() {
 
-				var j={"User": {"uid": "hampus",
+				var j={"Users":{"User": {"uid": "hampus",
 
 				"pwd":"pasword1",
-			    "status":"online"}};
+			    "status":"online"}}};
 				HXML.postXMLDoc("../asynchronous/login/", 
 					function(xhttp){
 						console.log("Sent Login to server ...")
