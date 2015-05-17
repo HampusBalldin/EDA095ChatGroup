@@ -32,6 +32,5 @@ public class AsyncHandler implements HttpHandler {
 			return false;
 		return principal.equals(((AsyncHandler) obj).principal);
 	}
-	
 
 }
