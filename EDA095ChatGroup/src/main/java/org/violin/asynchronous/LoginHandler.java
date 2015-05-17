@@ -65,4 +65,5 @@ public class LoginHandler extends AsyncHandler {
 		}
 		return user;
 	}
+
 }

@@ -21,7 +21,7 @@ CREATE TABLE Friends (
 	uid_1 VARCHAR(64),
 	uid_2 VARCHAR(64), 
 	FOREIGN KEY (uid_1) REFERENCES Users(uid),
-	FOREIGN KEY (uid_1) REFERENCES Users(uid),
+	FOREIGN KEY (uid_2) REFERENCES Users(uid),
 	PRIMARY KEY(uid_1, uid_2)
 );
 
