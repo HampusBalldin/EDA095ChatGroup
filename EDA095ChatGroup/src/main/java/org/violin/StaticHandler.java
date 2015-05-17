@@ -32,5 +32,5 @@ public class StaticHandler implements HttpHandler {
 		os.close();
 		in.close();
 	}
-
+	
 }
