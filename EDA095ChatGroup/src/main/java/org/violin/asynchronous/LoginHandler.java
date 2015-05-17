@@ -53,6 +53,8 @@ public class LoginHandler extends AsyncHandler {
 	public User getUser(String jsonString) {
 		JSONObject jsonObject = new JSONObject(jsonString);
 		String xml = XML.toString(jsonObject);
+		System.out.println(jsonString);
+		System.out.println(xml);
 		User user = null;
 		try {
 			Users users = XMLUtilities.unmarshal(XMLUtilities.documentify(xml),

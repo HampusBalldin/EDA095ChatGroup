@@ -16,11 +16,6 @@ import org.w3c.dom.NodeList;
 import com.sun.net.httpserver.Headers;
 
 public class HTTPUtilities {
-
-	public HTTPUtilities() {
-
-	}
-
 	public static void printHeaders(Headers h) {
 		Iterator<Entry<String, List<String>>> itr = h.entrySet().iterator();
 
