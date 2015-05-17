@@ -1,1 +1,1 @@
-xjc -d gen -p org.violin.database.generated status.xsd users.xsd friends.xsd
+xjc -d gen -p org.violin.database.generated status.xsd users.xsd friends.xsd message.xsd messagetype.xsd

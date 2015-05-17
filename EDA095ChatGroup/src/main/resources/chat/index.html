@@ -9,21 +9,16 @@
 			function onBodyLoaded() {
 
 				var j={"Users":{"User": {"uid": "hampus",
-
 				"pwd":"pasword1",
 			    "Status":"Online"}}};
-			    
-				HXML.postXMLDoc("../asynchronous/login/", 
+				HXML.postXMLDoc("../async/login/", 
 					function(xhttp){
 						console.log("Sent Login to server ...")
 					}, 
 					JSON.stringify(j));
 				}
-				
 			</script>
-			
 		</head>
-		
 		<body onload="onBodyLoaded()">
 			<div id="header">
 				<h1>Joels hemsida</h1>

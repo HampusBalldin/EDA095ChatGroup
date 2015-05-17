@@ -1,11 +1,9 @@
 package org.violin;
 
 import java.io.IOException;
-
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.namespace.QName;
-
 import org.violin.database.DBFriends;
 import org.violin.database.Database;
 import org.violin.database.XMLUtilities;
@@ -15,7 +13,6 @@ import org.violin.database.generated.Status;
 
 public class Main {
 	public static void main(String[] args) {
-
 		System.out.println("------- Connecting to Database --------");
 		Database db = new Database();
 		db.openConnection("eda095user", "bestpassword");
@@ -25,7 +22,7 @@ public class Main {
 		dbFriends.marshal(friends, System.out);
 
 		System.out.println("------- Starting Server --------");
-		Server server = new Server();
+		Server server = new Server(db);
 		try {
 			server.start();
 		} catch (IOException e) {

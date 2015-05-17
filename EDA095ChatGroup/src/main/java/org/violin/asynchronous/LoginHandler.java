@@ -1,71 +1,55 @@
 package org.violin.asynchronous;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import org.json.JSONObject;
-import org.json.XML;
-import org.violin.database.XMLUtilities;
-import org.violin.database.generated.ObjectFactory;
+import org.violin.database.DBUsers;
+import org.violin.database.Database;
+import org.violin.database.generated.Message;
+import org.violin.database.generated.Status;
 import org.violin.database.generated.User;
 import org.violin.database.generated.Users;
+
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 
 public class LoginHandler extends AsyncHandler {
+	private Database db;
 
-	public LoginHandler(HttpServer server) {
+	public LoginHandler(Database db, HttpServer server) {
 		super(server);
+		this.db = db;
 	}
 
 	@Override
 	public void handle(HttpExchange exchange) {
 		System.out.println("LoginHandler: " + exchange.getRequestURI());
-		switch (exchange.getRequestMethod().toUpperCase()) {
-		case "GET":
-			handleGet(exchange);
-			break;
-		case "POST":
-			handlePost(exchange);
-			break;
-		}
+		Message msg = getMessage(exchange);
+		createContext(msg.getOrigin());
+		notifyOnlineFriends(msg.getOrigin());
+		setCookie(msg.getOrigin(), exchange);
 	}
 
-	public void handleGet(HttpExchange exchange) {
-
+	private void setCookie(User user, HttpExchange exchange) {
+		exchange.getResponseHeaders().set("Cookie",
+				"uid=" + user.getUid() + ";");
 	}
 
-	public void handlePost(HttpExchange exchange) {
-		BufferedReader in = new BufferedReader(new InputStreamReader(
-				exchange.getRequestBody()));
-		StringBuilder sb = new StringBuilder();
-		try {
-			while (in.ready()) {
-				sb.append(in.readLine());
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		User user = getUser(sb.toString());
-		System.out.println(user.getUid() + user.getPwd() + user.getStatus());
+	private void createContext(User user) {
+		server.createContext("/async/" + user.getUid() + "/messageHandler",
+				new MessageHandler(server));
 	}
 
-	public User getUser(String jsonString) {
-		JSONObject jsonObject = new JSONObject(jsonString);
-		String xml = XML.toString(jsonObject);
-		System.out.println(jsonString);
-		System.out.println(xml);
-		User user = null;
-		try {
-			Users users = XMLUtilities.unmarshal(XMLUtilities.documentify(xml),
-					Users.class, ObjectFactory.class);
-			if (users.getUser().size() >= 1) {
-				user = users.getUser().get(0);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+	public void notifyOnlineFriends(User user) {
+		DBUsers dbUsers = new DBUsers(db);
+
+		Users users = dbUsers.query("SELECT * " + " FROM Users"
+				+ " WHERE (status = ? OR status = ?) AND (uid IN"
+				+ " (SELECT uid_1 FROM friends"
+				+ " WHERE ? = uid_2) OR uid IN " + " (SELECT uid_2"
+				+ " FROM friends " + " WHERE ? = uid_1))",
+				Status.ONLINE.value(), Status.AWAY.value(), "" + user.getUid(),
+				"" + user.getUid());
+		for (User friend : users.getUser()) {
+			System.out.println(friend.getUid() + " - " + friend.getStatus());
 		}
-		return user;
 	}
 
 }

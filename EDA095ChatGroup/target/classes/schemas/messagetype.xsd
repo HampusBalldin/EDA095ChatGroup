@@ -1,0 +1,11 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<xsd:element name="MessageType" type="MessageType" />
+	<xsd:simpleType name="MessageType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Request_Receive_Data" />
+			<xsd:enumeration value="Request_Send_Data" />
+			<xsd:enumeration value="Login" />
+			<xsd:enumeration value="Logout" />
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>

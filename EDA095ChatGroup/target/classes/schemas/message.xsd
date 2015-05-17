@@ -1,0 +1,10 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<xsd:element name="Message" type="Message" />
+	<xsd:complexType name="Message">
+		<xsd:sequence>
+			<xsd:element name="type" type="MessageType" />
+			<xsd:element name="origin" type="User" />
+			<xsd:element name="data" type="xsd:string" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

@@ -63,6 +63,28 @@ public abstract class DBObject<T> {
 		return t;
 	}
 
+	public T query(String sql, String... args) {
+		T t = null;
+		Connection conn = db.getConnection();
+
+		try {
+			PreparedStatement prep = conn.prepareStatement(sql);
+			for (int i = 1; i <= args.length; i++) {
+				prep.setString(i, args[i - 1]);
+			}
+			ResultSet rs = prep.executeQuery();
+			Document doc = XMLUtilities.documentify(rs);
+			t = unmarshal(doc);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		} finally {
+			db.releaseConnection();
+		}
+		return t;
+	}
+
 	public void marshal(T t, OutputStream out) {
 		try {
 			XMLUtilities.marshal(new JAXBElement<T>(new QName(t.getClass()
@@ -76,8 +98,8 @@ public abstract class DBObject<T> {
 	public T unmarshal(Document doc) {
 		T t = null;
 		try {
-			t = (T) XMLUtilities.unmarshal(doc, rootType(), factoryType(), rootName(),
-					rowName());
+			t = (T) XMLUtilities.unmarshal(doc, rootType(), factoryType(),
+					rootName(), rowName());
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		} catch (ParserConfigurationException e) {

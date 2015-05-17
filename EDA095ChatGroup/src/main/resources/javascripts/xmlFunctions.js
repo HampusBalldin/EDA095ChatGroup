@@ -11,9 +11,6 @@ HXML.getXMLDoc = function (filename, callback){
 	} else { // code for IE5 and IE6
 		xhttp=new ActiveXObject("Microsoft.XMLHTTP");
 	}
-	//xhttp.withCredentials = true;
-	//xhttp.setRequestHeader('Access-Control-Allow-Credentials', 'true');
-	//xhttp.setRequestHeader('Cookie', 'uid=Hampus;');
 	xhttp.overrideMimeType("text/xml");
 	xhttp.open("GET", filename, true);
 	xhttp.send();
