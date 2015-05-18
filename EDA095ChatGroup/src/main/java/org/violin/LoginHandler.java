@@ -70,9 +70,7 @@ public class LoginHandler extends StaticHandler {
 				"" + user.getUid());
 		
 		for (User friend : users.getUser()) {
-			
 			System.out.println(friend.getUid() + " - " + friend.getStatus());
-		
 		}
 	}
 }
