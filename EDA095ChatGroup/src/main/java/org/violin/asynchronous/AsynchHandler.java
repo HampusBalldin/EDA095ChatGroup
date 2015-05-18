@@ -4,36 +4,41 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import javax.xml.bind.annotation.XmlEnumValue;
-
 import org.json.JSONObject;
 import org.json.XML;
 import org.violin.database.XMLUtilities;
 import org.violin.database.generated.Message;
-import org.violin.database.generated.MessageType;
 import org.violin.database.generated.ObjectFactory;
 
-import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import com.sun.net.httpserver.HttpServer;
 
-public class AsynchHandler {
+public class AsynchHandler implements HttpHandler {
 	/**
 	 * The principal which this handler is responsible for...
 	 */
-	private AsynchContexts contexts;
+	private AsynchHandlerManager contexts;
 	private Receiver receiver;
 	private Sender sender;
 
-	public AsynchHandler(AsynchContexts contexts) {
+	public AsynchHandler(AsynchHandlerManager contexts) {
 		this.contexts = contexts;
-		Receiver receiver = new Receiver();
-		Sender sender = new Sender();
+		receiver = new Receiver();
+		sender = new Sender();
+	}
+	
+	public void start() {
 		Thread t1 = new Thread(receiver);
 		Thread t2 = new Thread(sender);
 		t1.start();
 		t2.start();
+	}
+
+	public void terminate() {
+		System.out.println("Call Receiver Terminate");
+		receiver.terminate();
+		System.out.println("Call Sender Terminate");
+		sender.terminate();
 	}
 
 	public void handle(HttpExchange exchange) throws IOException {

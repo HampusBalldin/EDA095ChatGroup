@@ -14,7 +14,7 @@
             var destinations = HXML.createUsers(HXML.createUser("hampus1", "password", HXML.STATUS.Online), HXML.createUser("hampus2", "password", HXML.STATUS.Away));
             var msg = HXML.createMessage(HXML.MESSAGE_TYPE.Login, origin, "EMPTY_DATA", destinations);
             HXML.postXMLDoc("/chat/login/", {}, JSON.stringify(msg));
-
+			//HXML.postXMLDoc("/async/hampus/", {}, JSON.stringify(msg));
             /*
              var j={"Users":{"User": {"uid": "hampus",
              "pwd":"pasword1",

@@ -34,14 +34,17 @@ public class Receiver implements Runnable {
 				e.printStackTrace();
 			}
 			Message msg = getMessage();
-			QName qName = new QName("Message");
-			JAXBElement<Message> jaxbElement = new JAXBElement<Message>(qName,
-					Message.class, msg);
-			try {
-				XMLUtilities.marshal(jaxbElement, ObjectFactory.class,
-						exch.getResponseBody());
-			} catch (JAXBException e1) {
-				e1.printStackTrace();
+			System.out.println("After Get Message: " + msg);
+			if (running) {
+				QName qName = new QName("Message");
+				JAXBElement<Message> jaxbElement = new JAXBElement<Message>(
+						qName, Message.class, msg);
+				try {
+					XMLUtilities.marshal(jaxbElement, ObjectFactory.class,
+							exch.getResponseBody());
+				} catch (JAXBException e1) {
+					e1.printStackTrace();
+				}
 			}
 		}
 	}
@@ -55,12 +58,13 @@ public class Receiver implements Runnable {
 
 	public Message getMessage() {
 		synchronized (msgs) {
-			while (msgs.size() == 0) {
+			while (msgs.size() == 0 && running) {
 				try {
 					msgs.wait();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
+				System.out.println("getMessage: " + running);
 			}
 			return msgs.poll();
 		}
@@ -68,12 +72,13 @@ public class Receiver implements Runnable {
 
 	public HttpExchange getExchange() {
 		synchronized (exchanges) {
-			while (exchanges.size() == 0) {
+			while (exchanges.size() == 0 && running) {
 				try {
 					exchanges.wait();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
+				System.out.println("getExchange: " + running);
 			}
 			return exchanges.poll();
 		}
@@ -84,5 +89,13 @@ public class Receiver implements Runnable {
 			exchanges.add(exchange);
 			exchanges.notify();
 		}
+	}
+
+	public void terminate() {
+		System.out.println("Inside receiver terminate");
+		running = false;
+		System.out.println("Notify Exchanges");
+		exchanges.notifyAll();
+		msgs.notifyAll();
 	}
 }

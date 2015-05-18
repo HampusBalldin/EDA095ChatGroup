@@ -8,19 +8,30 @@ import org.violin.database.generated.Message;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import com.sun.net.httpserver.HttpServer;
 
-public class AsynchContexts implements HttpHandler {
+public class AsynchHandlerManager implements HttpHandler {
 
 	private HashMap<String, AsynchHandler> contexts = new HashMap<String, AsynchHandler>();
 	private Database db;
-
-	public AsynchContexts(Database db) {
+	private HttpServer server;
+	
+	public AsynchHandlerManager(HttpServer server, Database db) {
 		this.db = db;
+		this.server = server;
 	}
 
 	public void createContext(String binding, AsynchHandler handler) {
 		synchronized (contexts) {
-			contexts.put(binding, handler);
+			if (!contexts.containsKey(binding)) {
+				System.out.println("Create Context for " + binding);
+				contexts.put(binding, handler);
+				server.createContext(binding, handler);
+				handler.start();
+			} else {
+				System.out.println("Binding Already exists for " + binding);
+				handler.terminate();
+			}
 		}
 	}
 
@@ -44,4 +55,6 @@ public class AsynchContexts implements HttpHandler {
 	public void addMessage(String binding, Message msg) {
 
 	}
+	
+	
 }

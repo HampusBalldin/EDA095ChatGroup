@@ -16,4 +16,8 @@ public class Sender implements Runnable {
 
 		}
 	}
+
+	public void terminate() {
+		running = false;
+	}
 }

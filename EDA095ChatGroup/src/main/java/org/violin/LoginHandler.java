@@ -2,7 +2,7 @@ package org.violin;
 
 import java.util.Iterator;
 
-import org.violin.asynchronous.AsynchContexts;
+import org.violin.asynchronous.AsynchHandlerManager;
 import org.violin.asynchronous.AsynchHandler;
 import org.violin.database.DBUsers;
 import org.violin.database.Database;
@@ -15,9 +15,9 @@ import com.sun.net.httpserver.HttpExchange;
 
 public class LoginHandler extends StaticHandler {
 	private Database db;
-	private AsynchContexts contexts;
+	private AsynchHandlerManager contexts;
 
-	public LoginHandler(Database db, AsynchContexts contexts) {
+	public LoginHandler(Database db, AsynchHandlerManager contexts) {
 		super();
 		this.db = db;
 		this.contexts = contexts;
@@ -30,12 +30,12 @@ public class LoginHandler extends StaticHandler {
 		User user = msg.getOrigin();
 		Users destinations = msg.getDestinations();
 		Iterator<User> itr = destinations.getUser().iterator();
-		while(itr.hasNext()){
-			
+		while (itr.hasNext()) {
+
 			User u = itr.next();
 			System.out.println(u.getPwd() + u.getUid() + u.getStatus().value());
 		}
-		
+
 		createContext(user);
 		notifyOnlineFriends(user);
 		setCookie(user, exchange);
@@ -53,7 +53,6 @@ public class LoginHandler extends StaticHandler {
 	 * @param user
 	 */
 	private void createContext(User user) {
-
 		contexts.createContext("/asynch/" + user.getUid(), new AsynchHandler(
 				contexts));
 	}
@@ -68,7 +67,7 @@ public class LoginHandler extends StaticHandler {
 				+ " FROM friends " + " WHERE ? = uid_1))",
 				Status.ONLINE.value(), Status.AWAY.value(), "" + user.getUid(),
 				"" + user.getUid());
-		
+
 		for (User friend : users.getUser()) {
 			System.out.println(friend.getUid() + " - " + friend.getStatus());
 		}
