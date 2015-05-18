@@ -4,10 +4,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import javax.xml.bind.annotation.XmlEnumValue;
+
 import org.json.JSONObject;
 import org.json.XML;
 import org.violin.database.XMLUtilities;
 import org.violin.database.generated.Message;
+import org.violin.database.generated.MessageType;
 import org.violin.database.generated.ObjectFactory;
 
 import com.sun.net.httpserver.Headers;
@@ -15,33 +18,40 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
-public class AsyncHandler implements HttpHandler {
+public class AsynchHandler {
 	/**
 	 * The principal which this handler is responsible for...
 	 */
-	private String principal;
-	protected HttpServer server;
+	private AsynchContexts contexts;
+	private Receiver receiver;
+	private Sender sender;
 
-	public AsyncHandler(HttpServer server) {
-		this.server = server;
+	public AsynchHandler(AsynchContexts contexts) {
+		this.contexts = contexts;
+		Receiver receiver = new Receiver();
+		Sender sender = new Sender();
+		Thread t1 = new Thread(receiver);
+		Thread t2 = new Thread(sender);
+		t1.start();
+		t2.start();
 	}
 
 	public void handle(HttpExchange exchange) throws IOException {
-		Headers requestHeaders = exchange.getRequestHeaders();
+		Message msg = getMessage(exchange);
+		switch (msg.getType()) {
+		case LOGIN:
+			break;
+		case LOGOUT:
+			break;
+		case REQUEST_RECEIVE_DATA:
+			receiver.addExchange(exchange);
+			break;
+		case REQUEST_SEND_DATA:
+			break;
+		}
 	}
 
-	public String getPrincipal() {
-		return principal;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (!(obj instanceof AsyncHandler))
-			return false;
-		return principal.equals(((AsyncHandler) obj).principal);
-	}
-
-	protected Message getMessage(HttpExchange exchange) {
+	private Message getMessage(HttpExchange exchange) {
 		BufferedReader in = new BufferedReader(new InputStreamReader(
 				exchange.getRequestBody()));
 		StringBuilder sb = new StringBuilder();

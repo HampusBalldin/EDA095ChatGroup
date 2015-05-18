@@ -1,5 +1,9 @@
-package org.violin.asynchronous;
+package org.violin;
 
+import java.util.Iterator;
+
+import org.violin.asynchronous.AsynchContexts;
+import org.violin.asynchronous.AsynchHandler;
 import org.violin.database.DBUsers;
 import org.violin.database.Database;
 import org.violin.database.generated.Message;
@@ -8,27 +12,33 @@ import org.violin.database.generated.User;
 import org.violin.database.generated.Users;
 
 import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpServer;
 
-public class LoginHandler extends AsyncHandler {
+public class LoginHandler extends StaticHandler {
 	private Database db;
+	private AsynchContexts contexts;
 
-	public LoginHandler(Database db, HttpServer server) {
-		super(server);
+	public LoginHandler(Database db, AsynchContexts contexts) {
+		super();
 		this.db = db;
+		this.contexts = contexts;
 	}
 
 	@Override
 	public void handle(HttpExchange exchange) {
 		System.out.println("LoginHandler: " + exchange.getRequestURI());
 		Message msg = getMessage(exchange);
-//		System.out.println(msg.getType());
-		User origin = msg.getOrigin();
-		System.out.println(origin.getPwd()+origin.getUid() +origin.getStatus());
+		User user = msg.getOrigin();
+		Users destinations = msg.getDestinations();
+		Iterator<User> itr = destinations.getUser().iterator();
+		while(itr.hasNext()){
+			
+			User u = itr.next();
+			System.out.println(u.getPwd() + u.getUid() + u.getStatus().value());
+		}
 		
-		createContext(msg.getOrigin());
-		notifyOnlineFriends(msg.getOrigin());
-		setCookie(msg.getOrigin(), exchange);
+		createContext(user);
+		notifyOnlineFriends(user);
+		setCookie(user, exchange);
 	}
 
 	private void setCookie(User user, HttpExchange exchange) {
@@ -36,9 +46,16 @@ public class LoginHandler extends AsyncHandler {
 				"uid=" + user.getUid() + ";");
 	}
 
+	/**
+	 * Creates an asynchronous context with
+	 * org.violin.asynchronous.AsynchContexts
+	 * 
+	 * @param user
+	 */
 	private void createContext(User user) {
-		server.createContext("/async/" + user.getUid() + "/messageHandler",
-				new MessageHandler(server));
+
+		contexts.createContext("/asynch/" + user.getUid(), new AsynchHandler(
+				contexts));
 	}
 
 	public void notifyOnlineFriends(User user) {
@@ -51,9 +68,11 @@ public class LoginHandler extends AsyncHandler {
 				+ " FROM friends " + " WHERE ? = uid_1))",
 				Status.ONLINE.value(), Status.AWAY.value(), "" + user.getUid(),
 				"" + user.getUid());
+		
 		for (User friend : users.getUser()) {
+			
 			System.out.println(friend.getUid() + " - " + friend.getStatus());
+		
 		}
 	}
-
 }

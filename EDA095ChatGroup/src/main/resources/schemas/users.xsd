@@ -13,6 +13,4 @@
 			<xsd:element name="status" type="Status" />
 		</xsd:sequence>
 	</xsd:complexType>
-
-
 </xsd:schema>

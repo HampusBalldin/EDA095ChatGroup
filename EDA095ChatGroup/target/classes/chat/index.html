@@ -7,13 +7,15 @@
 			<script src="../javascripts/cookies.js"></script>
 			<script>
 			function onBodyLoaded() {
-				var origin =
-				{ uid: "hampus",
-					 pwd: "pasword1",
-			   	 	 Status: "Online" 
-			   	 };
-				var msg = HXML.createMessage(HXML.messageType.Login, origin, "");
-				HXML.postXMLDoc("../async/login/", {}, JSON.stringify(msg))
+				var origin = HXML.createUser("hampus", "password", HXML.STATUS.Online, false);
+				var destinations = 
+				[
+					HXML.createUser("hampus1", "password", HXML.STATUS.Online, true),
+					HXML.createUser("hampus2", "password", HXML.STATUS.Away, true)		
+				];
+				
+				var msg = HXML.createMessage(HXML.MESSAGE_TYPE.Login, origin, "EMPTY_DATA",destinations);
+				HXML.postXMLDoc("/chat/login/", {}, JSON.stringify(msg))
 /*
 				var j={"Users":{"User": {"uid": "hampus",
 				"pwd":"pasword1",
