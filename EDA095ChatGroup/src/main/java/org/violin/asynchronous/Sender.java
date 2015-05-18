@@ -1,8 +1,9 @@
 package org.violin.asynchronous;
 
 /**
- * Request to send is handled here.
- * The destination for a message is assumed to be all friends which are not online.
+ * Request to send is handled here. The destination for a message is assumed to
+ * be all friends which are not online.
+ * 
  * @author Hampus Balldin
  */
 public class Sender implements Runnable {
@@ -11,7 +12,6 @@ public class Sender implements Runnable {
 	@Override
 	public void run() {
 		running = true;
-
 		while (running) {
 
 		}
