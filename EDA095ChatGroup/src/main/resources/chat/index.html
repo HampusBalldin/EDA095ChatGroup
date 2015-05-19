@@ -1,74 +1,34 @@
-<!DOCTYPE html>
 <html>
 <head>
-    <title>Joels hemsida</title>
-    <link rel="stylesheet" type="text/css" href="style.css"/>
-    <script src="../javascripts/HXML.js"></script>
-    <script src="../javascripts/cookies.js"></script>
-    ¨
-    <script src="../javascripts/xml2json.js"></script>
-    <script src="../javascripts/json2xml.js"></script>
-    <script>
-        function onBodyLoaded() {
-            var origin = HXML.createUser("hampus", "password", HXML.STATUS.Online);
-            var destinations = HXML.createUsers(HXML.createUser("hampus1", "password", HXML.STATUS.Online), HXML.createUser("hampus2", "password", HXML.STATUS.Away));
-            var msg = HXML.createMessage(HXML.MESSAGE_TYPE.Login, origin, "EMPTY_DATA", destinations);
-            HXML.postXMLDoc("/chat/login/", {}, JSON.stringify(msg));
-			//HXML.postXMLDoc("/async/hampus/", {}, JSON.stringify(msg));
-            /*
-             var j={"Users":{"User": {"uid": "hampus",
-             "pwd":"pasword1",
-             "Status":"Online"}}};
-             HXML.postXMLDoc("../async/login/",
-             function(xhttp){
-             console.log("Sent Login to server ...")
-             },
-             JSON.stringify(j));
-             */
-        }
-
-    </script>
+<link rel="stylesheet" type="text/css" href="test.css"/>
 </head>
-<body onload="onBodyLoaded()">
-<div id="header">
-    <h1>Joels hemsida</h1>
+<body>
+<div id="wrap" style="width:850px;margin:0 auto;">
+<h2>MIN SIDA</h2>
+<div id="divstatus">
+Status: <span id="status">Not connected.</span>
 </div>
-
-<div id="border">
-    <p>---</p>
+<div style="float:right;width:530px;padding-right:15px">
+<div class="topstrip stripred">Chat Box</div>
+<div id="chat_box">
+<div id="chatt">
 </div>
-
-<!--
-<div id="text1">
-    <p>V&auml;lkommen till Joels nya hemsida</p>
+<form onsubmit="send_msg(); return false;" action="javascript:void(0)">
+<input type="text" style="width:100%; color:#bbbbbb" id="chat_msg" placeholder="Type your chat message">
+<input type="button" onclick="send_msg" value="SKICKA"/>
+</form>
 </div>
--->
-
-<div id="text2">
-    <script>
-        document.write("V&auml;lkommen till Joels nya hemsida");
-    </script>
 </div>
-
-<div id="border">
-    <p>---</p>
+<div style="float:left;width:300px;">
+<div class="topstrip stripgreen">Online users</div>
+<div id="online_users">
+<table class="box_t" id="online_users_t" cellspacing="0">
+</table>
 </div>
-
-<div id="link">
-    <a href="http://www.inkonst.com">
-        <img src="http://static.stereogum.com/uploads/2015/04/27091125/Refused-560x560.jpg" width=200px/>
-    </a>
 </div>
-
+<div style="clear:both"></div>
 </div>
-
-<div id="border">
-    <p>---</p>
-</div>
-
-<div id="copyright">
-    <p>Copyright &copy, 2015 Joel P&aring;lsson</p>
-</div>
-
+</body>
+</html>
 </body>
 </html>
