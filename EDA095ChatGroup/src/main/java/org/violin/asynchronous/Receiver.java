@@ -13,11 +13,6 @@ import org.violin.database.generated.Message;
 import org.violin.database.generated.ObjectFactory;
 import com.sun.net.httpserver.HttpExchange;
 
-/**
- * Request For Receive Wait here until something to receive...
- * 
- * @author Hampus Balldin
- */
 public class Receiver implements Runnable {
 	private boolean running;
 	private Queue<HttpExchange> exchanges = new LinkedList<HttpExchange>();
@@ -35,7 +30,7 @@ public class Receiver implements Runnable {
 			}
 			Message msg = getMessage();
 			System.out.println("After Get Message: " + msg);
-			if (running) {
+			if (running) {															//?
 				QName qName = new QName("Message");
 				JAXBElement<Message> jaxbElement = new JAXBElement<Message>(
 						qName, Message.class, msg);
@@ -49,27 +44,22 @@ public class Receiver implements Runnable {
 		}
 	}
 
-	public void addMessage(Message msg) {
-		synchronized (msgs) {
-			msgs.add(msg);
-			msgs.notify();
+	public void terminate() {										//?
+		System.out.println("Inside receiver terminate");
+		running = false;
+		System.out.println("Notify Exchanges");
+		exchanges.notifyAll();
+		msgs.notifyAll();
+	}
+	
+
+	public void addExchange(HttpExchange exchange) {
+		synchronized (exchanges) {
+			exchanges.add(exchange);
+			exchanges.notify();
 		}
 	}
-
-	public Message getMessage() {
-		synchronized (msgs) {
-			while (msgs.size() == 0 && running) {
-				try {
-					msgs.wait();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				System.out.println("getMessage: " + running);
-			}
-			return msgs.poll();
-		}
-	}
-
+	
 	public HttpExchange getExchange() {
 		synchronized (exchanges) {
 			while (exchanges.size() == 0 && running) {
@@ -84,18 +74,25 @@ public class Receiver implements Runnable {
 		}
 	}
 
-	public void addExchange(HttpExchange exchange) {
-		synchronized (exchanges) {
-			exchanges.add(exchange);
-			exchanges.notify();
+	public void addMessage(Message msg) {
+		synchronized (msgs) {
+			msgs.add(msg);
+			msgs.notify();							//?
 		}
 	}
 
-	public void terminate() {
-		System.out.println("Inside receiver terminate");
-		running = false;
-		System.out.println("Notify Exchanges");
-		exchanges.notifyAll();
-		msgs.notifyAll();
+	public Message getMessage() {
+		synchronized (msgs) {			
+			while (msgs.size() == 0 && running) {	//?
+				try {
+					msgs.wait();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				System.out.println("getMessage: " + running);
+			}
+			return msgs.poll();
+		}
 	}
+
 }

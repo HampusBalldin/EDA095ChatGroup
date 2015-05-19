@@ -15,15 +15,15 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 public class AsyncHandler implements HttpHandler {
-	
+
 	private Receiver receiver;
 	private Sender sender;
 
-	public AsyncHandler(Database db) {
+	public AsyncHandler(Database db, AsyncHandlerManager manager) {
 		receiver = new Receiver();
-		sender = new Sender(db);
+		sender = new Sender(db, manager);
 	}
-	
+
 	public void start() {
 		Thread receiverThread = new Thread(receiver);
 		Thread senderThread = new Thread(sender);
@@ -39,25 +39,21 @@ public class AsyncHandler implements HttpHandler {
 	}
 
 	public void handle(HttpExchange exchange) throws IOException {
-		Message msg = getMessage(exchange);  //var ska denna vara?
+		Message msg = getMessage(exchange); 						// var ska denna vara?
 		switch (msg.getType()) {
-		case LOGIN:
-			break;
-		case LOGOUT:
-			break;
-		case REQUEST_RECEIVE_DATA:
-			receiver.addExchange(exchange); //?
-			break;
-		case REQUEST_SEND_DATA:
-			sender.createMessage(exchange);  //lägg istället in i kön
-			break;
+			case REQUEST_RECEIVE_DATA:
+				receiver.addExchange(exchange);
+				break;
+			case REQUEST_SEND_DATA:
+				sender.addExchange(exchange);
+				break;
 		}
 	}
 
 	public void receiveMessage(Message msg) {
 		receiver.addMessage(msg);
 	}
-	
+
 	private Message getMessage(HttpExchange exchange) {
 		BufferedReader in = new BufferedReader(new InputStreamReader(
 				exchange.getRequestBody()));

@@ -1,6 +1,7 @@
 package org.violin;
 
 import org.violin.asynchronous.AsyncHandlerManager;
+import org.violin.database.DBUsers;
 import org.violin.database.Database;
 import org.violin.database.generated.Status;
 import org.violin.database.generated.User;
@@ -8,17 +9,19 @@ import org.violin.database.generated.User;
 import com.sun.net.httpserver.HttpExchange;
 
 public class LogoutHandler extends StaticHandler { 
-	Database db;
-	AsyncHandlerManager manager;
+	private Database db;
+	private AsyncHandlerManager manager;
+	DBUsers users;
 
 	public LogoutHandler(Database db, AsyncHandlerManager manager) {
 		super();
 		this.db = db;
 		this.manager = manager;
+		users = new DBUsers(db);
 	}
 
 	@Override
-	public void handle(HttpExchange exchange) {  //System.out.println("LoginHandler: " + exchange.getRequestURI());
+	public void handle(HttpExchange exchange) { 				 //System.out.println("LoginHandler: " + exchange.getRequestURI());
 		String query = exchange.getRequestURI().getQuery();
 		String uid = "";	//utvinn uid ur query
 		String pwd = "";	//utvinn pwd ur query
@@ -28,17 +31,17 @@ public class LogoutHandler extends StaticHandler {
 		user.setPwd(pwd);
 		user.setStatus(status);
 		
-		logout(db);
+		dbLogout(user);
 		removeContext(user);
 
 	}
 
-	private void logout(Database db) {	//fix
-		
+	private void dbLogout(User user) {
+		users.update(user);
 	}
 	
 	private void removeContext(User user) {
-		manager.removeContext("/asynch/" + user.getUid());
+		manager.removeContext(user);
 	}
 	
 }
