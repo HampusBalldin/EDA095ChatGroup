@@ -24,9 +24,13 @@ public class AsyncHandlerManager {
 		}
 	}
 
-	public void removeContext(User user) { 						// synchronized (contexts)?
+	public void removeContext(User user) {						
 		String context = "/asynch/" + user.getUid();
-		contexts.remove(context);
+		synchronized (contexts) {
+			AsyncHandler handler = contexts.get(context);
+			handler.terminate();
+			contexts.remove(context);
+		}
 	}
 
 	public void distributeMessage(Message msg) {

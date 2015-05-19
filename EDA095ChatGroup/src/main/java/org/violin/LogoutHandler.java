@@ -9,13 +9,12 @@ import org.violin.database.generated.User;
 import com.sun.net.httpserver.HttpExchange;
 
 public class LogoutHandler extends StaticHandler { 
-	private Database db;
+	
 	private AsyncHandlerManager manager;
 	DBUsers users;
 
 	public LogoutHandler(Database db, AsyncHandlerManager manager) {
 		super();
-		this.db = db;
 		this.manager = manager;
 		users = new DBUsers(db);
 	}

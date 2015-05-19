@@ -1,19 +1,14 @@
 package org.violin.asynchronous;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
 import org.violin.database.DBUsers;
 import org.violin.database.Database;
-import org.violin.database.generated.Friend;
-import org.violin.database.generated.Friends;
 import org.violin.database.generated.Message;
 import org.violin.database.generated.Status;
 import org.violin.database.generated.User;
 import org.violin.database.generated.Users;
-
-import com.sun.net.httpserver.HttpExchange;
 
 //ska ha tillgång till databasen
 //kolla med databasen vilka av mina vänner som är online
@@ -25,54 +20,51 @@ public class Sender implements Runnable {
 	
 	Database db;
 	private AsyncHandlerManager manager;
-	private Queue<HttpExchange> exchanges;
+	private boolean running;
+	private Queue<Message> messageQueue;
 	
 	public Sender (Database db, AsyncHandlerManager manager) {
 		this.db = db;
 		this.manager = manager;
-		exchanges = new LinkedList<HttpExchange>();
+		messageQueue = new LinkedList<Message>();
 	}
 		
-	@Override
+	@Override												//efterlikna run i Receiver
 	 public void run() {
-		while(true) {
-			HttpExchange exchange = getExchange();
-			Message msg = createMessage(exchange);
+		running = true;
+		while(running) {
+			Message msg = retrieveFromMessageQueue();		//hur kan jag skicka responseheader utan att ha exchange?
+			setDestination(msg);
 			distributeMessage(msg);
 		}
 	}
 	
-	public void terminate() {							//fix
+	public void terminate() {
+		running = false;
+		messageQueue.notifyAll();
 	}
 
-	public void addExchange(HttpExchange exchange) {	//synchronized (exchanges) 
-		exchanges.add(exchange);
-		exchanges.notify();								//?
+	public void addToMessageQueue(Message msg) {			//synchronized (exchanges) 
+		messageQueue.add(msg);
+		messageQueue.notify();								//?
 	}
 	
-	private HttpExchange getExchange() {				//synchronized (exchanges) 
-		while (exchanges.size() == 0 && running) {		//running?
+	private Message retrieveFromMessageQueue() {					//synchronized (exchanges) 
+		while (messageQueue.size() == 0 && running) {		//running?
 			try {
-				exchanges.wait();
+				messageQueue.wait();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			System.out.println("getExchange: " + running);
+			System.out.println("getMessage: " + running);
 		}
-		return exchanges.poll();
+		return messageQueue.poll();
 	}
 	
-	private Message createMessage(HttpExchange exchange) {
-		String origin = "";								//fix
-		User user = new User();
-		user.setUid(origin);							//räcker uid?
-		Users onlineFriends = getOnlineFriends(user);
-		String data = "";
-		Message msg = new Message();
-		msg.setOrigin(user);
+	private void setDestination(Message msg) {
+		User origin = msg.getOrigin();
+		Users onlineFriends = getOnlineFriends(origin);
 		msg.setDestinations(onlineFriends);
-		msg.setData(data);
-		return msg;
 	}
 	
 	private void distributeMessage(Message msg) {

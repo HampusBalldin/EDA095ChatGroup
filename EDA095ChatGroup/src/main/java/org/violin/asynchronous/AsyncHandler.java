@@ -39,22 +39,24 @@ public class AsyncHandler implements HttpHandler {
 	}
 
 	public void handle(HttpExchange exchange) throws IOException {
-		Message msg = getMessage(exchange); 						// var ska denna vara?
+		String exchangeContent = getExchangeContent(exchange);
+		Message msg = createMessage(exchangeContent);
 		switch (msg.getType()) {
 			case REQUEST_RECEIVE_DATA:
-				receiver.addExchange(exchange);
+				receiver.addReplyExchange(exchange);
 				break;
 			case REQUEST_SEND_DATA:
-				sender.addExchange(exchange);
+				sender.addToMessageQueue(msg);
 				break;
 		}
 	}
 
 	public void receiveMessage(Message msg) {
-		receiver.addMessage(msg);
+		receiver.addToReplyQueue(msg);
 	}
 
-	private Message getMessage(HttpExchange exchange) {
+	
+	private String getExchangeContent(HttpExchange exchange) {
 		BufferedReader in = new BufferedReader(new InputStreamReader(
 				exchange.getRequestBody()));
 		StringBuilder sb = new StringBuilder();
@@ -65,10 +67,10 @@ public class AsyncHandler implements HttpHandler {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return getMessage(sb.toString());
+		return sb.toString();
 	}
 
-	private Message getMessage(String jsonString) {
+	private Message createMessage(String jsonString) {
 		JSONObject jsonObject = new JSONObject(jsonString);
 		String xml = XML.toString(jsonObject);
 		System.out.println(jsonString);
