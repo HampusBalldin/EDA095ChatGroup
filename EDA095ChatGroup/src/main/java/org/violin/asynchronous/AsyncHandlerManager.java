@@ -14,7 +14,7 @@ public class AsyncHandlerManager {
 	}
 
 	public void createContext(String path, AsyncHandler handler) {
-		contexts.put(path, handler);
+		contexts.put(path, handler); //finns hander inse, skapa
 	}
 
 	public void removeContext(String path) { // synchronized (contexts)?
@@ -29,15 +29,5 @@ public class AsyncHandlerManager {
 		}
 	}
 
-	// @Override
-	// public void handle(HttpExchange exchange) throws IOException {
-	// String path = exchange.getRequestURI().getPath();
-	// AsyncHandler handler = contexts.get(path);
-	// if (handler != null) {
-	// handler.handle(exchange);
-	// } else {
-	// System.out.println("No handler found at: " + path);
-	// }
-	// }
 
 }

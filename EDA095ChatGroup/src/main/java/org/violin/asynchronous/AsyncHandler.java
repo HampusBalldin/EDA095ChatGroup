@@ -49,7 +49,7 @@ public class AsyncHandler implements HttpHandler {
 			receiver.addExchange(exchange); //?
 			break;
 		case REQUEST_SEND_DATA:
-			sender.createMessage(exchange);
+			sender.createMessage(exchange);  //lägg istället in i kön
 			break;
 		}
 	}

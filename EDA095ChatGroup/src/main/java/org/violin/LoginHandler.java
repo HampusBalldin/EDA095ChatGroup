@@ -2,6 +2,7 @@ package org.violin;
 
 import org.violin.asynchronous.AsyncHandler;
 import org.violin.asynchronous.AsyncHandlerManager;
+import org.violin.database.DBUsers;
 import org.violin.database.Database;
 import org.violin.database.generated.Status;
 import org.violin.database.generated.User;
@@ -25,22 +26,19 @@ public class LoginHandler extends StaticHandler {
 		String pwd = "";	//utvinn pwd ur query
 		Status status = Status.ONLINE;
 		User user = new User();
+		DBUsers users = new DBUsers(db);
 		user.setUid(uid);
 		user.setPwd(pwd);
 		user.setStatus(status);
 		
 		login(db);
 		createContext(user);
-		notifyOnlineFriends(user);		//?
 		setCookie(user, exchange);		//?
 	}
 
-	private void login(Database db) {	//fix
-		db.
-	}
-	
-	private void notifyOnlineFriends(User user) {	//vad ska ske här?
-	
+	private void login(Database db) {
+		users.update(user);
+			 }
 	}
 	
 	private void setCookie(User user, HttpExchange exchange) {	//?
