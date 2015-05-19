@@ -16,6 +16,12 @@ public class DBUsers extends DBObject<Users> {
 		super(db);
 	}
 
+	public void update(User user) {
+		Users users = new Users();
+		users.getUser().add(user);
+		update(users);
+	}
+
 	@Override
 	protected Class<?> factoryType() {
 		return ObjectFactory.class;
