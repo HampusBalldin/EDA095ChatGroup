@@ -34,6 +34,16 @@ public class DBUsers extends DBObject<Users> {
 				"" + user.getUid());
 	}
 
+	public Users getFriends(User user) {
+		return query("SELECT * " + " FROM Users"
+				+ " WHERE (status = ? OR status = ?) AND (uid IN"
+				+ " (SELECT uid_1 FROM friends"
+				+ " WHERE ? = uid_2) OR uid IN " + " (SELECT uid_2"
+				+ " FROM friends " + " WHERE ? = uid_1))",
+				Status.ONLINE.value(), Status.AWAY.value(), "" + user.getUid(),
+				"" + user.getUid());
+	}
+
 	public void update(User user) {
 		Users users = new Users();
 		users.getUser().add(user);

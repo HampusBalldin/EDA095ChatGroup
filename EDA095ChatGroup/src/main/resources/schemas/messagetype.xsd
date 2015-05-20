@@ -6,6 +6,7 @@
 			<xsd:enumeration value="Request_Send_Data" />
 			<xsd:enumeration value="Login" />
 			<xsd:enumeration value="Logout" />
+			<xsd:enumeration value="GetFriends"/>
 		</xsd:restriction>
 	</xsd:simpleType>
 </xsd:schema>

@@ -72,7 +72,7 @@ public abstract class DBObject<T> {
 			for (int i = 1; i <= args.length; i++) {
 				prep.setString(i, args[i - 1]);
 			}
-			ResultSet rs = prep.executeQuery();
+			ResultSet rs = prep.executeQuery();			
 			Document doc = XMLUtilities.documentify(rs);
 			t = unmarshal(doc);
 		} catch (SQLException e) {

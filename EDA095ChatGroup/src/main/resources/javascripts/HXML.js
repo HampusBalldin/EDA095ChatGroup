@@ -48,8 +48,10 @@ HXML.MESSAGE_TYPE = {
     Request_Receive_Data: "Request_Receive_Data",
     Request_Send_Data: "Request_Send_Data",
     Login: "Login",
-    Logout: "Logout"
+    Logout: "Logout",
+    GetFriends: "GetFriends"
 }
+
 /**
  * @type {{Online: string, Offline: string, Away: string}}
  */

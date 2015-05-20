@@ -10,10 +10,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.violin.database.generated.Status;
-import org.violin.database.generated.User;
-import org.violin.database.generated.Users;
-
 public class Database {
 	private Connection conn = null;
 	private boolean isHeld = false;
