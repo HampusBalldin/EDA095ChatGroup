@@ -73,8 +73,8 @@ HXML.createMessage = function (type, origin, data, destinations) {
         Message: {
             "type": type,
             origin,
-            destinations,
-            "data": data
+            "data": data,
+            destinations
         }
     };
     return msg;
