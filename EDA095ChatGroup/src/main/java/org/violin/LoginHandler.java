@@ -3,7 +3,6 @@ package org.violin;
 import org.violin.asynchronous.AsyncHandlerManager;
 import org.violin.database.DBUsers;
 import org.violin.database.Database;
-import org.violin.database.generated.Message;
 import org.violin.database.generated.Status;
 import org.violin.database.generated.User;
 import com.sun.net.httpserver.HttpExchange;
@@ -23,10 +22,11 @@ public class LoginHandler extends StaticHandler {
 	@Override
 	public void handle(HttpExchange exchange) { // System.out.println("LoginHandler: "
 												// + exchange.getRequestURI());
+
 		System.out.println("LOGIN HANDLER!!!!");
 		String query = exchange.getRequestURI().getQuery();
 		System.out.println(query);
-		
+
 		String uid = ""; // utvinn uid ur query
 		String pwd = ""; // utvinn pwd ur query
 		Status status = Status.ONLINE;
