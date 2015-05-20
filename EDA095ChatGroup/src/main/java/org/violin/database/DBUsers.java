@@ -7,6 +7,7 @@ import java.util.List;
 import javax.management.Attribute;
 
 import org.violin.database.generated.ObjectFactory;
+import org.violin.database.generated.Status;
 import org.violin.database.generated.User;
 import org.violin.database.generated.Users;
 
@@ -14,6 +15,16 @@ public class DBUsers extends DBObject<Users> {
 
 	public DBUsers(Database db) {
 		super(db);
+	}
+
+	public Users getOnlineFriends(User user) {
+		return query("SELECT * " + " FROM Users"
+				+ " WHERE (status = ? OR status = ?) AND (uid IN"
+				+ " (SELECT uid_1 FROM friends"
+				+ " WHERE ? = uid_2) OR uid IN " + " (SELECT uid_2"
+				+ " FROM friends " + " WHERE ? = uid_1))",
+				Status.ONLINE.value(), Status.AWAY.value(), "" + user.getUid(),
+				"" + user.getUid());
 	}
 
 	public void update(User user) {
