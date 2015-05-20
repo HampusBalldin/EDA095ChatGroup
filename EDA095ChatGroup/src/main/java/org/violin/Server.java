@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 
 import org.violin.asynchronous.AsyncHandlerManager;
-import org.violin.asynchronous.AsynchHandlerManager;
 import org.violin.database.Database;
 
 import com.sun.net.httpserver.HttpServer;
@@ -19,9 +18,8 @@ public class Server {
 
 	public void start() throws IOException {
 		HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
-		RootHandler rootHandler = new RootHandler();							//?
+		RootHandler rootHandler = new RootHandler(); // ?
 		AsyncHandlerManager contexts = new AsyncHandlerManager(db);
-
 		server.createContext("/", rootHandler);
 		server.createContext("/chat", new ChatpageStaticHandler(rootHandler));
 		server.createContext("/javascripts", new JavascriptHandler());
