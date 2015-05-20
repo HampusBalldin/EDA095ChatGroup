@@ -29,10 +29,8 @@ public class LogoutHandler extends StaticHandler {
 		user.setUid(uid);
 		user.setPwd(pwd);
 		user.setStatus(status);
-		
 		dbLogout(user);
 		removeContext(user);
-
 	}
 
 	private void dbLogout(User user) {

@@ -31,9 +31,9 @@
 
 		$("#Button_Message_Send").on('click', function() {
 
-			$.post("asynch/" + getCookie("uid"), {
+			$.post("../asynch/" + getCookie("uid"), {
 
-				HXML.createMessage(HXML.MESSAGE_TYPE.Request_Send_Data, 
+				Message:HXML.createMessage(HXML.MESSAGE_TYPE.Request_Send_Data,
 				 HXML.createUsers(getCookie("uid"),getCookie("pwd"), HXML.STATUS.Online),
 				 $("#note").val(),
 				 HXML.createUsers())
@@ -44,7 +44,7 @@
 
 		$("#Button_Message_Logout").on('click', function() {
 
-			$.post("logout", {
+			$.post("../logout", {
 
 				User : HXML.createUser(getCookie("uid"),getCookie("pwd"), HXML.STATUS.Online)
 				
@@ -67,7 +67,7 @@
 
 		$("#Button_Message_Login").on('click', function() {
 
-			$.post("login", {
+			$.post("../login", {
 
 				User : HXML.createUser(getCookie("uid"),getCookie("pwd"), HXML.STATUS.Online)
 				

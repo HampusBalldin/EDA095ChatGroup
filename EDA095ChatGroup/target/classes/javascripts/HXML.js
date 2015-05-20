@@ -51,7 +51,6 @@ HXML.MESSAGE_TYPE = {
     Logout: "Logout"
 }
 /**
- *
  * @type {{Online: string, Offline: string, Away: string}}
  */
 HXML.STATUS = {

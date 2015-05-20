@@ -17,7 +17,7 @@ public class Receiver implements Runnable {
 	private boolean running;
 	private Queue<HttpExchange> exchanges = new LinkedList<HttpExchange>();
 	private Queue<Message> messageQueue = new LinkedList<Message>();
-
+	
 	@Override
 	public void run() {
 		running = true;
@@ -36,30 +36,30 @@ public class Receiver implements Runnable {
 						qName, Message.class, msg);
 				try {
 					XMLUtilities.marshal(jaxbElement, ObjectFactory.class,
-							exch.getResponseBody());						//skriver vi till outputstream här?
+							exch.getResponseBody());
 				} catch (JAXBException e1) {
-					e1.printStackTrace();	
+					e1.printStackTrace();
 				}
 			}
 		}
 	}
 
 	public void terminate() {
-		running = false;								//	System.out.println("Inside receiver terminate");
-		exchanges.notifyAll();							//	System.out.println("Notify Exchanges");
+		running = false; // System.out.println("Inside receiver terminate");
+		exchanges.notifyAll(); // System.out.println("Notify Exchanges");
 		messageQueue.notifyAll();
 	}
-	
+
 	public void addReplyExchange(HttpExchange exchange) {
 		synchronized (exchanges) {
 			exchanges.add(exchange);
 			exchanges.notify();
 		}
 	}
-	
+
 	public HttpExchange getReplyExchange() {
 		synchronized (exchanges) {
-			while (exchanges.size() == 0 && running) {		
+			while (exchanges.size() == 0 && running) {
 				try {
 					exchanges.wait();
 				} catch (InterruptedException e) {
@@ -79,7 +79,7 @@ public class Receiver implements Runnable {
 	}
 
 	public Message retrieveFromReplyQueue() {
-		synchronized (messageQueue) {			
+		synchronized (messageQueue) {
 			while (messageQueue.size() == 0 && running) {
 				try {
 					messageQueue.wait();

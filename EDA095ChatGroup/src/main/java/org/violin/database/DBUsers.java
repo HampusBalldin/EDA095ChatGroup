@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.management.Attribute;
-
 import org.violin.database.generated.ObjectFactory;
 import org.violin.database.generated.Status;
 import org.violin.database.generated.User;

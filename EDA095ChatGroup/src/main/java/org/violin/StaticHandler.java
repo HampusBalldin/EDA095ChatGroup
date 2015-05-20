@@ -19,7 +19,8 @@ import com.sun.net.httpserver.HttpHandler;
 
 public class StaticHandler implements HttpHandler {
 	private static final MimeResolver resolver = new MimeResolver();
-
+	
+	
 	public void handle(HttpExchange exchange) throws IOException {
 		String path = System.getProperty("user.dir") + "/src/main/resources"
 				+ exchange.getRequestURI();
@@ -51,6 +52,7 @@ public class StaticHandler implements HttpHandler {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		System.out.println(sb.toString());
 		return getMessage(sb.toString());
 	}
 
