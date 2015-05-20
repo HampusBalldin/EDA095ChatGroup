@@ -20,11 +20,15 @@ public class Server {
 		HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
 		RootHandler rootHandler = new RootHandler(); // ?
 		AsyncHandlerManager contexts = new AsyncHandlerManager(db);
+		ChatpageStaticHandler chatPageHandler = new ChatpageStaticHandler(
+				rootHandler);
+
 		server.createContext("/", rootHandler);
-		server.createContext("/chat", new ChatpageStaticHandler(rootHandler));
+		server.createContext("/chat", chatPageHandler);
 		server.createContext("/javascripts", new JavascriptHandler());
 		server.createContext("/login", new LoginpageStaticHandler(rootHandler));
-		server.createContext("/loginhandler", new LoginHandler(db, contexts));
+		server.createContext("/loginhandler", new LoginHandler(db, contexts,
+				chatPageHandler));
 		server.createContext("/loguthandler", new LogoutHandler(db, contexts));
 		server.setExecutor(null);
 		server.start();

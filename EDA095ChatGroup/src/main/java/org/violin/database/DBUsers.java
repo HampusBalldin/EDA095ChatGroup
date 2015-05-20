@@ -15,6 +15,14 @@ public class DBUsers extends DBObject<Users> {
 	public DBUsers(Database db) {
 		super(db);
 	}
+	
+	public User createUser(String uid, String pwd, Status status){
+		User user = new User();
+		user.setUid(uid);
+		user.setPwd(pwd);
+		user.setStatus(status);
+		return user;
+	}
 
 	public Users getOnlineFriends(User user) {
 		return query("SELECT * " + " FROM Users"

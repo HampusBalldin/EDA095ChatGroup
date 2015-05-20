@@ -13,7 +13,8 @@ import org.violin.database.generated.Friend;
 import org.violin.database.generated.Friends;
 import org.violin.database.generated.ObjectFactory;
 import org.violin.database.generated.Status;
-import org.violin.database.generated.User;
+
+
 
 public class Main {
 	public static void main(String[] args) {

@@ -22,6 +22,8 @@ public class LogoutHandler extends StaticHandler {
 	@Override
 	public void handle(HttpExchange exchange) { 				 //System.out.println("LoginHandler: " + exchange.getRequestURI());
 		String query = exchange.getRequestURI().getQuery();
+		
+		
 		String uid = "";	//utvinn uid ur query
 		String pwd = "";	//utvinn pwd ur query
 		Status status = Status.OFFLINE;

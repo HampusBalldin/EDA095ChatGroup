@@ -18,6 +18,8 @@ public class ChatpageStaticHandler extends StaticHandler {
 			rootHandler.handle(exchange);
 		}
 	}
+	
+
 
 	public boolean isAuhtenticated() {
 		return true;

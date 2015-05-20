@@ -38,10 +38,10 @@ public class HTTPUtilities {
 	public static class MimeResolver {
 		private HashMap<String, String> mimes = new HashMap<String, String>();
 
-		public String resolveHttpContent(URI requestUri) {
-			String type = getFileType(requestUri);
+		public String resolveHttpContent(String path) {
+			String type = getFileType(path);
 			if (mimes.get(type) == null) {
-				String path = System.getProperty("user.dir")
+				path = System.getProperty("user.dir")
 						+ "/src/main/resources/mimetypes.xml";
 				try {
 					Document document = XMLUtilities
@@ -54,8 +54,16 @@ public class HTTPUtilities {
 			return mimes.get(type);
 		}
 
+		public String resolveHttpContent(URI requestUri) {
+			return resolveHttpContent(requestUri.getPath());
+		}
+
 		public String getFileType(URI requestUri) {
-			String[] splits = requestUri.getPath().split("\\.");
+			return getFileType(requestUri.getPath());
+		}
+
+		public String getFileType(String path) {
+			String[] splits = path.split("\\.");
 			if (splits.length >= 2) {
 				return splits[1];
 			}
