@@ -23,8 +23,9 @@ public class Server {
 		server.createContext("/", rootHandler);
 		server.createContext("/chat", new ChatpageStaticHandler(rootHandler));
 		server.createContext("/javascripts", new JavascriptHandler());
-		server.createContext("/login", new LoginHandler(db, contexts));
-		server.createContext("/logout", new LogoutHandler(db, contexts));
+		server.createContext("/login", new LoginpageStaticHandler(rootHandler));
+		server.createContext("/loginhandler", new LoginHandler(db, contexts));
+		server.createContext("/loguthandler", new LogoutHandler(db, contexts));
 		server.setExecutor(null);
 		server.start();
 		// server.createContext(arg0, arg1);

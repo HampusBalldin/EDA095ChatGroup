@@ -5,10 +5,9 @@ import org.violin.database.DBUsers;
 import org.violin.database.Database;
 import org.violin.database.generated.Status;
 import org.violin.database.generated.User;
-
 import com.sun.net.httpserver.HttpExchange;
 
-public class LoginHandler extends StaticHandler { 
+public class LoginHandler extends StaticHandler {
 	Database db;
 	AsyncHandlerManager manager;
 	DBUsers users;
@@ -21,16 +20,20 @@ public class LoginHandler extends StaticHandler {
 	}
 
 	@Override
-	public void handle(HttpExchange exchange) {  				//System.out.println("LoginHandler: " + exchange.getRequestURI());
+	public void handle(HttpExchange exchange) { // System.out.println("LoginHandler: "
+												// + exchange.getRequestURI());
+
+		System.out.println("LOGIN HANDLER!!!!");
 		String query = exchange.getRequestURI().getQuery();
-		String uid = "";	//utvinn uid ur query
-		String pwd = "";	//utvinn pwd ur query
+		System.out.println(query);
+
+		String uid = ""; // utvinn uid ur query
+		String pwd = ""; // utvinn pwd ur query
 		Status status = Status.ONLINE;
 		User user = new User();
 		user.setUid(uid);
 		user.setPwd(pwd);
 		user.setStatus(status);
-		
 		dbLogin(user);
 		createContext(user);
 		setCookie(user, exchange);
@@ -39,13 +42,14 @@ public class LoginHandler extends StaticHandler {
 	private void dbLogin(User user) {
 		users.update(user);
 	}
-	
+
 	private void createContext(User user) {
 		manager.createContext(user);
 	}
-	
+
 	private void setCookie(User user, HttpExchange exchange) {
-		exchange.getResponseHeaders().set("Cookie", "uid=" + user.getUid() + ";");
+		exchange.getResponseHeaders().set("Cookie",
+				"uid=" + user.getUid() + ";");
 	}
 
 }
