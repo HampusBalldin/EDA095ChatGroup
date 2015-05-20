@@ -12,9 +12,8 @@ import org.violin.database.generated.Message;
 import org.violin.database.generated.ObjectFactory;
 
 import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
 
-public class AsyncHandler implements HttpHandler {
+public class AsyncHandler extends org.violin.Handler {
 
 	private Receiver receiver;
 	private Sender sender;
@@ -39,17 +38,18 @@ public class AsyncHandler implements HttpHandler {
 	}
 
 	public void handle(HttpExchange exchange) throws IOException {
-		String exchangeContent = getExchangeContent(exchange);
-		Message msg = createMessage(exchangeContent);
-
-		switch (msg.getType()) {
-		case REQUEST_RECEIVE_DATA:
-			receiver.addReplyExchange(exchange);
-			break;
-		case REQUEST_SEND_DATA:
-			exchange.sendResponseHeaders(200, 0);
-			sender.addToMessageQueue(msg);
-			break;
+		if (authenticate(exchange)) {
+			String exchangeContent = getExchangeContent(exchange);
+			Message msg = createMessage(exchangeContent);
+			switch (msg.getType()) {
+			case REQUEST_RECEIVE_DATA:
+				receiver.addReplyExchange(exchange);
+				break;
+			case REQUEST_SEND_DATA:
+				exchange.sendResponseHeaders(200, 0);
+				sender.addToMessageQueue(msg);
+				break;
+			}
 		}
 	}
 

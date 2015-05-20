@@ -5,11 +5,11 @@ import java.net.InetSocketAddress;
 
 import org.violin.asynchronous.AsyncHandlerManager;
 import org.violin.database.Database;
+import org.violin.dynamic.DynamicHandler;
 
 import com.sun.net.httpserver.HttpServer;
 
 public class Server {
-
 	private Database db;
 
 	public Server(Database db) {
@@ -18,18 +18,15 @@ public class Server {
 
 	public void start() throws IOException {
 		HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
-		RootHandler rootHandler = new RootHandler(); // ?
+		RootHandler rootHandler = new RootHandler();
 		AsyncHandlerManager contexts = new AsyncHandlerManager(db);
-		ChatpageStaticHandler chatPageHandler = new ChatpageStaticHandler(
-				rootHandler);
 
 		server.createContext("/", rootHandler);
-		server.createContext("/chat", chatPageHandler);
-		server.createContext("/javascripts", new JavascriptHandler());
-		server.createContext("/login", new LoginpageStaticHandler(rootHandler));
-		server.createContext("/loginhandler", new LoginHandler(db, contexts,
-				chatPageHandler));
-		server.createContext("/loguthandler", new LogoutHandler(db, contexts));
+		server.createContext("/chat", new StaticHandler());
+		server.createContext("/javascripts", new StaticHandler());
+		server.createContext("/login", new StaticHandler());
+		server.createContext("/loginhandler", new DynamicHandler(db, contexts));
+		server.createContext("/loguthandler", new DynamicHandler(db, contexts));
 		server.setExecutor(null);
 		server.start();
 		// server.createContext(arg0, arg1);

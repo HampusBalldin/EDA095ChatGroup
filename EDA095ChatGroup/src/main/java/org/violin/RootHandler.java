@@ -1,7 +1,6 @@
 package org.violin;
 
 import java.io.IOException;
-
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;

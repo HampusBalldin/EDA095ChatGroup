@@ -17,28 +17,28 @@ import org.violin.database.generated.ObjectFactory;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-public class StaticHandler implements HttpHandler {
+public class StaticHandler extends Handler {
 	private static final MimeResolver resolver = new MimeResolver();
 
 	public void handle(HttpExchange exchange, String path) throws IOException {
-		System.out.println(path);
-		System.out.println(exchange.getRequestURI());
-		exchange.getResponseHeaders().set("Content-Type",
-				resolver.resolveHttpContent(path));
-		FileInputStream in = new FileInputStream(new File(path));
-		HTTPUtilities.printHeaders(exchange.getResponseHeaders());
-		exchange.sendResponseHeaders(200, 0);
-		BufferedOutputStream os = new BufferedOutputStream(
-				exchange.getResponseBody());
-
-		int b = 0;
-		while ((b = in.read()) != -1) {
-			os.write(b);
+		if (authenticate(exchange)) {
+			System.out.println(path);
+			System.out.println(exchange.getRequestURI());
+			exchange.getResponseHeaders().set("Content-Type",
+					resolver.resolveHttpContent(path));
+			FileInputStream in = new FileInputStream(new File(path));
+			HTTPUtilities.printHeaders(exchange.getResponseHeaders());
+			exchange.sendResponseHeaders(200, 0);
+			BufferedOutputStream os = new BufferedOutputStream(
+					exchange.getResponseBody());
+			int b = 0;
+			while ((b = in.read()) != -1) {
+				os.write(b);
+			}
+			os.flush();
+			os.close();
+			in.close();
 		}
-
-		os.flush();
-		os.close();
-		in.close();
 	}
 
 	public void handle(HttpExchange exchange) throws IOException {
