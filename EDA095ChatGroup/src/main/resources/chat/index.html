@@ -35,10 +35,8 @@
 
 			$.post("../asynch/" + getCookie("uid"), {
 
-
-                MessageType:HXML.MESSAGE_TYPE.Request_Send_Data,
-
-				Message:HXML.createMessage(HXML.MESSAGE_TYPE.Request_Send_Data,
+				 Message:HXML.createMessage(
+				 HXML.MESSAGE_TYPE.Request_Send_Data,
 				 HXML.createUsers(getCookie("uid"),getCookie("pwd"), HXML.STATUS.Online),
 				 $("#note").val(),
 				 HXML.createUsers())
@@ -51,9 +49,11 @@
 
 			$.post("../logout", {
 
-                MessageType:HXML.MESSAGE_TYPE.logout,
-				User : HXML.createUser(getCookie("uid"),getCookie("pwd"), HXML.STATUS.Online)
-				
+                 Message:HXML.createMessage(HXML.MESSAGE_TYPE.logout,
+				 HXML.createUsers(getCookie("uid"),getCookie("pwd"), HXML.STATUS.Offline),
+				 null,
+				 HXML.createUsers())
+
 			}).done(function(name) {
 
 				for ( j = 1; j < 10; j++) {
@@ -75,10 +75,11 @@
 
 			$.post("../login", {
 
-                MessageType:HXML.MESSAGE_TYPE.logout,
+                 Message:HXML.createMessage(HXML.MESSAGE_TYPE.login,
+				 HXML.createUsers(getCookie("uid"),getCookie("pwd"), HXML.STATUS.Online),
+				 null,
+				 HXML.createUsers())
 
-				User : HXML.createUser(getCookie("uid"),getCookie("pwd"), HXML.STATUS.Online)
-				
 			}).done(function(name) {
 
 				for ( j = 1; j < 10; j++) {
@@ -102,8 +103,10 @@
 
 			$.post("ansynch" + getCookie("uid"), {
 
-                MessageType:HXML.MESSAGE_TYPE.Request_Receive_Data,
-				uid : getCookie("uid")
+                 Message:HXML.createMessage(HXML.MESSAGE_TYPE.Request_Receive_Data,
+				 HXML.createUsers(getCookie("uid"),getCookie("pwd"), HXML.STATUS.Online),
+				 null,
+				 HXML.createUsers())
 
 			}).done(function(name) {
 
