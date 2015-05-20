@@ -6,7 +6,6 @@ import java.util.Queue;
 import org.violin.database.DBUsers;
 import org.violin.database.Database;
 import org.violin.database.generated.Message;
-import org.violin.database.generated.Status;
 import org.violin.database.generated.User;
 import org.violin.database.generated.Users;
 
