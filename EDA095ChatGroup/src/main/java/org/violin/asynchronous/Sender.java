@@ -24,7 +24,7 @@ public class Sender implements Runnable {
 		messageQueue = new LinkedList<Message>();
 	}
 		
-	@Override												//efterlikna run i Receiver
+	@Override
 	 public void run() {
 		running = true;
 		while(running) {
@@ -39,13 +39,16 @@ public class Sender implements Runnable {
 		messageQueue.notifyAll();
 	}
 
-	public void addToMessageQueue(Message msg) {			//synchronized (exchanges) 
+	public void addToMessageQueue(Message msg) {
+		synchronized (messageQueue) {
 		messageQueue.add(msg);
-		messageQueue.notify();								//?
+		messageQueue.notify();	
+		}
 	}
 	
-	private Message retrieveFromMessageQueue() {					//synchronized (exchanges) 
-		while (messageQueue.size() == 0 && running) {		//running?
+	private Message retrieveFromMessageQueue() {
+		synchronized (messageQueue) {
+		while (messageQueue.size() == 0 && running) {
 			try {
 				messageQueue.wait();
 			} catch (InterruptedException e) {
@@ -54,6 +57,7 @@ public class Sender implements Runnable {
 			System.out.println("getMessage: " + running);
 		}
 		return messageQueue.poll();
+		}
 	}
 	
 	private void setDestination(Message msg) {
