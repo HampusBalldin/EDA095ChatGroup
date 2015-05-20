@@ -58,25 +58,13 @@ public class Sender implements Runnable {
 	
 	private void setDestination(Message msg) {
 		User origin = msg.getOrigin();
-		Users onlineFriends = getOnlineFriends(origin);
+		DBUsers dbUsers = new DBUsers(db);
+		Users onlineFriends = dbUsers.getOnlineFriends(origin);
 		msg.setDestinations(onlineFriends);
 	}
 	
 	private void distributeMessage(Message msg) {
 		manager.distributeMessage(msg);
 	}	
-		
-	private Users getOnlineFriends(User user) {
-		DBUsers dbUsers = new DBUsers(db);
-		Users users = dbUsers.query("SELECT * " + " FROM Users"
-				+ " WHERE (status = ? OR status = ?) AND (uid IN"
-					+ " (SELECT uid_1 FROM friends"
-				+ " WHERE ? = uid_2) OR uid IN " + " (SELECT uid_2"
-				+ " FROM friends " + " WHERE ? = uid_1))",
-				Status.ONLINE.value(), Status.AWAY.value(), "" + user.getUid(),
-				"" + user.getUid());
-		return users;
-
-	}
 
 }
