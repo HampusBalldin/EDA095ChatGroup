@@ -24,8 +24,9 @@ public class LoginHandler extends StaticHandler {
 	public void handle(HttpExchange exchange) { // System.out.println("LoginHandler: "
 												// + exchange.getRequestURI());
 		System.out.println("LOGIN HANDLER!!!!");
-		Message msg = getMessage(exchange);
 		String query = exchange.getRequestURI().getQuery();
+		System.out.println(query);
+		
 		String uid = ""; // utvinn uid ur query
 		String pwd = ""; // utvinn pwd ur query
 		Status status = Status.ONLINE;
