@@ -10,11 +10,6 @@ import org.violin.database.generated.Status;
 import org.violin.database.generated.User;
 import org.violin.database.generated.Users;
 
-//ska ha tillgång till databasen
-//kolla med databasen vilka av mina vänner som är online
-//genererar ett message med receivers setDestinations(Users value) med receivers
-//så länge kön är tom så väntar den, vid innehåll skapa meddelande och distribuera
-//svara klienten (kolla i static handler) skicka headers, send responseheader(200, ok);
 
 public class Sender implements Runnable {
 	
@@ -33,7 +28,7 @@ public class Sender implements Runnable {
 	 public void run() {
 		running = true;
 		while(running) {
-			Message msg = retrieveFromMessageQueue();		//hur kan jag skicka responseheader utan att ha exchange?
+			Message msg = retrieveFromMessageQueue();
 			setDestination(msg);
 			distributeMessage(msg);
 		}

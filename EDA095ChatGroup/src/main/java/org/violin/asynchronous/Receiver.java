@@ -36,7 +36,7 @@ public class Receiver implements Runnable {
 						qName, Message.class, msg);
 				try {
 					XMLUtilities.marshal(jaxbElement, ObjectFactory.class,
-							exch.getResponseBody());
+							exch.getResponseBody());						//skriver vi till outputstream här?
 				} catch (JAXBException e1) {
 					e1.printStackTrace();	
 				}

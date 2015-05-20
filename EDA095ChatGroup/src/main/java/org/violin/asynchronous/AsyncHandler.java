@@ -41,15 +41,19 @@ public class AsyncHandler implements HttpHandler {
 	public void handle(HttpExchange exchange) throws IOException {
 		String exchangeContent = getExchangeContent(exchange);
 		Message msg = createMessage(exchangeContent);
+		
 		switch (msg.getType()) {
 			case REQUEST_RECEIVE_DATA:
 				receiver.addReplyExchange(exchange);
 				break;
 			case REQUEST_SEND_DATA:
+				exchange.sendResponseHeaders(200, 0);
 				sender.addToMessageQueue(msg);
 				break;
 		}
 	}
+	
+	
 
 	public void receiveMessage(Message msg) {
 		receiver.addToReplyQueue(msg);
