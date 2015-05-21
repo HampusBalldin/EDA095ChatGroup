@@ -41,7 +41,6 @@ HXML.postXMLDoc = function (filename, callback, data) {
     xhttp.send(data);
 }
 /**
- *
  * @type {{Request_Receive_Data: string, Request_Send_Data: string, Login: string, Logout: string}}
  */
 HXML.MESSAGE_TYPE = {
