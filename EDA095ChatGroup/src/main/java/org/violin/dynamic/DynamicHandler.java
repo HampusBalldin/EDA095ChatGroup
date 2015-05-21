@@ -53,32 +53,54 @@ public class DynamicHandler extends Handler {
 				dbLogin(user); // loggar in i databasen
 				createContext(user); // skapar context
 				setCookie(user, exchange); // sätter cookie
-				break;
+				try {
+					exchange.sendResponseHeaders(200, -1);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			} else {
 				System.out.println("NOT AUTHENTICATED");
-				break;
-			}
+				try {
+					exchange.sendResponseHeaders(401, -1);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}	
+			break;
 		case LOGOUT:
 			System.out.println("Dynamic Handler LOGOUT");
 			user = createUser(exchange);
 			dbLogout(user); // loggar ut ur databaen
 			removeContext(user); // tar bort context
+			try {
+				exchange.sendResponseHeaders(200, -1);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			break;
 		case GET_FRIENDS: // skicka users
 			System.out.println("Dynamic Handler GET FRIENDS");
 			user = createUser(exchange);
-			Users users = getFriends(user);
-			OutputStream os = exchange.getResponseBody();
-			sendFriends(os, users); // gör till xml-sträng, skickar strängen
+			if (dbUsers.authenticate(user)) {
+				Users users = getFriends(user);
+				try {
+					System.out.println("SENDING RESPONSE HEADERS!");
+					HTTPUtilities.printHeaders(exchange.getResponseHeaders());
+					exchange.sendResponseHeaders(200, 0);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				OutputStream os = exchange.getResponseBody();
+				sendFriends(os, users); // gör till xml-sträng, skickar strängen
+			} else {
+				System.out.println("NOT AUTHENTICATED");
+				try {
+					exchange.sendResponseHeaders(401, -1);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 			break;
-		}
-		try {
-			System.out.println("SENDING RESPONSE HEADERS!");
-			HTTPUtilities.printHeaders(exchange.getResponseHeaders());
-			exchange.sendResponseHeaders(200, -1);
-			exchange.close();
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 
