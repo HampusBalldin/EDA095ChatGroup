@@ -4,6 +4,7 @@ import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -19,27 +20,66 @@ import com.sun.net.httpserver.HttpExchange;
 
 public class StaticHandler extends Handler {
 	private static final MimeResolver resolver = new MimeResolver();
+	private String loginPath = System.getProperty("user.dir")
+			+ "/src/main/resources/login/index.html";
+	private String loginCss = System.getProperty("user.dir")
+			+ "/src/main/resources/login/PageStyle.css";
 
 	public void handle(HttpExchange exchange, String path) throws IOException {
-		User user = createUser(exchange);
-		if (authenticate(user)) {
-			System.out.println(path);
-			System.out.println(exchange.getRequestURI());
-			exchange.getResponseHeaders().set("Content-Type",
-					resolver.resolveHttpContent(path));
-			FileInputStream in = new FileInputStream(new File(path));
-			HTTPUtilities.printHeaders(exchange.getResponseHeaders());
-			exchange.sendResponseHeaders(200, 0);
-			BufferedOutputStream os = new BufferedOutputStream(
-					exchange.getResponseBody());
-			int b = 0;
-			while ((b = in.read()) != -1) {
-				os.write(b);
-			}
-			os.flush();
-			os.close();
-			in.close();
+		User user = null;
+		boolean isAuthenticated = true;
+		try {
+			user = createUser(exchange);
+		} catch (NullPointerException e) {
+			isAuthenticated = false;
 		}
+		if (isAuthenticated) {
+			if (authenticate(user)) {
+				System.out.println(path);
+				System.out.println(exchange.getRequestURI());
+				exchange.getResponseHeaders().set("Content-Type",
+						resolver.resolveHttpContent(path));
+				FileInputStream in = new FileInputStream(new File(path));
+				HTTPUtilities.printHeaders(exchange.getResponseHeaders());
+				exchange.sendResponseHeaders(200, 0);
+				BufferedOutputStream os = new BufferedOutputStream(
+						exchange.getResponseBody());
+				int b = 0;
+				while ((b = in.read()) != -1) {
+					os.write(b);
+				}
+				os.flush();
+				os.close();
+				in.close();
+			}
+		} else {
+			sendbackLoginPage(exchange, path);
+		}
+	}
+
+	public void sendbackLoginPage(HttpExchange exchange, String path)
+			throws IOException {
+		if (path.equals(loginPath)) {
+			path = loginPath;
+		} else if (path.equals(loginCss)) {
+			path = loginCss;
+		} else {
+			path = loginPath;
+		}
+		exchange.getResponseHeaders().set("Content-Type",
+				resolver.resolveHttpContent(path));
+		FileInputStream in = new FileInputStream(new File(path));
+		HTTPUtilities.printHeaders(exchange.getResponseHeaders());
+		exchange.sendResponseHeaders(200, 0);
+		BufferedOutputStream os = new BufferedOutputStream(
+				exchange.getResponseBody());
+		int b = 0;
+		while ((b = in.read()) != -1) {
+			os.write(b);
+		}
+		os.flush();
+		os.close();
+		in.close();
 	}
 
 	public void handle(HttpExchange exchange) throws IOException {
