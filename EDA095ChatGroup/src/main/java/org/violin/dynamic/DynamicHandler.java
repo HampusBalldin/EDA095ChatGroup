@@ -54,6 +54,8 @@ public class DynamicHandler extends Handler {
 				createContext(user); // skapar context
 				setCookie(user, exchange); // sätter cookie
 				try {
+					System.out.println("SENDING RESPONSE HEADERS: ");
+					HTTPUtilities.printHeaders(exchange.getResponseHeaders());
 					exchange.sendResponseHeaders(200, -1);
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -125,8 +127,8 @@ public class DynamicHandler extends Handler {
 	private void setCookie(User user, HttpExchange exchange) {
 		Headers headers = exchange.getResponseHeaders();
 		List<String> values = new ArrayList<String>();
-		values.add("uid=" + user.getUid() + ";");
-		values.add("pwd=" + user.getPwd() + ";");
+		values.add("uid=" + user.getUid());
+		values.add("pwd=" + user.getPwd());
 		headers.put("Set-Cookie", values);
 	}
 
