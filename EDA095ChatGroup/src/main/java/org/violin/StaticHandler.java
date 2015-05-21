@@ -29,7 +29,6 @@ public class StaticHandler extends Handler {
 	private String loginChat = System.getProperty("user.dir")
 			+ "/src/main/resources/chat/index.html";
 
-
 	public void handle(HttpExchange exchange, String path) throws IOException {
 		User user = null;
 		boolean existsCookie = true;
@@ -74,9 +73,9 @@ public class StaticHandler extends Handler {
 			path = loginHXML;
 		} else if (path.equals(loginjquery)) {
 			path = loginjquery;
-		} else if(path.equals(loginChat)){
+		} else if (path.equals(loginChat)) {
 			path = loginChat;
-		}else {
+		} else {
 			path = loginPath;
 		}
 		exchange.getResponseHeaders().set("Content-Type",

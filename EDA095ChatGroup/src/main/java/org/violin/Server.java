@@ -20,7 +20,7 @@ public class Server {
 	public void start() throws IOException {
 		HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
 		RootHandler rootHandler = new RootHandler();
-		AsyncHandlerManager contexts = new AsyncHandlerManager(db);
+		AsyncHandlerManager contexts = new AsyncHandlerManager(db, server);
 
 		server.createContext("/", rootHandler);
 		server.createContext("/chat", new StaticHandler());

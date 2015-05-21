@@ -45,7 +45,11 @@ public abstract class Handler implements HttpHandler {
 		return user;
 	}
 
+	
+	//Message%5BMessage%5D%5Btype%5D=Login&Message%5BMessage%5D%5Borigin%5D%5Buid%5D=David&Message%5BMessage%5D%5Borigin%5D%5Bpwd%5D=123&Message%5BMessage%5D%5Borigin%5D%5Bstatus%5D=Online&Message%5BMessage%5D%5Bdata%5D=Test+Data
+
 	protected String getExchangeContent(HttpExchange exchange) {
+		System.out.println("GET EXCHANGE CONTENT");
 		BufferedReader in = new BufferedReader(new InputStreamReader(
 				exchange.getRequestBody()));
 		StringBuilder sb = new StringBuilder();
@@ -56,7 +60,10 @@ public abstract class Handler implements HttpHandler {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return sb.toString();
+		String miniParse1 = sb.toString().replace("%5B", "[");
+		String miniParse2 = miniParse1.replace("%5D", "]");
+		System.out.println(miniParse2);
+		return miniParse2;
 	}
 
 	protected Message createMessage(String jsonString) {

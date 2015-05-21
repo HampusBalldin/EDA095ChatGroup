@@ -1,5 +1,6 @@
 package org.violin.dynamic;
 
+import java.io.IOException;
 import java.io.OutputStream;
 
 import javax.xml.bind.JAXBElement;
@@ -34,32 +35,44 @@ public class DynamicHandler extends Handler {
 
 	@Override
 	public void handle(HttpExchange exchange) {
+		System.out.println("Dynamic Handler");
 		String exchangeContent = getExchangeContent(exchange);
 		Message msg = createMessage(exchangeContent);
 		User user;
-		switch(msg.getType()) {
+		switch (msg.getType()) {
 		case LOGIN:
+			System.out.println("Dynamic Handler LOGIN");
 			user = msg.getOrigin();
 			if (dbUsers.authenticate(user)) {
-				dbLogin(user); //loggar in i databasen
-				createContext(user); //skapar context
-				setCookie(user, exchange); //sätter cookie
+				System.out.println("AUTHENTICATED");
+				dbLogin(user); // loggar in i databasen
+				createContext(user); // skapar context
+				setCookie(user, exchange); // sätter cookie
 				break;
 			} else {
+				System.out.println("NOT AUTHENTICATED");
 				break;
 			}
 		case LOGOUT:
-			user = createUser(exchange); 
-			dbLogout(user); //loggar ut ur databaen
-			removeContext(user); //tar bort context
-			break;
-		case GET_FRIENDS: //skicka users
+			System.out.println("Dynamic Handler LOGOUT");
 			user = createUser(exchange);
-			Users users = getFriends(user); 
-			OutputStream os = exchange.getResponseBody();
-			sendFriends(os,users); //gör till xml-sträng, skickar strängen
+			dbLogout(user); // loggar ut ur databaen
+			removeContext(user); // tar bort context
 			break;
-		}	
+		case GET_FRIENDS: // skicka users
+			System.out.println("Dynamic Handler GET FRIENDS");
+			user = createUser(exchange);
+			Users users = getFriends(user);
+			OutputStream os = exchange.getResponseBody();
+			sendFriends(os, users); // gör till xml-sträng, skickar strängen
+			break;
+		}
+		
+		try {
+			exchange.sendResponseHeaders(200, 0);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void dbLogin(User user) {
@@ -83,7 +96,7 @@ public class DynamicHandler extends Handler {
 	private void setCookie(User user, HttpExchange exchange) {
 		Headers headers = exchange.getResponseHeaders();
 		headers.set("Cookie",
-				"uid=" + user.getUid() + ";" + "pwd=" + user.getPwd());
+				"uid=" + user.getUid() + ";" + "pwd=" + user.getPwd() + ";");
 	}
 
 	private Users getFriends(User user) {
@@ -93,74 +106,16 @@ public class DynamicHandler extends Handler {
 	private Users getOnlineFriends(User user) {
 		return dbUsers.getOnlineFriends(user);
 	}
-	
+
 	private void sendFriends(OutputStream os, Users users) {
 		QName qName = new QName("Users");
-		JAXBElement<Users> jaxbElement = new JAXBElement<Users>(qName, Users.class, users);
+		JAXBElement<Users> jaxbElement = new JAXBElement<Users>(qName,
+				Users.class, users);
 		try {
 			XMLUtilities.marshal(jaxbElement, ObjectFactory.class, os);
 		} catch (JAXBException e) {
-			e.printStackTrace();	
-		}	
+			e.printStackTrace();
+		}
 	}
-
-	// if (authenticate(exchange)) { //implementera authenticate
-	// User user = getUser(exchange.getRequestBody());
-	// System.out.println(user.getUid() + user.getPwd()
-	// + user.getStatus().value());
-	// dbLogin(user);
-	// createContext(user);
-	// setCookie(user, exchange);
-	// HTTPUtilities.printHeaders(exchange.getResponseHeaders());
-	// Users users = dbUsers.getOnlineFriends(user);
-	// System.out.println("Found online friends for  " + user.getUid()
-	// + user.getPwd() + user.getStatus().value());
-	// if (users != null) {
-	// Iterator<User> itr = users.getUser().iterator();
-	// while (itr.hasNext()) {
-	// User u = itr.next();
-	// System.out.println(u.getUid() + u.getPwd()
-	// + u.getStatus().value());
-	// }
-	// }
-	//
-	// try {
-	// String path = System.getProperty("user.dir")
-	// + "/src/main/resources/chat/index.html";
-	// send(exchange, users, path);
-	// } catch (IOException e) {
-	// e.printStackTrace();
-	// }
-	//
-	// public User getUser(InputStream in) {
-	// BufferedReader br = new BufferedReader(new InputStreamReader(in));
-	// String read = "";
-	// try {
-	// while (br.ready()) {
-	// read += br.readLine();
-	// }
-	// } catch (IOException e) {
-	// e.printStackTrace();
-	// }
-	// String[] info = read.split("&");
-	// String uid = info[0].split("=")[1];
-	// String pwd = info[1].split("=")[1];
-	// return dbUsers.createUser(uid, pwd, Status.ONLINE);
-	// }
-	//
-	// @Override
-	// public void handle(HttpExchange exchange) {
-	// //System.out.println("LoginHandler: " + exchange.getRequestURI());
-	// String query = exchange.getRequestURI().getQuery();
-	// String uid = ""; //utvinn uid ur query
-	// String pwd = ""; //utvinn pwd ur query
-	// Status status = Status.OFFLINE;
-	// User user = new User();
-	// user.setUid(uid);
-	// user.setPwd(pwd);
-	// user.setStatus(status);
-	// dbLogout(user);
-	// removeContext(user);
-	// }
 
 }

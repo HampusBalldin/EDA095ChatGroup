@@ -29,19 +29,15 @@
 					var uid = $("#username").val();
 					var pwd = $("#password").val();
 		
-			$.post("loginhandler", {
 		
-				 Message:HXML.createMessage(
+			var msg = 
+				 HXML.createMessage(
 				 HXML.MESSAGE_TYPE.Login, 
 				 HXML.createUser(uid,pwd,HXML.STATUS.Online),
 				 "Test Data", 
-				 HXML.createUsers())
-
-			}).done(function(arg) {
-			
+				 HXML.createUsers());
+			$.post("../loginhandler", JSON.stringify(msg)).done(function(arg) {
 				alert("da");
-			
-
 			});
 		});
 	});

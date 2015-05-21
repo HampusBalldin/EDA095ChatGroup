@@ -38,28 +38,26 @@
 
 
 		$("#Button_Message_Send").on('click', function() {
+		
+				var msg = 
+				 HXML.createMessage(
+				 HXML.MESSAGE_TYPE.Login, 
+				 HXML.createUser(getCookie("username"),getCookie("password"),HXML.STATUS.Online),
+				 "", HXML.createUsers());
 
-			$.post("../asynch/" + uid, {
-
-				 Message:HXML.createMessage(
-				 HXML.MESSAGE_TYPE.Request_Send_Data,
-				 HXML.createUsers(getCookie("username"),getCookie("password"), HXML.STATUS.Online),
-				 $("#note").val(),
-				 HXML.createUsers())
-
-			})
+			$.post("../asynch/" + uid, JSON.stringify(msg));
 
 		});
 
 		$("#Button_Message_Logout").on('click', function() {
 
-			$.post("../logout", {
-
-                 Message:
-                 HXML.createMessage(HXML.MESSAGE_TYPE.Logout,
-                 HXML.createUser(getCookie("username"),getCookie("password"), HXML.STATUS.Offline),"", HXML.createUsers())
-
-			}).done(function(name) {
+			var msg = 
+				 HXML.createMessage(
+				 HXML.MESSAGE_TYPE.Login, 
+				 HXML.createUser(getCookie("username"),getCookie("password"),HXML.STATUS.Offline),
+				 "", 
+				 HXML.createUsers());
+			$.post("../logout", JSON.stringify(msg)).done(function(name) {
 
 				for ( j = 1; j < 10; j++) {
 
