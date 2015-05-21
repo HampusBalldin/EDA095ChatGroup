@@ -42,7 +42,7 @@
 		
 				var msg = 
 				 HXML.createMessage(
-				 HXML.MESSAGE_TYPE.Login, 
+				 HXML.MESSAGE_TYPE.Request_Send_Data, 
 				 HXML.createUser(getCookie("uid"),getCookie("pwd"),HXML.STATUS.Online),
 				 "", HXML.createUser());
 
@@ -53,7 +53,7 @@
 		$("#Button_Message_Logout").on('click', function() {
 			var msg = 
 				 HXML.createMessage(
-				 HXML.MESSAGE_TYPE.Login, 
+				 HXML.MESSAGE_TYPE.Logout, 
 				 HXML.createUser(getCookie("uid"),getCookie("pwd"),HXML.STATUS.Offline),
 				 "", 
 				 HXML.createUser());
