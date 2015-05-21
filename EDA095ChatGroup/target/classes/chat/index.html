@@ -75,26 +75,24 @@
 		});
 
 		$("#Button_Message_GetFriends").on('click', function() {
+
+
                  var msg = HXML.createMessage(HXML.MESSAGE_TYPE.GetFriends,
 				 HXML.createUser(getCookie("uid"),getCookie("pwd"), HXML.STATUS.Online),
 				 "",
-				 HXML.createUsers());
+				 HXML.createUser());
 
-		$.post("../getfriends",JSON.stringify(msg)).done(function(name) {
+		$.post("../getfriends",JSON.stringify(msg)).done(function(arg) {
 			
 				for ( j = 1; j < 10; j++) {
-
 					drawUser("", j, 'nameTable');
-
 				}
 				
-				var userList = xml2json(parseXml(arg));
-				var users = [];
-				
+				var userList = xml2json(HXML.parseXml(arg));	
+				console.log(userList);
+				console.log(userList.Users);			
 				for ( k = 1; k < 10; k++) {
-				
-				users[k] = userList.Users.User[k].uid;
-				alert(users[k])
+					
 				}
 						
 				for ( i = 1; i < users.length; i++) {
@@ -112,9 +110,9 @@
 			
 
                  var msg = HXML.createMessage(HXML.MESSAGE_TYPE.Request_Receive_Data,
-				 HXML.createUsers(getCookie("uid"),getCookie("pwd"), HXML.STATUS.Online),
+				 HXML.createUser(getCookie("uid"),getCookie("pwd"), HXML.STATUS.Online),
 				 "",
-				 HXML.createUsers());
+				 HXML.createUser());
 
 		$.post("../asynch/" + uid,JSON.stringify(msg)).done(function(name) {
 		

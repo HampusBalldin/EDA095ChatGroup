@@ -30,15 +30,15 @@ public class StaticHandler extends Handler {
 			+ "/src/main/resources/chat/index.html";
 
 	public void handle(HttpExchange exchange, String path) throws IOException {
-		User user = null;
-		boolean existsCookie = true;
-		try {
-			user = createUser(exchange);
-		} catch (NullPointerException e) {
-			existsCookie = false;
-		}
-		if (existsCookie) {
-			if (authenticate(user)) {
+//		User user = null;
+//		boolean existsCookie = true;
+//		try {
+//			user = createUser(exchange);
+//		} catch (NullPointerException e) {
+//			existsCookie = false;
+//		}
+//		if (existsCookie) {
+//			if (authenticate(user)) {
 				System.out.println("Authenticated!");
 				System.out.println(path);
 				System.out.println(exchange.getRequestURI());
@@ -56,11 +56,11 @@ public class StaticHandler extends Handler {
 				os.flush();
 				os.close();
 				in.close();
-			}
-		} else {
-			System.out.println("Not Authenticated!");
-			sendbackLoginPage(exchange, path);
-		}
+		// }
+		// } else {
+		// System.out.println("Not Authenticated!");
+		// sendbackLoginPage(exchange, path);
+		// }
 	}
 
 	public void sendbackLoginPage(HttpExchange exchange, String path)

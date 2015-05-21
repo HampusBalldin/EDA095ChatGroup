@@ -87,11 +87,39 @@ public class XMLUtilities {
 			Marshaller marshaller = jc.createMarshaller();
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 			marshaller.marshal(jaxbElement, out);
+
 		} catch (PropertyException e) {
 			e.printStackTrace();
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static <T> Document marshal(Object jaxbElement, Class<T> jaxbFactory)
+			throws JAXBException {
+		if (!(jaxbElement instanceof JAXBElement<?>)) {
+			throw new JAXBException("Must be a instance of JAXBElement<?>");
+		}
+		Document doc = null;
+		try {
+			JAXBContext jc = JAXBContext.newInstance(jaxbFactory);
+			Marshaller marshaller = jc.createMarshaller();
+			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+			DocumentBuilderFactory factory = DocumentBuilderFactory
+					.newInstance();
+			DocumentBuilder builder = factory.newDocumentBuilder();
+			doc = builder.newDocument();
+			marshaller.marshal(jaxbElement, doc);
+
+		} catch (PropertyException e) {
+			e.printStackTrace();
+		} catch (JAXBException e) {
+			e.printStackTrace();
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		}
+		return doc;
 	}
 
 	public static Document documentify(ResultSet rs)

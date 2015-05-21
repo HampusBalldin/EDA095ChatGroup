@@ -23,6 +23,7 @@ import org.violin.database.generated.Users;
 
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
+import com.sun.xml.internal.txw2.Document;
 
 public class DynamicHandler extends Handler {
 	private Database db;
@@ -47,7 +48,7 @@ public class DynamicHandler extends Handler {
 		switch (msg.getType()) {
 		case LOGIN:
 			System.out.println("Dynamic Handler LOGIN");
-			
+
 			if (dbUsers.authenticate(user)) {
 				System.out.println("AUTHENTICATED");
 				dbLogin(user); // loggar in i databasen
@@ -103,6 +104,8 @@ public class DynamicHandler extends Handler {
 			}
 			break;
 		}
+
+		exchange.close();
 	}
 
 	private void dbLogin(User user) {
@@ -140,14 +143,20 @@ public class DynamicHandler extends Handler {
 	}
 
 	private void sendFriends(OutputStream os, Users users) {
+		System.out.println("----------SENDING FRIENDS --------");
+		DBUsers dbUsers = new DBUsers(db);
+		System.out.println(dbUsers.stringify(users));
+
 		QName qName = new QName("Users");
 		JAXBElement<Users> jaxbElement = new JAXBElement<Users>(qName,
 				Users.class, users);
 		try {
 			XMLUtilities.marshal(jaxbElement, ObjectFactory.class, os);
+			os.flush();
 		} catch (JAXBException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-
 }

@@ -49,8 +49,9 @@ public class Main {
 		}
 
 		DBUsers dbUsers = new DBUsers(db);
-		Users users = dbUsers.query("SELECT * FROM Users");
-
+		Users users = dbUsers.getFriends(dbUsers.createUser("David", "", null));
+		System.out.println(dbUsers.stringify(users));
+		
 		qName = new QName("Users");
 		JAXBElement<Users> jaxbUsers = new JAXBElement<Users>(qName,
 				Users.class, users);

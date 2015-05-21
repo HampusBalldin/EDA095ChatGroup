@@ -22,6 +22,10 @@
 
 		$("#BT_Login").click(function() {
 		
+		
+		//setCookie("username", $("#username").val(), 1);
+		//setCookie("password", $("#password").val(), 1);
+		
 					var uid = $("#username").val();
 					var pwd = $("#password").val();
 		
@@ -32,11 +36,8 @@
 				 HXML.createUser(uid,pwd,HXML.STATUS.Online),
 				 "Test Data", 
 				 HXML.createUsers());
-				 
 			$.post("../loginhandler", JSON.stringify(msg)).done(function(arg) {
-			
 				alert("da");
-				
 			});
 		});
 	});

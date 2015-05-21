@@ -82,21 +82,17 @@
 				 "",
 				 HXML.createUser());
 
-		$.post("../getfriends",JSON.stringify(msg)).done(function(name) {
+		$.post("../getfriends",JSON.stringify(msg)).done(function(arg) {
 			
 				for ( j = 1; j < 10; j++) {
-
 					drawUser("", j, 'nameTable');
-
 				}
 				
-				var userList = xml2json(parseXml(arg));
-				var users = [];
-				
+				var userList = xml2json(HXML.parseXml(arg));	
+				console.log(userList);
+				console.log(userList.Users);			
 				for ( k = 1; k < 10; k++) {
-				
-				users[k] = userList.Users.User[k].uid;
-				alert(users[k])
+					
 				}
 						
 				for ( i = 1; i < users.length; i++) {
