@@ -1,8 +1,8 @@
 
 <script src="../javascripts/jquery.js" type="text/javascript"></script>
+<script src="../javascripts/xml2json.js" type="text/javascript"></script>
 <script src="../javascripts/HXML.js" type="text/javascript"></script>
 <link rel="stylesheet" type="text/css"  href="../chat/PageStyle.css">
-
 
 <script>
 	$(document).ready(function() {
@@ -80,18 +80,26 @@
 				 null,
 				 HXML.createUsers())
 
-			}).done(function(name) {
-
+			}).done(function(arg) {
+			
 				for ( j = 1; j < 10; j++) {
 
 					drawUser("", j, 'nameTable');
 
 				}
-				var names = name.split("<:>");
+				
+				var userList = xml2json(parseXml(arg));
+				var users = [];
+				
+				for ( k = 1; k < 10; k++) {
+				
+				users[k] = userList.Users.User[k].uid;
+				alert(users[k])
+				}
+						
+				for ( i = 1; i < users.length; i++) {
 
-				for ( i = 1; i < names.length; i++) {
-
-					drawUser(names[i - 1], i, 'nameTable');
+					drawUser(users[i - 1], i, 'nameTable');
 
 				}
 			});
