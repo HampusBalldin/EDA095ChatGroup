@@ -3,6 +3,7 @@ package org.violin;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
+import org.violin.asynchronous.AsyncHandler;
 import org.violin.asynchronous.AsyncHandlerManager;
 import org.violin.database.Database;
 import org.violin.dynamic.DynamicHandler;
