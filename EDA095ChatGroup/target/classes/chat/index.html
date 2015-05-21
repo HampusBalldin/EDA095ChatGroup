@@ -33,6 +33,7 @@
 
 		var tableId = 1;
 		var uid = getCookie("uid");
+		
 		alert(uid);
 
 
@@ -41,7 +42,7 @@
 				var msg = 
 				 HXML.createMessage(
 				 HXML.MESSAGE_TYPE.Login, 
-				 HXML.createUser(getCookie("username"),getCookie("password"),HXML.STATUS.Online),
+				 HXML.createUser(getCookie("uid"),getCookie("pwd"),HXML.STATUS.Online),
 				 "", HXML.createUsers());
 
 			$.post("../asynch/" + uid, JSON.stringify(msg));
@@ -52,9 +53,10 @@
 			var msg = 
 				 HXML.createMessage(
 				 HXML.MESSAGE_TYPE.Login, 
-				 HXML.createUser(getCookie("username"),getCookie("password"),HXML.STATUS.Offline),
+				 HXML.createUser(getCookie("uid"),getCookie("pwd"),HXML.STATUS.Offline),
 				 "", 
 				 HXML.createUsers());
+				 
 			$.post("../logout", JSON.stringify(msg)).done(function(name) {
 
 				for ( j = 1; j < 10; j++) {
@@ -74,14 +76,13 @@
 
 		$("#Button_Message_GetFriends").on('click', function() {
 
-			$.post("../getfriends", {
 
-                 Message:HXML.createMessage(HXML.MESSAGE_TYPE.GetFriends,
-				 HXML.createUsers(getCookie("username"),getCookie("password"), HXML.STATUS.Online),
+                 var msg = HXML.createMessage(HXML.MESSAGE_TYPE.GetFriends,
+				 HXML.createUsers(getCookie("uid"),getCookie("pwd"), HXML.STATUS.Online),
 				 "",
 				 HXML.createUsers())
 
-			}).done(function(arg) {
+		$.post("../getfriends",JSON.stringify(msg)).done(function(name) {
 			
 				for ( j = 1; j < 10; j++) {
 
@@ -110,15 +111,15 @@
 		
 		function pull() {
 
-			$.post("../asynch/" + uid, {
+			
 
-                 Message:HXML.createMessage(HXML.MESSAGE_TYPE.Request_Receive_Data,
-				 HXML.createUsers(getCookie("username"),getCookie("password"), HXML.STATUS.Online),
+                 var msg = HXML.createMessage(HXML.MESSAGE_TYPE.Request_Receive_Data,
+				 HXML.createUsers(getCookie("uid"),getCookie("pwd"), HXML.STATUS.Online),
 				 "",
 				 HXML.createUsers())
 
-			}).done(function(name) {
-
+		$.post("../asynch/" + uid,JSON.stringify(msg)).done(function(name) {
+		
 				var tempList = [];
 				tempList[0] = name;
 				
