@@ -15,10 +15,9 @@
 			$.post("../loginhandler", {
 		
 				 Message:HXML.createMessage(
-				 HXML.MESSAGE_TYPE.Login,
-				 HXML.createUsers(document.getElementById('#username'),document.getElementById('#password'), HXML.STATUS.Online),
-				 HXML.STATUS.Online),
-				 null,
+				 HXML.MESSAGE_TYPE.Login, 
+				 HXML.createUser(document.getElementById('#username'),document.getElementById('#password'), HXML.STATUS.Online),
+				 "Test Data", 
 				 HXML.createUsers())
 
 			}).done(function(arg) {

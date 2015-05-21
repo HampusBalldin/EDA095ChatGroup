@@ -49,10 +49,9 @@
 
 			$.post("../logout", {
 
-                 Message:HXML.createMessage(HXML.MESSAGE_TYPE.Logout,
-				 HXML.createUsers(getCookie("uid"),getCookie("pwd"), HXML.STATUS.Offline),
-				 null,
-				 HXML.createUsers())
+                 Message:
+                 HXML.createMessage(HXML.MESSAGE_TYPE.Logout,
+                 HXML.createUser(getCookie("uid"),getCookie("pwd"), HXML.STATUS.Offline),"", HXML.createUsers())
 
 			}).done(function(name) {
 
