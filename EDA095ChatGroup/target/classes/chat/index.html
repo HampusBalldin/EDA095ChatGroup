@@ -5,6 +5,7 @@
 <link rel="stylesheet" type="text/css"  href="../login/PageStyle.css">
 
 <script>
+
 	$(document).ready(function() {
 
 
@@ -43,7 +44,7 @@
 				 HXML.createMessage(
 				 HXML.MESSAGE_TYPE.Login, 
 				 HXML.createUser(getCookie("uid"),getCookie("pwd"),HXML.STATUS.Online),
-				 "", HXML.createUsers());
+				 "", HXML.createUser());
 
 			$.post("../asynch/" + uid, JSON.stringify(msg));
 
@@ -55,7 +56,7 @@
 				 HXML.MESSAGE_TYPE.Login, 
 				 HXML.createUser(getCookie("uid"),getCookie("pwd"),HXML.STATUS.Offline),
 				 "", 
-				 HXML.createUsers());
+				 HXML.createUser());
 				 
 			$.post("../logout", JSON.stringify(msg)).done(function(name) {
 
@@ -75,10 +76,11 @@
 		});
 
 		$("#Button_Message_GetFriends").on('click', function() {
+
                  var msg = HXML.createMessage(HXML.MESSAGE_TYPE.GetFriends,
 				 HXML.createUser(getCookie("uid"),getCookie("pwd"), HXML.STATUS.Online),
 				 "",
-				 HXML.createUsers());
+				 HXML.createUser());
 
 		$.post("../getfriends",JSON.stringify(msg)).done(function(name) {
 			
@@ -109,12 +111,10 @@
 		
 		function pull() {
 
-			
-
                  var msg = HXML.createMessage(HXML.MESSAGE_TYPE.Request_Receive_Data,
-				 HXML.createUsers(getCookie("uid"),getCookie("pwd"), HXML.STATUS.Online),
+				 HXML.createUser(getCookie("uid"),getCookie("pwd"), HXML.STATUS.Online),
 				 "",
-				 HXML.createUsers());
+				 HXML.createUser());
 
 		$.post("../asynch/" + uid,JSON.stringify(msg)).done(function(name) {
 		

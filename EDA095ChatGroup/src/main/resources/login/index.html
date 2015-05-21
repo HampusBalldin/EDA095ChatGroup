@@ -31,7 +31,7 @@
 				 HXML.MESSAGE_TYPE.Login, 
 				 HXML.createUser(uid,pwd,HXML.STATUS.Online),
 				 "Test Data", 
-				 HXML.createUsers());
+				 HXML.createUser());
 				 
 			$.post("../loginhandler", JSON.stringify(msg)).done(function(arg) {
 			
