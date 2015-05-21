@@ -2,11 +2,14 @@ package org.violin.dynamic;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.namespace.QName;
 
+import org.violin.HTTPUtilities;
 import org.violin.Handler;
 import org.violin.asynchronous.AsyncHandlerManager;
 import org.violin.database.DBUsers;
@@ -36,6 +39,8 @@ public class DynamicHandler extends Handler {
 	@Override
 	public void handle(HttpExchange exchange) {
 		System.out.println("Dynamic Handler");
+
+		HTTPUtilities.printHeaders(exchange.getRequestHeaders());
 		String exchangeContent = getExchangeContent(exchange);
 		Message msg = createMessage(exchangeContent);
 		User user;
@@ -68,7 +73,10 @@ public class DynamicHandler extends Handler {
 			break;
 		}
 		try {
-			exchange.sendResponseHeaders(200, 0);
+			System.out.println("SENDING RESPONSE HEADERS!");
+			HTTPUtilities.printHeaders(exchange.getResponseHeaders());
+			exchange.sendResponseHeaders(200, -1);
+			exchange.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -94,8 +102,10 @@ public class DynamicHandler extends Handler {
 
 	private void setCookie(User user, HttpExchange exchange) {
 		Headers headers = exchange.getResponseHeaders();
-		headers.set("Cookie",
-				"uid=" + user.getUid() + ";" + "pwd=" + user.getPwd() + ";");
+		List<String> values = new ArrayList<String>();
+		values.add("uid=" + user.getUid() + ";");
+		values.add("pwd=" + user.getPwd() + ";");
+		headers.put("Set-Cookie", values);
 	}
 
 	private Users getFriends(User user) {
