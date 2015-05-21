@@ -13,15 +13,16 @@ import org.violin.HTTPUtilities.MimeResolver;
 import org.violin.database.XMLUtilities;
 import org.violin.database.generated.Message;
 import org.violin.database.generated.ObjectFactory;
+import org.violin.database.generated.User;
 
 import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
 
 public class StaticHandler extends Handler {
 	private static final MimeResolver resolver = new MimeResolver();
 
 	public void handle(HttpExchange exchange, String path) throws IOException {
-		if (authenticate(exchange)) {
+		User user = createUser(exchange);
+		if (authenticate(user)) {
 			System.out.println(path);
 			System.out.println(exchange.getRequestURI());
 			exchange.getResponseHeaders().set("Content-Type",
