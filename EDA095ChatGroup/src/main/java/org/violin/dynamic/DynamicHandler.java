@@ -1,10 +1,18 @@
 package org.violin.dynamic;
 
+import java.io.OutputStream;
+
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.namespace.QName;
+
 import org.violin.Handler;
 import org.violin.asynchronous.AsyncHandlerManager;
 import org.violin.database.DBUsers;
 import org.violin.database.Database;
+import org.violin.database.XMLUtilities;
 import org.violin.database.generated.Message;
+import org.violin.database.generated.ObjectFactory;
 import org.violin.database.generated.Status;
 import org.violin.database.generated.User;
 import org.violin.database.generated.Users;
@@ -28,22 +36,30 @@ public class DynamicHandler extends Handler {
 	public void handle(HttpExchange exchange) {
 		String exchangeContent = getExchangeContent(exchange);
 		Message msg = createMessage(exchangeContent);
-		User user = createUser(exchange);
-		switch (msg.getType()) {
-		case LOGIN: // kan vi få LOGIN i annat fall än i det första? ok!
-			dbLogin(user); // 1. loggar in i databaen
-			createContext(user); // 2. skapar context
-			setCookie(user, exchange); // 3. sätter cookie
-
+		User user;
+		switch(msg.getType()) {
+		case LOGIN:
+			user = msg.getOrigin();
+			if (dbUsers.authenticate(user)) {
+				dbLogin(user); //loggar in i databasen
+				createContext(user); //skapar context
+				setCookie(user, exchange); //sätter cookie
+				break;
+			} else {
+				break;
+			}
 		case LOGOUT:
-			dbLogout(user); // 1. loggar ut ur databaen
-			removeContext(user); // 2. ta bort context
-			setCookie(user, exchange); // 3. ta bort cookie / sätt
-										// cookie-status?
-
-		case GET_FRIENDS: // skicka users
-			Users users = getFriends(user);
-		}
+			user = createUser(exchange); 
+			dbLogout(user); //loggar ut ur databaen
+			removeContext(user); //tar bort context
+			break;
+		case GET_FRIENDS: //skicka users
+			user = createUser(exchange);
+			Users users = getFriends(user); 
+			OutputStream os = exchange.getResponseBody();
+			sendFriends(os,users); //gör till xml-sträng, skickar strängen
+			break;
+		}	
 	}
 
 	private void dbLogin(User user) {
@@ -76,6 +92,16 @@ public class DynamicHandler extends Handler {
 
 	private Users getOnlineFriends(User user) {
 		return dbUsers.getOnlineFriends(user);
+	}
+	
+	private void sendFriends(OutputStream os, Users users) {
+		QName qName = new QName("Users");
+		JAXBElement<Users> jaxbElement = new JAXBElement<Users>(qName, Users.class, users);
+		try {
+			XMLUtilities.marshal(jaxbElement, ObjectFactory.class, os);
+		} catch (JAXBException e) {
+			e.printStackTrace();	
+		}	
 	}
 
 	// if (authenticate(exchange)) { //implementera authenticate

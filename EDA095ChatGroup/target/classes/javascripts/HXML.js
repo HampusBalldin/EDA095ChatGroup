@@ -6,6 +6,7 @@ var HXML = HXML || {};
  * @param callback, the function being called when request successfully ACKed.
  */
 HXML.getXMLDoc = function (filename, callback) {
+	
     if (window.XMLHttpRequest) {
         xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
@@ -13,6 +14,7 @@ HXML.getXMLDoc = function (filename, callback) {
                 callback(xhttp);
             }
         };
+        
     } else { // code for IE5 and IE6
         xhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
