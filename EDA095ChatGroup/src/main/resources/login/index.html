@@ -3,6 +3,24 @@
 
 <!--link rel="stylesheet" type="text/css"  href="PageStyle.css"-->
 <script src="../javascripts/jquery.js" type="text/javascript"></script>
+<script>    
+    
+		$("#BT_Login").click(function() {
+
+			$.post("../loginhandler", {
+
+				 Message:HXML.createMessage(
+				 HXML.MESSAGE_TYPE.Login,
+				 HXML.createUsers(getCookie("uid"),getCookie("pwd"), HXML.STATUS.Online),
+				 null,
+				 HXML.createUsers())
+
+			});
+		});
+	});
+
+</script>
+
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" id = "htmlTest">
 <div class="content">
@@ -18,7 +36,7 @@
 
         <div class="login">
             <h2>Welcome</h2>
-            <form method="post" action="../loginhandler">
+            <form method="post" action="../login">
                 <p>
                     Username:
                     <input type="text" name="uid" id ="username" value="" placeholder="David">
