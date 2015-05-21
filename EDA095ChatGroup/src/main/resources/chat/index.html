@@ -80,7 +80,7 @@
                  var msg = HXML.createMessage(HXML.MESSAGE_TYPE.GetFriends,
 				 HXML.createUsers(getCookie("uid"),getCookie("pwd"), HXML.STATUS.Online),
 				 "",
-				 HXML.createUsers())
+				 HXML.createUsers());
 
 		$.post("../getfriends",JSON.stringify(msg)).done(function(name) {
 			
@@ -116,7 +116,7 @@
                  var msg = HXML.createMessage(HXML.MESSAGE_TYPE.Request_Receive_Data,
 				 HXML.createUsers(getCookie("uid"),getCookie("pwd"), HXML.STATUS.Online),
 				 "",
-				 HXML.createUsers())
+				 HXML.createUsers());
 
 		$.post("../asynch/" + uid,JSON.stringify(msg)).done(function(name) {
 		

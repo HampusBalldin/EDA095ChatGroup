@@ -67,7 +67,7 @@ public class DynamicHandler extends Handler {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-			}	
+			}
 			break;
 		case LOGOUT:
 			System.out.println("Dynamic Handler LOGOUT");
