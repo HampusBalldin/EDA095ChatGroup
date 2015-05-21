@@ -40,8 +40,11 @@ public class AsyncHandler extends org.violin.Handler {
 		System.out.println(exchangeContent);
 		System.out.println("END");
 		Message msg = createMessage(exchangeContent);
-
-		if (authenticate(msg.getOrigin())) {
+		System.out.println("Was Able to Parse Message :)!");
+		System.out.println(msg.getOrigin());
+//		if (authenticate(msg.getOrigin())) {
+			System.out.println("ASYNCHANDLER AUTHENTICATED");
+			System.out.println(msg.getType());
 			switch (msg.getType()) {
 			case REQUEST_RECEIVE_DATA:
 				System.out.println("RECEIVER");
@@ -53,7 +56,9 @@ public class AsyncHandler extends org.violin.Handler {
 				sender.addToMessageQueue(msg);
 				break;
 			}
-		}
+//		}else{
+//			System.out.println("ASYNCHANDLER NOT AUTHENTICATED");
+//		}
 	}
 
 	public void receiveMessage(Message msg) {
