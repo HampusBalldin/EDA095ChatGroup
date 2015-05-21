@@ -34,20 +34,24 @@ public class AsyncHandler extends org.violin.Handler {
 
 	public void handle(HttpExchange exchange) throws IOException {
 		System.out.println("ASYNCH HANDLER");
-		User user = createUser(exchange);
-		if (authenticate(user)) {
-			String exchangeContent = getExchangeContent(exchange);
-			Message msg = createMessage(exchangeContent);
+		String exchangeContent = getExchangeContent(exchange);
+		
+		System.out.println("START");
+		System.out.println(exchangeContent);
+		System.out.println("END");
+		Message msg = createMessage(exchangeContent);
+
+		if (authenticate(msg.getOrigin())) {
 			switch (msg.getType()) {
-				case REQUEST_RECEIVE_DATA:
-					System.out.println("RECEIVER");
-					receiver.addReplyExchange(exchange);
-					break;
-				case REQUEST_SEND_DATA:
-					System.out.println("SENDER");
-					exchange.sendResponseHeaders(200, 0);
-					sender.addToMessageQueue(msg);
-					break;
+			case REQUEST_RECEIVE_DATA:
+				System.out.println("RECEIVER");
+				receiver.addReplyExchange(exchange);
+				break;
+			case REQUEST_SEND_DATA:
+				System.out.println("SENDER");
+				exchange.sendResponseHeaders(200, 0);
+				sender.addToMessageQueue(msg);
+				break;
 			}
 		}
 	}
@@ -56,5 +60,4 @@ public class AsyncHandler extends org.violin.Handler {
 		receiver.addToReplyQueue(msg);
 	}
 
-	
 }

@@ -60,10 +60,7 @@ public abstract class Handler implements HttpHandler {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		String miniParse1 = sb.toString().replace("%5B", "[");
-		String miniParse2 = miniParse1.replace("%5D", "]");
-		System.out.println(miniParse2);
-		return miniParse2;
+		return sb.toString();
 	}
 
 	protected Message createMessage(String jsonString) {
