@@ -4,10 +4,8 @@ import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
 import org.json.JSONObject;
 import org.json.XML;
 import org.violin.HTTPUtilities.MimeResolver;
@@ -24,17 +22,22 @@ public class StaticHandler extends Handler {
 			+ "/src/main/resources/login/index.html";
 	private String loginCss = System.getProperty("user.dir")
 			+ "/src/main/resources/login/PageStyle.css";
+	private String loginHXML = System.getProperty("user.dir")
+			+ "/src/main/resources/javascripts/HXML.js";
+	private String loginjquery = System.getProperty("user.dir")
+			+ "/src/main/resources/javascripts/jquery.js";
 
 	public void handle(HttpExchange exchange, String path) throws IOException {
 		User user = null;
-		boolean isAuthenticated = true;
+		boolean existsCookie = true;
 		try {
 			user = createUser(exchange);
 		} catch (NullPointerException e) {
-			isAuthenticated = false;
+			existsCookie = false;
 		}
-		if (isAuthenticated) {
+		if (existsCookie) {
 			if (authenticate(user)) {
+				System.out.println("Authenticated!");
 				System.out.println(path);
 				System.out.println(exchange.getRequestURI());
 				exchange.getResponseHeaders().set("Content-Type",
@@ -53,6 +56,7 @@ public class StaticHandler extends Handler {
 				in.close();
 			}
 		} else {
+			System.out.println("Not Authenticated!");
 			sendbackLoginPage(exchange, path);
 		}
 	}
@@ -63,6 +67,10 @@ public class StaticHandler extends Handler {
 			path = loginPath;
 		} else if (path.equals(loginCss)) {
 			path = loginCss;
+		} else if (path.equals(loginHXML)) {
+			path = loginHXML;
+		} else if (path.equals(loginjquery)) {
+			path = loginjquery;
 		} else {
 			path = loginPath;
 		}

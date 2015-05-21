@@ -19,8 +19,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 public abstract class Handler implements HttpHandler {
-	protected Database db = new Database(); // ok att ha denn trots att db finns
-											// i subklasser?
+	protected Database db = new Database();
 	protected DBUsers dbUsers = new DBUsers(db);
 
 	protected boolean authenticate(User user) {
@@ -31,7 +30,8 @@ public abstract class Handler implements HttpHandler {
 		}
 	}
 
-	protected User createUser(HttpExchange exchange) throws NullPointerException{
+	protected User createUser(HttpExchange exchange)
+			throws NullPointerException {
 		User user = new User();
 		Headers headers = exchange.getResponseHeaders();
 		ArrayList<String> cookies = new ArrayList<String>();
