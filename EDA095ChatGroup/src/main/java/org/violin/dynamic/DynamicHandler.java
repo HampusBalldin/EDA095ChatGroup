@@ -43,11 +43,11 @@ public class DynamicHandler extends Handler {
 		HTTPUtilities.printHeaders(exchange.getRequestHeaders());
 		String exchangeContent = getExchangeContent(exchange);
 		Message msg = createMessage(exchangeContent);
-		User user;
+		User user = msg.getOrigin();
 		switch (msg.getType()) {
 		case LOGIN:
 			System.out.println("Dynamic Handler LOGIN");
-			user = msg.getOrigin();
+			
 			if (dbUsers.authenticate(user)) {
 				System.out.println("AUTHENTICATED");
 				dbLogin(user); // loggar in i databasen
@@ -71,7 +71,6 @@ public class DynamicHandler extends Handler {
 			break;
 		case LOGOUT:
 			System.out.println("Dynamic Handler LOGOUT");
-			user = createUser(exchange);
 			dbLogout(user); // loggar ut ur databaen
 			removeContext(user); // tar bort context
 			try {
@@ -82,9 +81,9 @@ public class DynamicHandler extends Handler {
 			break;
 		case GET_FRIENDS: // skicka users
 			System.out.println("Dynamic Handler GET FRIENDS");
-			user = createUser(exchange);
 			if (dbUsers.authenticate(user)) {
 				Users users = getFriends(user);
+				System.out.println("GOT THEM FRIENDS!");
 				try {
 					System.out.println("SENDING RESPONSE HEADERS!");
 					HTTPUtilities.printHeaders(exchange.getResponseHeaders());
