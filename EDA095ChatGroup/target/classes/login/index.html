@@ -11,16 +11,20 @@
 		$("#BT_Login").click(function() {
 		
 		        	alert("hej");
+					var uid = $("#username").val();
+					var pwd = $("#password").val();
 		
-			$.post("../loginhandler", {
+			$.post("loginhandler", {
 		
 				 Message:HXML.createMessage(
 				 HXML.MESSAGE_TYPE.Login, 
-				 HXML.createUser(document.getElementById('#username'),document.getElementById('#password'), HXML.STATUS.Online),
+				 HXML.createUser(uid,pwd,HXML.STATUS.Online),
 				 "Test Data", 
 				 HXML.createUsers())
 
 			}).done(function(arg) {
+			
+				alert("da");
 			
 
 			});
