@@ -1,7 +1,7 @@
 
 <script src="../javascripts/jquery.js" type="text/javascript"></script>
 <script src="../javascripts/HXML.js" type="text/javascript"></script>
-<link rel="stylesheet" type="text/css"  href="PageStyle.css">
+<link rel="stylesheet" type="text/css"  href="../chat/PageStyle.css">
 
 
 <script>
@@ -41,7 +41,7 @@
 				 $("#note").val(),
 				 HXML.createUsers())
 
-			});
+			})
 
 		});
 
@@ -49,7 +49,7 @@
 
 			$.post("../logout", {
 
-                 Message:HXML.createMessage(HXML.MESSAGE_TYPE.logout,
+                 Message:HXML.createMessage(HXML.MESSAGE_TYPE.Logout,
 				 HXML.createUsers(getCookie("uid"),getCookie("pwd"), HXML.STATUS.Offline),
 				 null,
 				 HXML.createUsers())
@@ -71,11 +71,11 @@
 			});
 		});
 
-		$("#Button_Message_Login").on('click', function() {
+		$("#Button_Message_GetFriends").on('click', function() {
 
-			$.post("../login", {
+			$.post("../getfriends", {
 
-                 Message:HXML.createMessage(HXML.MESSAGE_TYPE.login,
+                 Message:HXML.createMessage(HXML.MESSAGE_TYPE.GetFriends,
 				 HXML.createUsers(getCookie("uid"),getCookie("pwd"), HXML.STATUS.Online),
 				 null,
 				 HXML.createUsers())
@@ -101,7 +101,7 @@
 		
 		function pull() {
 
-			$.post("ansynch" + getCookie("uid"), {
+			$.post("../ansynch/" + getCookie("uid"), {
 
                  Message:HXML.createMessage(HXML.MESSAGE_TYPE.Request_Receive_Data,
 				 HXML.createUsers(getCookie("uid"),getCookie("pwd"), HXML.STATUS.Online),
@@ -218,8 +218,8 @@ onload = function() {
     </button>
     <br>
     <br>
-    <button id = "Button_Message_Login">
-        login
+    <button id = "Button_Message_GetFriends">
+        get friends
     </button>
     <button id = "Button_Message_Logout">
         logout
