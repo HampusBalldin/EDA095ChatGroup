@@ -2,12 +2,11 @@
 <script src="../javascripts/jquery.js" type="text/javascript"></script>
 <script src="../javascripts/xml2json.js" type="text/javascript"></script>
 <script src="../javascripts/HXML.js" type="text/javascript"></script>
-<link rel="stylesheet" type="text/css"  href="../chat/PageStyle.css">
+<link rel="stylesheet" type="text/css"  href="../login/PageStyle.css">
 
 <script>
 	$(document).ready(function() {
 
-		var tableId = 1;
 
 		function setCookie(cname, cvalue, exdays) {
 			var d = new Date();
@@ -31,9 +30,16 @@
 		}
 
 
+
+		var tableId = 1;
+		var uid = getCookie("username");
+		
+		        	alert(uid);
+
+
 		$("#Button_Message_Send").on('click', function() {
 
-			$.post("../asynch/" + getCookie("uid"), {
+			$.post("../asynch/" + uid, {
 
 				 Message:HXML.createMessage(
 				 HXML.MESSAGE_TYPE.Request_Send_Data,
@@ -108,7 +114,7 @@
 		
 		function pull() {
 
-			$.post("../ansynch/" + getCookie("uid"), {
+			$.post("../asynch/" + uid, {
 
                  Message:HXML.createMessage(HXML.MESSAGE_TYPE.Request_Receive_Data,
 				 HXML.createUsers(getCookie("uid"),getCookie("pwd"), HXML.STATUS.Online),
