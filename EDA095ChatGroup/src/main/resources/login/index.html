@@ -35,12 +35,8 @@
 				 HXML.MESSAGE_TYPE.Login, 
 				 HXML.createUser(uid,pwd,HXML.STATUS.Online),
 				 "Test Data", 
-<<<<<<< HEAD
 				 HXML.createUsers());
-=======
 				 HXML.createUser());
-				 
->>>>>>> 143cdce908c5098febd151c47b5db0c35e76372a
 			$.post("../loginhandler", JSON.stringify(msg)).done(function(arg) {
 				alert("da");
 			});

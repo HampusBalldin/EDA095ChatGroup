@@ -83,22 +83,20 @@
 				 HXML.createUser());
 
 		$.post("../getfriends",JSON.stringify(msg)).done(function(arg) {
-			
 				for ( j = 1; j < 10; j++) {
 					drawUser("", j, 'nameTable');
 				}
-				
-				var userList = xml2json(HXML.parseXml(arg));	
-				console.log(userList);
-				console.log(userList.Users);			
-				for ( k = 1; k < 10; k++) {
-					
-				}
-						
-				for ( i = 1; i < users.length; i++) {
-
-					drawUser(users[i - 1], i, 'nameTable');
-
+				var dom = HXML.parseXml(arg);
+				var users = dom.getElementsByTagName("Users");
+				var usersNodes = dom.getElementsByTagName("User");
+				var uid = "", pwd = "", status = "";
+				var usersList = [];
+				for(var i = 0; i < usersNodes.length; i++){
+					uid = usersNodes[i].getElementsByTagName("uid")[0].textContent;
+					pwd = usersNodes[i].getElementsByTagName("pwd")[0].textContent;
+					status = usersNodes[i].getElementsByTagName("status")[0].textContent;
+					console.log(uid + pwd + status);
+					drawUser(uid, 1 + i, 'nameTable');			
 				}
 			});
 		});
@@ -112,7 +110,7 @@
 				 "",
 				 HXML.createUser());
 
-		$.post("../asynch/" + uid,JSON.stringify(msg)).done(function(name) {
+		$.post("../asynch/" + getCookie("uid"),JSON.stringify(msg)).done(function(name) {
 		
 				var tempList = [];
 				tempList[0] = name;
