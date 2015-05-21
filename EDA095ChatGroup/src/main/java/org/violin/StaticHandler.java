@@ -26,6 +26,9 @@ public class StaticHandler extends Handler {
 			+ "/src/main/resources/javascripts/HXML.js";
 	private String loginjquery = System.getProperty("user.dir")
 			+ "/src/main/resources/javascripts/jquery.js";
+	private String loginChat = System.getProperty("user.dir")
+			+ "/src/main/resources/chat/index.html";
+
 
 	public void handle(HttpExchange exchange, String path) throws IOException {
 		User user = null;
@@ -71,7 +74,9 @@ public class StaticHandler extends Handler {
 			path = loginHXML;
 		} else if (path.equals(loginjquery)) {
 			path = loginjquery;
-		} else {
+		} else if(path.equals(loginChat)){
+			path = loginChat;
+		}else {
 			path = loginPath;
 		}
 		exchange.getResponseHeaders().set("Content-Type",
