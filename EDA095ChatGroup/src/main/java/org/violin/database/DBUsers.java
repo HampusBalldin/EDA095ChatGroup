@@ -16,6 +16,12 @@ public class DBUsers extends DBObject<Users> {
 		super(db);
 	}
 
+	public boolean authenticate(User user) {
+		String sql = "SELECT * FROM Users WHERE uid = ? AND pwd = ?";
+		Users users = query(sql, user.getUid(), user.getPwd());
+		return users.getUser().size() != 0;
+	}
+
 	public User createUser(String uid, String pwd, Status status) {
 		User user = new User();
 		user.setUid(uid);

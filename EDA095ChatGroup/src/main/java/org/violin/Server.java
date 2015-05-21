@@ -26,6 +26,7 @@ public class Server {
 		server.createContext("/javascripts", new StaticHandler());
 		server.createContext("/login", new StaticHandler());
 		server.createContext("/loginhandler", new DynamicHandler(db, contexts));
+		server.createContext("/getfriends", new DynamicHandler(db, contexts));
 		server.createContext("/loguthandler", new DynamicHandler(db, contexts));
 		server.setExecutor(null);
 		server.start();
