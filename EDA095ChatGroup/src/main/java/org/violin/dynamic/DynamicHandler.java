@@ -67,7 +67,6 @@ public class DynamicHandler extends Handler {
 			sendFriends(os, users); // gör till xml-sträng, skickar strängen
 			break;
 		}
-		
 		try {
 			exchange.sendResponseHeaders(200, 0);
 		} catch (IOException e) {
