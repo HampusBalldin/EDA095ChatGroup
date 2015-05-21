@@ -2,24 +2,29 @@
         "http://www.w3.org/TR/html4/strict.dtd">
 
 <link rel="stylesheet" type="text/css"  href="../login/PageStyle.css">
-<script src="../javascripts/jquery.js" type="text/javascript"></script>
-<script src="../javascripts/HXML.js" type="text/javascript"></script>
+<script src="javascripts/jquery.js" type="text/javascript"></script>
+<script src="javascripts/HXML.js" type="text/javascript"></script>
 
 <script>    
     	$(document).ready(function() {
     
 		$("#BT_Login").click(function() {
+		
+		
+					alert("hej");
+		
 			$.post("../loginhandler", {
 		
 				 Message:HXML.createMessage(
 				 HXML.MESSAGE_TYPE.Login,
-				 HXML.createUsers(getCookie("uid"),getCookie("pwd"), HXML.STATUS.Online),
+				 HXML.createUsers(document.getElementById('#username'),
+				 document.getElementById('#password'),
+				  HXML.STATUS.Online),
 				 null,
 				 HXML.createUsers())
 
 			}).done(function(arg) {
 			
-			alert("hej");
 
 			});
 		});
