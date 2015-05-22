@@ -24,9 +24,14 @@ public class Receiver implements Runnable {
 	public void run() {
 		running = true;
 		while (running) {
+			
+
+				
 			HttpExchange exchange = getReplyExchange();
 			OutputStream os = exchange.getResponseBody();
 			Message msg = retrieveFromReplyQueue();
+			
+			if(msg != null){
 
 			try {
 				exchange.sendResponseHeaders(200, 0);
@@ -37,13 +42,37 @@ public class Receiver implements Runnable {
 					+ "with message " + msg.getData());
 			sendToClient(os, msg);
 			exchange.close();
-		}
+			}
+		}		
 	}
 
 	public void terminate() {
-		running = false; // System.out.println("Inside receiver terminate");
-		exchanges.notifyAll(); // System.out.println("Notify Exchanges");
-		messageQueue.notifyAll();
+		
+		running = false; 
+		
+		synchronized (messageQueue) {
+			
+			try{
+				
+				messageQueue.notifyAll();
+				
+			}catch(Exception e){
+				
+				e.printStackTrace();
+			}
+		}
+		synchronized (exchanges) {
+			
+			try{
+
+				exchanges.notifyAll();
+
+			}catch(Exception e){
+				
+				e.printStackTrace();
+			}
+		}
+	
 	}
 
 	public void addToReplyQueue(Message msg) {

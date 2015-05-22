@@ -82,10 +82,16 @@ public class DynamicHandler extends Handler {
 			dbLogin(user); // loggar in i databasen
 			createContext(user); // skapar context
 			setCookie(user, exchange); // sätter cookie
+			
+			String response = ""; 
 			try {
-				System.out.println("SENDING RESPONSE HEADERS: ");
+				System.out.println("SENDING RESPONSE HEADERS AND BODY: ");
 				HTTPUtilities.printHeaders(exchange.getResponseHeaders());
-				exchange.sendResponseHeaders(200, -1);
+				exchange.sendResponseHeaders(200, response.length());
+				OutputStream os = exchange.getResponseBody();
+				os.write(response.getBytes());
+				os.close();
+				
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -103,6 +109,7 @@ public class DynamicHandler extends Handler {
 		User user = msg.getOrigin();
 		dbLogout(user); // loggar ut ur databaen
 		removeContext(user); // tar bort context
+		
 		try {
 			exchange.sendResponseHeaders(200, -1);
 		} catch (IOException e) {
