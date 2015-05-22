@@ -27,39 +27,35 @@ public class Logout implements Action {
 
 	@Override
 	public void perform(Message msg, HttpExchange exchange) {
-
-			User user = msg.getOrigin();
-			dbLogout(user); // loggar ut ur databaen
-			removeContext(user); // tar bort context
-
+		User user = msg.getOrigin();
+		dbLogout(user); // loggar ut ur databaen
+		removeContext(user); // tar bort context
+		try {
+			StringBuilder contentBuilder = new StringBuilder();
 			try {
-			
-				StringBuilder contentBuilder = new StringBuilder();
-				try {
-					
-					String path = System.getProperty("user.dir") + "/src/main/resources/logout/logout.html";
-					BufferedReader in = new BufferedReader(new FileReader(path));
-					String str;
-					while ((str = in.readLine()) != null) {
-						contentBuilder.append(str);
-					}
-					in.close();
-				} catch (IOException e) {
+
+				String path = System.getProperty("user.dir")
+						+ "/src/main/resources/logout/logout.html";
+				BufferedReader in = new BufferedReader(new FileReader(path));
+				String str;
+				while ((str = in.readLine()) != null) {
+					contentBuilder.append(str);
 				}
-				
-					String response = contentBuilder.toString();
-					System.out.println("SENDING RESPONSE HEADERS AND BODY: ");
-					HTTPUtilities.printHeaders(exchange.getResponseHeaders());
-					exchange.sendResponseHeaders(200, response.length());
-					OutputStream os = exchange.getResponseBody();
-					os.write(response.getBytes());
-					os.close();		
-					
-					} catch (IOException e) {
-						
-				e.printStackTrace();
+				in.close();
+			} catch (IOException e) {
 			}
+			String response = contentBuilder.toString();
+			System.out.println("SENDING RESPONSE HEADERS AND BODY: ");
+			HTTPUtilities.printHeaders(exchange.getResponseHeaders());
+			exchange.sendResponseHeaders(200, response.length());
+			OutputStream os = exchange.getResponseBody();
+			os.write(response.getBytes());
+			os.close();
+
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+	}
 
 	private void dbLogout(User user) {
 		DBUsers dbUsers = new DBUsers(db);
