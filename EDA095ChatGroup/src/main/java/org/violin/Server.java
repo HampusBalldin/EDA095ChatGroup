@@ -28,7 +28,8 @@ public class Server {
 		server.createContext("/loginhandler", new DynamicHandler(db, contexts));
 		server.createContext("/getfriends", new DynamicHandler(db, contexts));
 		server.createContext("/logouthandler", new DynamicHandler(db, contexts));
-		server.createContext("/dynamichandler", new DynamicHandler(db, contexts));
+		server.createContext("/dynamichandler",
+				new DynamicHandler(db, contexts));
 		StaticLoginHandler staticLoginHandler = new StaticLoginHandler();
 		// Special Case Login
 		server.createContext("/javascripts/HXML.js", staticLoginHandler);
@@ -36,7 +37,7 @@ public class Server {
 		server.createContext("/login/index.html", staticLoginHandler);
 		server.createContext("/login/PageStyle.css", staticLoginHandler);
 		server.createContext("/chat/PageStyle.css", staticLoginHandler);
-		
+
 		server.setExecutor(null);
 		server.start();
 		// server.createContext(arg0, arg1);

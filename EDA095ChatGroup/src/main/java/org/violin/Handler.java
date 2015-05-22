@@ -116,7 +116,7 @@ public abstract class Handler implements HttpHandler {
 		return msg;
 	}
 
-	protected void setCookie(User user, HttpExchange exchange) {
+	public void setCookie(User user, HttpExchange exchange) {
 		Headers headers = exchange.getResponseHeaders();
 		List<String> values = new ArrayList<String>();
 		values.add("uid=" + user.getUid());
