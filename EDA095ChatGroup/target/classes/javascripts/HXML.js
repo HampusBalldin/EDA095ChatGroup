@@ -176,7 +176,6 @@ HXML.establishConnection = function () {
             HXML.createUsers());
 
     $.post("../loginhandler", JSON.stringify(msg)).done(function (arg) {
-        alert("da");
     });
 }
 

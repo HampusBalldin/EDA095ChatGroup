@@ -19,10 +19,17 @@ public class StaticHandler extends Handler {
 	private static final MimeResolver resolver = new MimeResolver();
 
 	public void handle(HttpExchange exchange, String path) throws IOException {
-		System.out.println("StaticHandler" + exchange.getRequestURI());
-		if (authenticate(exchange)) {
+		System.out.println("StaticHandler" + path);
+		
+		boolean isAuthenticated = authenticate(exchange);
+		if(isAuthenticated){
+			System.out.println("OFFICIALLY AUTHENTICATED");
+		}else{
+			System.out.println("OFFICIALLY NOT AUTHENTICATED");
+		}
+		if (isAuthenticated) {
 			System.out.println("Authenticated!");
-			System.out.println(path);
+			System.out.println("Getting: " + path);
 			System.out.println(exchange.getRequestURI());
 			exchange.getResponseHeaders().set("Content-Type",
 					resolver.resolveHttpContent(path));

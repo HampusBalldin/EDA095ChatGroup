@@ -18,10 +18,8 @@ public class DBUsers extends DBObject<Users> {
 
 	public boolean authenticate(User user) {
 		String sql = "SELECT * FROM Users WHERE uid = ? AND pwd = ?";
-		
-		System.out.println(user.getUid() + user.getPwd());
+		System.out.println("Authenticateing: " + user.getUid() + user.getPwd() + " against database");
 		Users users = query(sql, user.getUid(), user.getPwd());
-		
 		System.out.println(users.getUser().size());
 		return users.getUser().size() != 0;
 	}
