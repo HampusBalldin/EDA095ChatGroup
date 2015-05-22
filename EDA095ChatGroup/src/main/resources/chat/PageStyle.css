@@ -1,85 +1,103 @@
 
-h2{
+h2 {
 
     font: 25px arial, sans-serif;
 }
-* {
 
+* {
     font: 15px arial, sans-serif;
 }
- #BT_Login , button, #File_Button{
-  -webkit-border-radius: 5;
-  -moz-border-radius: 5;
-  border-radius: 5px;
-  font-family: Arial;
-  color: #ffffff;
-  font-size: 14px;
-  background: #53c09f;
-  padding: 5px 15px 5px 15px;
-  text-decoration: none; 
-  border: none;
+
+#BT_Login, button, #File_Button {
+    -webkit-border-radius: 5;
+    -moz-border-radius: 5;
+    border-radius: 5px;
+    font-family: Arial;
+    color: #ffffff;
+    font-size: 14px;
+    background: #53c09f;
+    padding: 5px 15px 5px 15px;
+    text-decoration: none;
+    border: none;
 }
 
 #BT_Login:hover, button:hover, #File_Button:hover {
-  background: #7ddbbf;
+    background: #7ddbbf;
 }
-  
+
 .content {
-  position: absolute;
-  left: 50%;
-  top: 35%;
-  -webkit-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
+    position: absolute;
+    left: 50%;
+    top: 35%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 }
 
-#File_Button{
-   position: relative;
-       top: 150px;
-   font-family: calibri;
-   width: 150px;
-   padding: 10px;
+#File_Button {
+    position: relative;
+    top: 150px;
+    font-family: calibri;
+    width: 150px;
+    padding: 10px;
 
-   text-align: center;
-   cursor:pointer;
-  }
-  
-  #t1:hover,#t2:hover,#t3:hover,#t4:hover,#t5:hover,#t6:hover,#t7:hover,#t8:hover,#t9:hover {
-  
-  -webkit-border-radius: 5;
-  -moz-border-radius: 5;
-  border-radius: 5px;
-  font-family: Arial;
-  color: #ffffff;
-  font-size: 14px;
-  background: #7ddbbf;
-  padding: 5px 15px 5px 15px;
-  text-decoration: none; 
-  border: none;
-  }
-  
-  
-  #t0{
-  	
-  	  color: #000000;
-
-  }
-  
-  #t1,#t2,#t3,#t4,#t5,#t6,#t7,#t8,#t9,#c11,#c12,#c13,#c14,#c15,#c16,#c17,#c18,#c19{
-  
-  -webkit-border-radius: 5;
-  -moz-border-radius: 5;
-  border-radius: 5px;
-  font-family: Arial;
-  color: #7ddbbf;
-  font-size: 14px;
-  background: #ffffff;
-  padding: 5px 15px 5px 15px;
-  text-decoration: none; 
-  border: none;
-  
-  }
-  
- #t1:active,#t2:active,#t3:active,#t4:active,#t5:active,#t6:active,#t7:active,#t8:active,#t9:active{
-      background: #ffffff;
+    text-align: center;
+    cursor: pointer;
 }
+
+.hover {
+
+    -webkit-border-radius: 5;
+    -moz-border-radius: 5;
+    border-radius: 5px;
+    font-family: Arial;
+    color: #ffffff;
+    font-size: 14px;
+    background: #7ddbbf;
+    padding: 5px 15px 5px 15px;
+    text-decoration: none;
+    border: none;
+}
+
+td {
+    -webkit-border-radius: 5;
+    -moz-border-radius: 5;
+    border-radius: 5px;
+    font-family: Arial;
+    color: #7ddbbf;
+    font-size: 14px;
+    background: #ffffff;
+    padding: 5px 15px 5px 15px;
+    text-decoration: none;
+    border: none;
+}
+
+#table-wrapper_1 #table-wrapper_2 {
+    position: relative;
+}
+
+#table-scroll_1 #table-scroll_2 {
+    height: 150px;
+    overflow: auto;
+    margin-top: 20px;
+}
+
+#table-wrapper_1 #table-wrapper_2 table {
+    width: 100%;
+}
+
+#table-wrapper_1 #table-wrapper_2 table * {
+    background: yellow;
+    color: black;
+}
+
+#table-wrapper_1 #table-wrapper_2 table thead th .text {
+    position: absolute;
+    top: -20px;
+    z-index: 2;
+    height: 20px;
+    width: 35%;
+    border: 1px solid red;
+}
+
+
   

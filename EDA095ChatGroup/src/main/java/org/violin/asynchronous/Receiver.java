@@ -27,13 +27,14 @@ public class Receiver implements Runnable {
 			HttpExchange exchange = getReplyExchange();
 			OutputStream os = exchange.getResponseBody();
 			Message msg = retrieveFromReplyQueue();
-			
+
 			try {
 				exchange.sendResponseHeaders(200, 0);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			System.out.println("After Get Message: " + msg);
+			System.out.println("RECEIVER REPLY: to " + exchange.getRequestURI()
+					+ "with message " + msg.getData());
 			sendToClient(os, msg);
 			exchange.close();
 		}

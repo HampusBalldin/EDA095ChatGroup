@@ -35,7 +35,7 @@ public class Server {
 		server.createContext("/javascripts/jquery.js", staticLoginHandler);
 		server.createContext("/login/index.html", staticLoginHandler);
 		server.createContext("/login/PageStyle.css", staticLoginHandler);
-		
+		server.createContext("/chat/PageStyle.css", staticLoginHandler);
 		
 		
 		server.setExecutor(null);
