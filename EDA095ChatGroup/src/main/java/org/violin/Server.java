@@ -23,6 +23,7 @@ public class Server {
 
 		server.createContext("/", rootHandler);
 		server.createContext("/chat", new StaticHandler(db));
+		server.createContext("/chat/PageStyle.css", new StaticHandler(db));
 		server.createContext("/javascripts", new StaticHandler(db));
 		// server.createContext("/login", new StaticHandler());
 		server.createContext("/loginhandler", new DynamicHandler(db, contexts));
@@ -31,11 +32,10 @@ public class Server {
 		server.createContext("/dynamichandler",
 				new DynamicHandler(db, contexts));
 		StaticLoginHandler staticLoginHandler = new StaticLoginHandler();
+		
 		// Special Case Login
-		server.createContext("/javascripts/HXML.js", staticLoginHandler);
-		server.createContext("/javascripts/jquery.js", staticLoginHandler);
-		server.createContext("/login/index.html", staticLoginHandler);
-		server.createContext("/login/PageStyle.css", staticLoginHandler);
+		server.createContext("/login/", staticLoginHandler);
+
 		server.setExecutor(null);
 		server.start();
 		// server.createContext(arg0, arg1);

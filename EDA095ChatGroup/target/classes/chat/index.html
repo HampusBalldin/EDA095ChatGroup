@@ -1,8 +1,6 @@
 <script src="../javascripts/jquery.js" type="text/javascript"></script>
 <script src="../javascripts/xml2json.js" type="text/javascript"></script>
 <script src="../javascripts/HXML.js" type="text/javascript"></script>
-<link rel="stylesheet" type="text/css" href="/chat/PageStyle.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 <script>
     $(document).ready(function () {
         function setCookie(cname, cvalue, exdays) {
@@ -26,7 +24,7 @@
         }
 
         setUserName();
-        function setUserName(){
+        function setUserName() {
             var user = document.getElementById("username");
             user.innerHTML = "Logged in as: " + getCookie("uid");
         }
@@ -46,10 +44,10 @@
                             "",
                             HXML.createUser());
             $.post("../logouthandler", JSON.stringify(msg)).done(function (arg) {
-            	
-	var newDoc = document.open("text/html", "replace");
-	newDoc.write(arg);
-	newDoc.close();            	
+
+                var newDoc = document.open("text/html", "replace");
+                newDoc.write(arg);
+                newDoc.close();
             });
         });
 
@@ -154,6 +152,8 @@
 
 
 <html>
+<link rel="stylesheet" type="text/css" href="../chat/PageStyle.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 <head>
 </head>
 <body>

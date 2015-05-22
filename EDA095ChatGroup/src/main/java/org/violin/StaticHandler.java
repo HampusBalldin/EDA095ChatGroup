@@ -18,12 +18,12 @@ public class StaticHandler extends Handler {
 
 	private static final MimeResolver resolver = new MimeResolver();
 
-	public void handle(HttpExchange exchange, String path) throws IOException {
+	private void handle(HttpExchange exchange, String path) throws IOException {
 		System.out.println("StaticHandler" + path);
 		boolean isAuthenticated = authenticate(exchange);
-		if(isAuthenticated){
+		if (isAuthenticated) {
 			System.out.println("OFFICIALLY AUTHENTICATED");
-		}else{
+		} else {
 			System.out.println("OFFICIALLY NOT AUTHENTICATED");
 		}
 		if (isAuthenticated) {
@@ -52,7 +52,9 @@ public class StaticHandler extends Handler {
 		exchange.close();
 	}
 
+	@Override
 	public void handle(HttpExchange exchange) throws IOException {
+		System.out.println("STATIC HANDLER" + exchange.getRequestURI());
 		String path = System.getProperty("user.dir") + "/src/main/resources"
 				+ exchange.getRequestURI();
 		handle(exchange, path);

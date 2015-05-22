@@ -66,10 +66,10 @@ public abstract class DBObject<T> {
 	public T query(String sql, String... args) {
 		T t = null;
 		Connection conn = db.getConnection();
-
 		try {
 			PreparedStatement prep = conn.prepareStatement(sql);
 			for (int i = 1; i <= args.length; i++) {
+				System.out.println("prep " + i + " = " + args[i - 1]);
 				prep.setString(i, args[i - 1]);
 			}
 			ResultSet rs = prep.executeQuery();

@@ -36,7 +36,6 @@ public abstract class Handler implements HttpHandler {
 		} else if (msg == null) {
 			System.out.println("EMPTY MESSAGE_2");
 			user = createUser(reqHeaders);
-
 		} else {
 			System.out.println("RECEIVE MESSAGE: " + msg);
 			try {
@@ -60,6 +59,7 @@ public abstract class Handler implements HttpHandler {
 		String[] tmp1 = msg.split("&");
 		String uid = tmp1[0].split("=")[1];
 		String pwd = tmp1[1].split("=")[1];
+		
 		DBUsers dbUsers = new DBUsers(db);
 		return dbUsers.createUser(uid, pwd, Status.ONLINE);
 	}
@@ -67,22 +67,27 @@ public abstract class Handler implements HttpHandler {
 	private User createUser(Headers reqHeaders) throws NullPointerException {
 		System.out.println("CREATE USER");
 		User user = new User();
-		ArrayList<String> cookies = (ArrayList<String>) reqHeaders
-				.get("Cookie");
+		if (reqHeaders != null) {
+
+		} else {
+			System.out.println("REQHEADERS ARE NULL!");
+		}
+		System.out.println("GETTING Cookies");
+		List<String> cookies = reqHeaders.get("Cookie");
+		System.out.println("Got Cookies");
 		if (cookies != null) {
 			System.out.println("ArrayList<String> size = " + cookies.size());
 			String[] cookie = cookies.get(0).split(";");
 			System.out.println("RECEIVED " + cookie.length + " COOKIES");
 			if (cookie.length >= 2) {
-				String uid = cookie[0];
-				String pwd = cookie[1];
+				String uid = cookie[0].split("=")[1];
+				String pwd = cookie[1].split("=")[1];
 				user.setUid(uid);
 				user.setPwd(pwd);
 				user.setStatus(Status.ONLINE);
 				System.out.println("Created User " + user.getUid()
 						+ user.getPwd());
 			} else {
-
 			}
 		} else {
 			System.out.println("COOKIES ARE NULL");
