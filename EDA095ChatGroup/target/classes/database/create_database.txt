@@ -35,6 +35,9 @@ INSERT INTO Users (uid, pwd, status) VALUES ('Joel', 'j', 'OFFLINE');
 INSERT INTO Users (uid, pwd, status) VALUES ('Natali', 'n', 'OFFLINE');
 
 INSERT INTO Friends (uid_1, uid_2) VALUES ('Hampus', 'David');
+INSERT INTO Friends (uid_1, uid_2) VALUES ('Hampus', 'Natali');
+INSERT INTO Friends (uid_1, uid_2) VALUES ('Hampus', 'Joel');
 INSERT INTO Friends (uid_1, uid_2) VALUES ('David', 'Joel');
+INSERT INTO Friends (uid_1, uid_2) VALUES ('David', 'Natali');
 INSERT INTO Friends (uid_1, uid_2) VALUES ('Joel', 'Natali');
-INSERT INTO Friends (uid_1, uid_2) VALUES ('Natali', 'Hampus');
+

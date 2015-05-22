@@ -9,30 +9,29 @@ import org.violin.database.generated.Message;
 import org.violin.database.generated.User;
 import org.violin.database.generated.Users;
 
-
 public class Sender implements Runnable {
-	
+
 	Database db;
 	private AsyncHandlerManager manager;
 	private boolean running;
 	private Queue<Message> messageQueue;
-	
-	public Sender (Database db, AsyncHandlerManager manager) {
+
+	public Sender(Database db, AsyncHandlerManager manager) {
 		this.db = db;
 		this.manager = manager;
 		messageQueue = new LinkedList<Message>();
 	}
-		
+
 	@Override
-	 public void run() {
+	public void run() {
 		running = true;
-		while(running) {
+		while (running) {
 			Message msg = retrieveFromMessageQueue();
 			setDestination(msg);
 			distributeMessage(msg);
 		}
 	}
-	
+
 	public void terminate() {
 		running = false;
 		messageQueue.notifyAll();
@@ -40,34 +39,34 @@ public class Sender implements Runnable {
 
 	public void addToMessageQueue(Message msg) {
 		synchronized (messageQueue) {
-		messageQueue.add(msg);
-		messageQueue.notify();	
+			messageQueue.add(msg);
+			messageQueue.notify();
 		}
 	}
-	
+
 	private Message retrieveFromMessageQueue() {
 		synchronized (messageQueue) {
-		while (messageQueue.size() == 0 && running) {
-			try {
-				messageQueue.wait();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			while (messageQueue.size() == 0 && running) {
+				try {
+					messageQueue.wait();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				System.out.println("getMessage: " + running);
 			}
-			System.out.println("getMessage: " + running);
-		}
-		return messageQueue.poll();
+			return messageQueue.poll();
 		}
 	}
-	
+
 	private void setDestination(Message msg) {
 		User origin = msg.getOrigin();
 		DBUsers dbUsers = new DBUsers(db);
 		Users onlineFriends = dbUsers.getOnlineFriends(origin);
 		msg.setDestinations(onlineFriends);
 	}
-	
+
 	private void distributeMessage(Message msg) {
 		manager.distributeMessage(msg);
-	}	
+	}
 
 }

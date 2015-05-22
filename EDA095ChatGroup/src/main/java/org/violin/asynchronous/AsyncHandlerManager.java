@@ -57,7 +57,11 @@ public class AsyncHandlerManager {
 			System.out.println("AsynchHandler Distribute Message for context "
 					+ context);
 			AsyncHandler handler = contexts.get(context);
-			handler.receiveMessage(msg);
+			if (handler != null) {
+				handler.receiveMessage(msg);
+			} else {
+				System.out.println("No Handler Assigned For " + user.getUid());
+			}
 		}
 	}
 }

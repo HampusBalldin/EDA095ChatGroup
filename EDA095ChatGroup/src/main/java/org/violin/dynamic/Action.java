@@ -1,5 +1,9 @@
 package org.violin.dynamic;
 
-public interface Action {
+import org.violin.database.generated.Message;
 
+import com.sun.net.httpserver.HttpExchange;
+
+public interface Action {
+	void perform(Message msg, HttpExchange exchange);
 }
