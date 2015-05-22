@@ -103,6 +103,7 @@
         pull();
 
         function pull() {
+        
             var uid = HXML.getCookie("uid"), pwd = HXML.getCookie("pwd");
             var status = HXML.checkConnectionStatus();
             if (status === "TRUE") {
@@ -115,15 +116,22 @@
                 HXML.establishConnection();
             }
 
-            //    }
+  
             console.log("uid = " + uid + "pwd = " + pwd);
             var msg = HXML.createMessage(HXML.MESSAGE_TYPE.Request_Receive_Data,
                     HXML.createUser(uid, pwd, HXML.STATUS.ONLINE),
                     "",
                     HXML.createUser());
-            $.post("../asynch/" + getCookie("uid"), JSON.stringify(msg)).done(function (name) {
+                    
+            $.post("../asynch/" + getCookie("uid"), JSON.stringify(msg)).done(function (arg) {
+            
+               	var dom = HXML.parseXml(arg);
+                var message = dom.getElementsByTagName("data")[0];
+                var user = dom.getElementsByTagName("origin")[0]; 
+                var userID = user.getElementsByTagName("uid")[0].textContent;
                 var tempList = [];
-                tempList[0] = name;
+                
+                tempList[0] = "From " + userID + " : " + message; 
 
                 for (k = 1; k < 9; k++) {
                     tempList[k] = document.getElementById('nameTable').rows[k].cells[1].innerHTML;
