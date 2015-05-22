@@ -25,6 +25,12 @@
             return "";
         }
 
+        setUserName();
+        function setUserName(){
+            var user = document.getElementById("username");
+            user.innerHTML = "Logged in as: " + getCookie("uid");
+        }
+
         var tableId = 1;
         var uid = getCookie("uid");
 
@@ -153,9 +159,12 @@
 <body>
 
 <div id="page" class="pagecenter">
-    <h> VioLink</h>
-    <br id="loggedin_name">
-    </br>
+    <div id="logotype" class="logotype">
+        <img src="violink_logo.png" alt="VioLink" width="400">
+    </div>
+    <div id="logotype" class="logotype">
+        <h1> id="username" </h1>
+    </div>
     <div id="table-wrapper_1"
          style="float: left; background-color: #FEFEFE; margin: 20px; width: 300px; height:200px;">
         <table>
