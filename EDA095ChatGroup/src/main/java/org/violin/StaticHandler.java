@@ -20,7 +20,6 @@ public class StaticHandler extends Handler {
 
 	public void handle(HttpExchange exchange, String path) throws IOException {
 		System.out.println("StaticHandler" + path);
-		
 		boolean isAuthenticated = authenticate(exchange);
 		if(isAuthenticated){
 			System.out.println("OFFICIALLY AUTHENTICATED");

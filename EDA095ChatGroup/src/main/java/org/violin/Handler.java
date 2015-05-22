@@ -27,17 +27,15 @@ public abstract class Handler implements HttpHandler {
 
 	protected boolean authenticate(HttpExchange exchange) {
 		System.out.println("BEGIN AUTHENTICATE");
+		Headers reqHeaders = exchange.getRequestHeaders();
 		String msg = getExchangeContent(exchange);
 		User user = null;
 		if (msg.equals("")) {
-
 			System.out.println("EMPTY MESSAGE_1");
-			user = createUser(exchange);
-
+			user = createUser(reqHeaders);
 		} else if (msg == null) {
-
 			System.out.println("EMPTY MESSAGE_2");
-			user = createUser(exchange);
+			user = createUser(reqHeaders);
 
 		} else {
 			System.out.println("RECEIVE MESSAGE: " + msg);
@@ -66,24 +64,28 @@ public abstract class Handler implements HttpHandler {
 		return dbUsers.createUser(uid, pwd, Status.ONLINE);
 	}
 
-	private User createUser(HttpExchange exchange) throws NullPointerException {
+	private User createUser(Headers reqHeaders) throws NullPointerException {
 		System.out.println("CREATE USER");
 		User user = new User();
-		Headers headers = exchange.getResponseHeaders();
-		ArrayList<String> cookies = (ArrayList<String>) headers.get("Cookie");
-		System.out.println("ArrayList<String> size = " + cookies.size());
-		
-		String[] cookie = cookies.get(0).split(";");
-		System.out.println("RECEIVED " + cookie.length + " COOKIES");
-		if (cookie.length >= 2) {
-			String uid = cookie[0];
-			String pwd = cookie[1];
-			user.setUid(uid);
-			user.setPwd(pwd);
-			user.setStatus(Status.ONLINE);
-			System.out.println("Created User " + user.getUid() + user.getPwd());
-		} else {
+		ArrayList<String> cookies = (ArrayList<String>) reqHeaders
+				.get("Cookie");
+		if (cookies != null) {
+			System.out.println("ArrayList<String> size = " + cookies.size());
+			String[] cookie = cookies.get(0).split(";");
+			System.out.println("RECEIVED " + cookie.length + " COOKIES");
+			if (cookie.length >= 2) {
+				String uid = cookie[0];
+				String pwd = cookie[1];
+				user.setUid(uid);
+				user.setPwd(pwd);
+				user.setStatus(Status.ONLINE);
+				System.out.println("Created User " + user.getUid()
+						+ user.getPwd());
+			} else {
 
+			}
+		} else {
+			System.out.println("COOKIES ARE NULL");
 		}
 		return user;
 	}
