@@ -1,14 +1,12 @@
 package org.violin.dynamic;
 
 import java.util.HashMap;
-
 import org.violin.HTTPUtilities;
 import org.violin.Handler;
 import org.violin.asynchronous.AsyncHandlerManager;
 import org.violin.database.Database;
 import org.violin.database.generated.Message;
 import org.violin.database.generated.MessageType;
-
 import com.sun.net.httpserver.HttpExchange;
 
 public class DynamicHandler extends Handler {
