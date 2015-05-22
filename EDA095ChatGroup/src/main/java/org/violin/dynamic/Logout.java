@@ -1,7 +1,11 @@
 package org.violin.dynamic;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.OutputStream;
 
+import org.violin.HTTPUtilities;
 import org.violin.Handler;
 import org.violin.asynchronous.AsyncHandlerManager;
 import org.violin.database.DBUsers;
@@ -23,15 +27,39 @@ public class Logout implements Action {
 
 	@Override
 	public void perform(Message msg, HttpExchange exchange) {
-		User user = msg.getOrigin();
-		dbLogout(user); // loggar ut ur databaen
-		removeContext(user); // tar bort context
-		try {
-			exchange.sendResponseHeaders(200, -1);
-		} catch (IOException e) {
-			e.printStackTrace();
+
+			User user = msg.getOrigin();
+			dbLogout(user); // loggar ut ur databaen
+			removeContext(user); // tar bort context
+
+			try {
+			
+				StringBuilder contentBuilder = new StringBuilder();
+				try {
+					
+					String path = System.getProperty("user.dir") + "/src/main/resources/logout/logout.html";
+					BufferedReader in = new BufferedReader(new FileReader(path));
+					String str;
+					while ((str = in.readLine()) != null) {
+						contentBuilder.append(str);
+					}
+					in.close();
+				} catch (IOException e) {
+				}
+				
+					String response = contentBuilder.toString();
+					System.out.println("SENDING RESPONSE HEADERS AND BODY: ");
+					HTTPUtilities.printHeaders(exchange.getResponseHeaders());
+					exchange.sendResponseHeaders(200, response.length());
+					OutputStream os = exchange.getResponseBody();
+					os.write(response.getBytes());
+					os.close();		
+					
+					} catch (IOException e) {
+						
+				e.printStackTrace();
+			}
 		}
-	}
 
 	private void dbLogout(User user) {
 		DBUsers dbUsers = new DBUsers(db);
