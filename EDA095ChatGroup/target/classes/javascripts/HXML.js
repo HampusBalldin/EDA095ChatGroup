@@ -160,13 +160,10 @@ HXML.parseXml = function (xml) {
 
 HXML.establishConnection = function () {
     console.log("establishConnection");
-    var uid = $("#username").val();
-    var pwd = $("#password").val();
-    if(uid === undefined){
-        var usr = HXML.getUser();
-        uid = usr.uid;
-        pwd = usr.pwd;
-    }
+    var usr = HXML.getUser();
+    uid = usr.uid;
+    pwd = usr.pwd;
+    console.log("UID = " + uid);
     var usr = HXML.getUser();
     var msg =
         HXML.createMessage(

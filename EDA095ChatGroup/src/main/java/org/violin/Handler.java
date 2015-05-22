@@ -38,10 +38,10 @@ public abstract class Handler implements HttpHandler {
 			System.out.println("EMPTY MESSAGE_1");
 			user = createUser(reqHeaders);
 		} else {
-			System.out.println("RECEIVE MESSAGE: " + msg);
+			System.out.println("RECEIVE MESSAGE: [" + msg + "]");
 			try {
 				user = getUserData(msg);
-				setCookie(user, exchange);
+				setCookie(user, exchange.getResponseHeaders());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -62,7 +62,6 @@ public abstract class Handler implements HttpHandler {
 		String[] tmp1 = msg.split("&");
 		String uid = tmp1[0].split("=")[1];
 		String pwd = tmp1[1].split("=")[1];
-
 		DBUsers dbUsers = new DBUsers(db);
 		return dbUsers.createUser(uid, pwd, Status.ONLINE);
 	}
@@ -75,9 +74,9 @@ public abstract class Handler implements HttpHandler {
 		} else {
 			System.out.println("REQHEADERS ARE NULL!");
 		}
+		HTTPUtilities.printHeaders(reqHeaders);
 		System.out.println("GETTING Cookies");
 		List<String> cookies = reqHeaders.get("Cookie");
-		System.out.println("Got Cookies");
 		if (cookies != null) {
 			System.out.println("ArrayList<String> size = " + cookies.size());
 			String[] cookie = cookies.get(0).split(";");
@@ -128,8 +127,7 @@ public abstract class Handler implements HttpHandler {
 		return msg;
 	}
 
-	public void setCookie(User user, HttpExchange exchange) {
-		Headers headers = exchange.getResponseHeaders();
+	public void setCookie(User user, Headers headers) {
 		List<String> values = new ArrayList<String>();
 		Date dt = new Date();
 		Calendar c = Calendar.getInstance();
@@ -137,8 +135,13 @@ public abstract class Handler implements HttpHandler {
 		c.add(Calendar.DATE, 5);
 		dt = c.getTime();
 		System.out.println("; expires 	= " + dt.toString());
-		values.add("uid=" + user.getUid() + "; expires=" + dt.toString() + ";");
-		values.add("pwd=" + user.getPwd() + "; expires=" + dt.toString() + ";");
+		values.add("uid=" + user.getUid() + "; expires=" + dt.toString()
+				+ ";path=/;");
+		values.add("pwd=" + user.getPwd() + "; expires=" + dt.toString()
+				+ ";path=/;");
 		headers.put("Set-Cookie", values);
+		headers.set("Access-Control-Max-Age", "360");
+		headers.set("Access-Control-Allow-Credentials", "true");
+		headers.set("Access-Control-Allow-Headers", "Authorization");
 	}
 }

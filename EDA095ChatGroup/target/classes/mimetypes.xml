@@ -9,6 +9,11 @@
 		<file-ending>html</file-ending>
 		<content-type>text/html</content-type>
 	</mime>
+	
+		<mime>
+		<file-ending>png</file-ending>
+		<content-type>image/png</content-type>
+	</mime>
 
 	<mime>
 		<file-ending>css</file-ending>

@@ -33,7 +33,7 @@ public class Login implements Action {
 			System.out.println("AUTHENTICATED");
 			dbLogin(user); // loggar in i databasen
 			createContext(user); // skapar context
-			handler.setCookie(user, exchange); // sätter cookie
+			handler.setCookie(user, exchange.getResponseHeaders()); // sätter cookie
 			String response = "";
 			try {
 				System.out.println("SENDING RESPONSE HEADERS AND BODY: ");

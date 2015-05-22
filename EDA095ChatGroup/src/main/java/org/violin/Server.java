@@ -23,7 +23,6 @@ public class Server {
 
 		server.createContext("/", rootHandler);
 		server.createContext("/chat", new StaticHandler(db));
-		server.createContext("/chat/PageStyle.css", new StaticHandler(db));
 		server.createContext("/javascripts", new StaticHandler(db));
 		// server.createContext("/login", new StaticHandler());
 		server.createContext("/loginhandler", new DynamicHandler(db, contexts));

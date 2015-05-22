@@ -158,62 +158,66 @@
 </head>
 <body>
 
-<div id="page" class="pagecenter">
-    <div id="logotype" class="logotype">
-        <img src="/chat/violink_logo.png" alt="VioLink" width="400">
+<br id="page" class="pagecenter">
+
+<div id="logotype" class="logotype">
+    <img src="/chat/violink_logo.png" alt="VioLink" width="400">
+</div>
+
+<br id="loggedin_name"></br>
+
+<div id="username">
+</div>
+<div id="table-wrapper_1"
+     style="float: left; background-color: #FEFEFE; margin: 20px; width: 300px; height:200px;">
+    <table>
+        <thead>
+        <tr>
+            <td width="500" class="headline" style="background-color: transparent;">Users:</td>
+        </tr>
+        </thead>
+    </table>
+    <div id="table-scroll_1" style="overflow:auto; height:150px;">
+        <table style="width:80%" id="users" class="table table-striped uglytext">
+            <tbody style="height: 10px !important; overflow: scroll; " id="users_body">
+            </tbody>
+        </table>
     </div>
-    <div id="username">
-    </div>
-    <div id="table-wrapper_1"
-         style="float: left; background-color: #FEFEFE; margin: 20px; width: 300px; height:200px;">
+</div>
+<div id="div1" style="float: right; width: 1000px; height:300px; ">
+    <div id="table-wrapper_2"
+         style="float: top; background-color: #FEFEFE; margin: 20px; ">
         <table>
             <thead>
             <tr>
-                <td width="500" class="headline" style="background-color: transparent;">Users:</td>
+                <td width="500" class="headline" style="background-color: transparent;">Messages:</td>
             </tr>
             </thead>
         </table>
-        <div id="table-scroll_1" style="overflow:auto; height:150px;">
-            <table style="width:80%" id="users" class="table table-striped uglytext">
-                <tbody style="height: 10px !important; overflow: scroll; " id="users_body">
+        <div id="table-scroll_2" style="overflow:auto; height:250px;">
+            <table style="width:80%; " id="messages" class="table table-striped uglytext">
+                <tbody style="height: 10px !important; overflow: scroll; " id="messages_body">
                 </tbody>
             </table>
         </div>
     </div>
-    <div id="div1" style="float: right; width: 1000px; height:300px; ">
-        <div id="table-wrapper_2"
-             style="float: top; background-color: #FEFEFE; margin: 20px; ">
-            <table>
-                <thead>
-                <tr>
-                    <td width="500" class="headline" style="background-color: transparent;">Messages:</td>
-                </tr>
-                </thead>
-            </table>
-            <div id="table-scroll_2" style="overflow:auto; height:250px;">
-                <table style="width:80%; " id="messages" class="table table-striped uglytext">
-                    <tbody style="height: 10px !important; overflow: scroll; " id="messages_body">
-                    </tbody>
-                </table>
-            </div>
-        </div>
 
-        <div style="float: bottom; width:80%;">
-            <input type="text" class="form-control" name="note" id="note" value="" placeholder="Message"
-                   style="margin: 20px;">
-        </div>
-        <div id="buttons" style="float: bottom;">
-            <button id="Button_Message_Send">
-                Send
-            </button>
-            <button id="Button_Message_GetFriends">
-                Get Friends
-            </button>
-            <button id="Button_Message_Logout">
-                Logout
-            </button>
-        </div>
+    <div style="float: bottom; width:80%;">
+        <input type="text" class="form-control" name="note" id="note" value="" placeholder="Message"
+               style="margin: 20px;">
     </div>
+    <div id="buttons" style="float: bottom;">
+        <button id="Button_Message_Send">
+            Send
+        </button>
+        <button id="Button_Message_GetFriends">
+            Get Friends
+        </button>
+        <button id="Button_Message_Logout">
+            Logout
+        </button>
+    </div>
+</div>
 </div>
 <script>
     window.onkeyup = function (e) {
