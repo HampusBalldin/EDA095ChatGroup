@@ -82,16 +82,10 @@ public class DynamicHandler extends Handler {
 			dbLogin(user); // loggar in i databasen
 			createContext(user); // skapar context
 			setCookie(user, exchange); // sätter cookie
-			
-			String response = ""; 
 			try {
-				System.out.println("SENDING RESPONSE HEADERS AND BODY: ");
+				System.out.println("SENDING RESPONSE HEADERS: ");
 				HTTPUtilities.printHeaders(exchange.getResponseHeaders());
-				exchange.sendResponseHeaders(200, response.length());
-				OutputStream os = exchange.getResponseBody();
-				os.write(response.getBytes());
-				os.close();
-				
+				exchange.sendResponseHeaders(200, -1);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -109,10 +103,19 @@ public class DynamicHandler extends Handler {
 		User user = msg.getOrigin();
 		dbLogout(user); // loggar ut ur databaen
 		removeContext(user); // tar bort context
-		
+
 		try {
-			exchange.sendResponseHeaders(200, -1);
-		} catch (IOException e) {
+			
+				String response = "<html lang=\"en\"><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" /><title>Logout</title><meta name=\"author\" content=\"David\" /><!-- Date: 2015-05-22 --></head><body><h2>You have been logged out</h2><form method=\"post\" action=\"/login/index.html\"><p class=\"submit\"><input type=\"submit\" value=\"Return to login\">	</p></form></body></html>"; 
+				System.out.println("SENDING RESPONSE HEADERS AND BODY: ");
+				HTTPUtilities.printHeaders(exchange.getResponseHeaders());
+				exchange.sendResponseHeaders(200, response.length());
+				OutputStream os = exchange.getResponseBody();
+				os.write(response.getBytes());
+				os.close();		
+				
+				} catch (IOException e) {
+					
 			e.printStackTrace();
 		}
 	}

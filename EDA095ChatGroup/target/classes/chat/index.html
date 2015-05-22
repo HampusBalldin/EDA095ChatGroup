@@ -27,7 +27,6 @@
 
         var tableId = 1;
         var uid = getCookie("uid");
-        alert(uid);
 
         $("#Button_Message_Send").on('click', function () {
             send();
@@ -40,7 +39,11 @@
                             HXML.createUser(getCookie("uid"), getCookie("pwd"), HXML.STATUS.OFFLINE),
                             "",
                             HXML.createUser());
-            $.post("../logouthandler", JSON.stringify(msg)).done(function (name) {
+            $.post("../logouthandler", JSON.stringify(msg)).done(function (arg) {
+            	
+	var newDoc = document.open("text/html", "replace");
+	newDoc.write(arg);
+	newDoc.close();            	
             });
         });
 
