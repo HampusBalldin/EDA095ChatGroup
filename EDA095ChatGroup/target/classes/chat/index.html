@@ -2,7 +2,7 @@
 <script src="../javascripts/xml2json.js" type="text/javascript"></script>
 <script src="../javascripts/HXML.js" type="text/javascript"></script>
 <link rel="stylesheet" type="text/css" href="/chat/PageStyle.css">
-
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 <script>
     $(document).ready(function () {
         function setCookie(cname, cvalue, exdays) {
@@ -30,15 +30,7 @@
         alert(uid);
 
         $("#Button_Message_Send").on('click', function () {
-            var data = document.getElementById("note").value;
-            var uid = getCookie("uid");
-            displayMessage(uid, data);
-            var msg =
-                    HXML.createMessage(
-                            HXML.MESSAGE_TYPE.Request_Send_Data,
-                            HXML.createUser(uid, getCookie("pwd"), HXML.STATUS.ONLINE),
-                            data, HXML.createUser());
-            $.post("../asynch/" + uid, JSON.stringify(msg));
+            send();
         });
 
         $("#Button_Message_Logout").on('click', function () {
@@ -48,8 +40,7 @@
                             HXML.createUser(getCookie("uid"), getCookie("pwd"), HXML.STATUS.OFFLINE),
                             "",
                             HXML.createUser());
-            $.post("../logout", JSON.stringify(msg)).done(function (name) {
-
+            $.post("../logouthandler", JSON.stringify(msg)).done(function (name) {
             });
         });
 
@@ -74,7 +65,7 @@
                     pwd = userNodes[i].getElementsByTagName("pwd")[0].textContent;
                     status = userNodes[i].getElementsByTagName("status")[0].textContent;
                     console.log(uid + pwd + status);
-                    drawUser(uid);
+                    drawUser(uid, i);
                 }
             });
         });
@@ -113,15 +104,33 @@
         }
     });
 
+    function send() {
+        var data = document.getElementById("note").value;
+        if (data !== "") {
+            var uid = HXML.getCookie("uid");
+            displayMessage(uid, data);
+            var msg =
+                    HXML.createMessage(
+                            HXML.MESSAGE_TYPE.Request_Send_Data,
+                            HXML.createUser(uid, HXML.getCookie("pwd"), HXML.STATUS.ONLINE),
+                            data, HXML.createUser());
+            $.post("../asynch/" + uid, JSON.stringify(msg));
+            document.getElementById("note").value = "";
+        }
+    }
+
     function displayMessage(userID, message) {
         var tempList = [];
         var d = new Date();
-        var text = d.toLocaleTimeString() + " - " + userID + " says: " + message;
+        var text = d.toLocaleTimeString() + " - " + userID + ": " + message;
         drawMessage(userID, text);
     }
 
-    function drawUser(userId) {
+    function drawUser(userId, index) {
         var myTable = document.getElementById("users_body");
+        if (index === 0) {
+            myTable.innerHTML = "";
+        }
         var html = "<tr><td id=" + userId + ">" + userId + "</td></tr>";
         myTable.innerHTML += html;
     }
@@ -139,57 +148,70 @@
 <head>
 </head>
 <body>
-<div id="loggedin_name"></div>
-<div align="center">
-    <h2> Messenger </h2>
 
-    <div id="table-wrapper_1">
-        <div id="table-scroll_1">
-            <table style="width:80%" id="users" class="table table-striped">
-                <thead>
-                <tr>
-                    <td width="500">Users:</td>
-                </tr>
-                </thead>
+<div id="page" class="pagecenter">
+    <h> VioLink</h>
+    <br id="loggedin_name">
+    </br>
+    <div id="table-wrapper_1"
+         style="float: left; background-color: #FEFEFE; margin: 20px; width: 300px; height:200px;">
+        <table>
+            <thead>
+            <tr>
+                <td width="500" class="headline" style="background-color: transparent;">Users:</td>
+            </tr>
+            </thead>
+        </table>
+        <div id="table-scroll_1" style="overflow:auto; height:150px;">
+            <table style="width:80%" id="users" class="table table-striped uglytext">
                 <tbody style="height: 10px !important; overflow: scroll; " id="users_body">
                 </tbody>
             </table>
         </div>
     </div>
-    <div id="table-wrapper_2">
-        <div id="table-scroll_2">
-            <table style="width:80%" id="messages" class="table table-striped">
+    <div id="div1" style="float: right; width: 1000px; height:300px; ">
+        <div id="table-wrapper_2"
+             style="float: top; background-color: #FEFEFE; margin: 20px; ">
+            <table>
                 <thead>
                 <tr>
-                    <td width="500">Messages:</td>
+                    <td width="500" class="headline" style="background-color: transparent;">Messages:</td>
                 </tr>
                 </thead>
-                <tbody style="height: 10px !important; overflow: scroll; " id="messages_body">
-                </tbody>
             </table>
+            <div id="table-scroll_2" style="overflow:auto; height:250px;">
+                <table style="width:80%; " id="messages" class="table table-striped uglytext">
+                    <tbody style="height: 10px !important; overflow: scroll; " id="messages_body">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div style="float: bottom; width:80%;">
+            <input type="text" class="form-control" name="note" id="note" value="" placeholder="Message"
+                   style="margin: 20px;">
+        </div>
+        <div id="buttons" style="float: bottom;">
+            <button id="Button_Message_Send">
+                Send
+            </button>
+            <button id="Button_Message_GetFriends">
+                Get Friends
+            </button>
+            <button id="Button_Message_Logout">
+                Logout
+            </button>
         </div>
     </div>
-    <div id="div1">
-        <p>
-
-        </p>
-    </div>
-    <br>
-    Input new note:
-    <input type="text" name="note" id="note" value="" placeholder="new note">
-    <button id="Button_Message_Send">
-        send
-    </button>
-    <br>
-    <br>
-    <button id="Button_Message_GetFriends">
-        get friends
-    </button>
-    <button id="Button_Message_Logout">
-        logout
-    </button>
-
 </div>
+<script>
+    window.onkeyup = function (e) {
+        var key = e.keyCode ? e.keyCode : e.which;
+        if (key === 13) {
+            send();
+        }
+    }
+</script>
 </body>
 </html>
 </body>

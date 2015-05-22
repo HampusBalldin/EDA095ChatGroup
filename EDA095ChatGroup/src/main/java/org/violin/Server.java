@@ -37,7 +37,6 @@ public class Server {
 		server.createContext("/login/PageStyle.css", staticLoginHandler);
 		server.createContext("/chat/PageStyle.css", staticLoginHandler);
 		
-		
 		server.setExecutor(null);
 		server.start();
 		// server.createContext(arg0, arg1);
