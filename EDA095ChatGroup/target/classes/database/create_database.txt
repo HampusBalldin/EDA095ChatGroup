@@ -25,14 +25,14 @@ CREATE TABLE Friends (
 	PRIMARY KEY(uid_1, uid_2)
 );
 
-INSERT INTO Status (status) VALUES ('Online');
-INSERT INTO Status (status) VALUES ('Away');
-INSERT INTO Status (status) VALUES ('Offline');
+INSERT INTO Status (status) VALUES ('ONLINE');
+INSERT INTO Status (status) VALUES ('AWAY');
+INSERT INTO Status (status) VALUES ('OFFLINE');
 
-INSERT INTO Users (uid, pwd, status) VALUES ('Hampus', 'password1', 'Online');
-INSERT INTO Users (uid, pwd, status) VALUES ('David', 'password2', 'Away');
-INSERT INTO Users (uid, pwd, status) VALUES ('Joel', 'password3', 'Offline');
-INSERT INTO Users (uid, pwd, status) VALUES ('Natali', 'password4', 'Online');
+INSERT INTO Users (uid, pwd, status) VALUES ('Hampus', 'h', 'OFFLINE');
+INSERT INTO Users (uid, pwd, status) VALUES ('David', 'd', 'OFFLINE');
+INSERT INTO Users (uid, pwd, status) VALUES ('Joel', 'j', 'OFFLINE');
+INSERT INTO Users (uid, pwd, status) VALUES ('Natali', 'n', 'OFFLINE');
 
 INSERT INTO Friends (uid_1, uid_2) VALUES ('Hampus', 'David');
 INSERT INTO Friends (uid_1, uid_2) VALUES ('David', 'Joel');

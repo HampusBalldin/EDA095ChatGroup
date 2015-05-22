@@ -6,7 +6,7 @@ var HXML = HXML || {};
  * @param callback, the function being called when request successfully ACKed.
  */
 HXML.getXMLDoc = function (filename, callback) {
-	
+
     if (window.XMLHttpRequest) {
         xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
@@ -14,7 +14,7 @@ HXML.getXMLDoc = function (filename, callback) {
                 callback(xhttp);
             }
         };
-        
+
     } else { // code for IE5 and IE6
         xhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
@@ -50,16 +50,17 @@ HXML.MESSAGE_TYPE = {
     Request_Send_Data: "Request_Send_Data",
     Login: "Login",
     Logout: "Logout",
-    GetFriends: "GetFriends"
+    GetFriends: "GetFriends",
+    CheckConnectionStatus: "CheckConnectionStatus"
 }
 
 /**
  * @type {{Online: string, Offline: string, Away: string}}
  */
 HXML.STATUS = {
-    Online: "Online",
-    Offline: "Offline",
-    Away: "Away",
+    ONLINE: "ONLINE",
+    OFFLINE: "OFFLINE",
+    AWAY: "AWAY"
 }
 
 /**
@@ -91,22 +92,12 @@ HXML.createMessage = function (type, origin, data, destinations) {
  * @param includeName
  * @returns {*}
  */
-HXML.createUser = function (uid, pwd, status, includeName) {
-    if (includeName) {
-        return {
-            "User": {
-                "uid": uid,
-                "pwd": pwd,
-                "status": status
-            }
-        };
-    } else {
-        return {
-            "uid": uid,
-            "pwd": pwd,
-            "status": status
-        };
-    }
+HXML.createUser = function (uid, pwd, status) {
+    return {
+        "uid": uid,
+        "pwd": pwd,
+        "status": status
+    };
 }
 
 /**
@@ -131,7 +122,7 @@ HXML.createFriend = function (uid_1, uid_2) {
  */
 HXML.createUsers = function () {
     var json = {"User": []};
-    for(var i = 0; i < arguments.length; i++){
+    for (var i = 0; i < arguments.length; i++) {
         json.User[i] = arguments[i];
     }
     return json;
@@ -165,4 +156,74 @@ HXML.parseXml = function (xml) {
     else
         alert("cannot parse xml string!");
     return dom;
+}
+
+HXML.establishConnection = function () {
+    console.log("establishConnection");
+    var uid = $("#username").val();
+    var pwd = $("#password").val();
+    if(uid === undefined){
+        var usr = HXML.getUser();
+        uid = usr.uid;
+        pwd = usr.pwd;
+    }
+    var usr = HXML.getUser();
+    var msg =
+        HXML.createMessage(
+            HXML.MESSAGE_TYPE.Login,
+            HXML.createUser(uid, pwd, HXML.STATUS.ONLINE),
+            "Test Data",
+            HXML.createUsers());
+
+    $.post("../loginhandler", JSON.stringify(msg)).done(function (arg) {
+        alert("da");
+    });
+}
+
+/**
+ *
+ * @returns {string}
+ */
+HXML.checkConnectionStatus = function () {
+    console.log("checkConnectionStatus");
+    var usr = HXML.getUser();
+    var msg =
+        HXML.createMessage(
+            HXML.MESSAGE_TYPE.CheckConnectionStatus,
+            HXML.createUser(usr.uid, usr.pwd, HXML.STATUS.ONLINE),
+            "Test Data",
+            HXML.createUsers());
+
+    return $.ajax({
+        type: "POST",
+        url: "../dynamichandler",
+        data: JSON.stringify(msg),
+        async: false
+    }).responseText;
+}
+
+HXML.getUser = function () {
+    uid = HXML.getCookie("uid");
+    pwd = HXML.getCookie("pwd");
+    return {"uid": uid, "pwd": pwd};
+}
+
+HXML.setCookie = function (cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    var expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + "; " + expires;
+}
+
+HXML.getCookie = function (cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for (var s = 0; s < ca.length; s++) {
+        var c = ca[s];
+        while (c.charAt(0) == ' ')
+            c = c.substring(1);
+        if (c.indexOf(name) == 0)
+            return c.substring(name.length, c.length);
+    }
+    return "";
 }

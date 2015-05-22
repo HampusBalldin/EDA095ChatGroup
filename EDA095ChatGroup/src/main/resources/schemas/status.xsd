@@ -2,9 +2,9 @@
 	<xsd:element name="Status" type="Status" />
 	<xsd:simpleType name="Status">
 		<xsd:restriction base="xsd:string">
-			<xsd:enumeration value="Online" />
-			<xsd:enumeration value="Offline" />
-			<xsd:enumeration value="Away" />
+			<xsd:enumeration value="ONLINE" />
+			<xsd:enumeration value="OFFLINE" />
+			<xsd:enumeration value="AWAY" />
 		</xsd:restriction>
 	</xsd:simpleType>
 </xsd:schema>

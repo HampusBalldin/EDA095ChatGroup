@@ -14,6 +14,7 @@ public class AsyncHandler extends org.violin.Handler {
 	private Sender sender;
 
 	public AsyncHandler(Database db, AsyncHandlerManager manager) {
+		super(db);
 		receiver = new Receiver();
 		sender = new Sender(db, manager);
 	}
@@ -42,23 +43,24 @@ public class AsyncHandler extends org.violin.Handler {
 		Message msg = createMessage(exchangeContent);
 		System.out.println("Was Able to Parse Message :)!");
 		System.out.println(msg.getOrigin());
-//		if (authenticate(msg.getOrigin())) {
-			System.out.println("ASYNCHANDLER AUTHENTICATED");
-			System.out.println(msg.getType());
-			switch (msg.getType()) {
-			case REQUEST_RECEIVE_DATA:
-				System.out.println("RECEIVER");
-				receiver.addReplyExchange(exchange);
-				break;
-			case REQUEST_SEND_DATA:
-				System.out.println("SENDER");
-				exchange.sendResponseHeaders(200, 0);
-				sender.addToMessageQueue(msg);
-				break;
-			}
-//		}else{
-//			System.out.println("ASYNCHANDLER NOT AUTHENTICATED");
-//		}
+		// if (authenticate(msg.getOrigin())) {
+		System.out.println("ASYNCHANDLER AUTHENTICATED");
+		System.out.println(msg.getType());
+		switch (msg.getType()) {
+		case REQUEST_RECEIVE_DATA:
+			System.out.println("RECEIVER");
+			receiver.addReplyExchange(exchange);
+			break;
+		case REQUEST_SEND_DATA:
+			System.out.println("SENDER");
+			exchange.sendResponseHeaders(200, -1);
+			exchange.close();
+			sender.addToMessageQueue(msg);
+			break;
+		}
+		// }else{
+		// System.out.println("ASYNCHANDLER NOT AUTHENTICATED");
+		// }
 	}
 
 	public void receiveMessage(Message msg) {

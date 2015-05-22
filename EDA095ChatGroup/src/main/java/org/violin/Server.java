@@ -3,7 +3,6 @@ package org.violin;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
-import org.violin.asynchronous.AsyncHandler;
 import org.violin.asynchronous.AsyncHandlerManager;
 import org.violin.database.Database;
 import org.violin.dynamic.DynamicHandler;
@@ -23,12 +22,22 @@ public class Server {
 		AsyncHandlerManager contexts = new AsyncHandlerManager(db, server);
 
 		server.createContext("/", rootHandler);
-		server.createContext("/chat", new StaticHandler());
-		server.createContext("/javascripts", new StaticHandler());
-		server.createContext("/login", new StaticHandler());
+		server.createContext("/chat", new StaticHandler(db));
+		server.createContext("/javascripts", new StaticHandler(db));
+		// server.createContext("/login", new StaticHandler());
 		server.createContext("/loginhandler", new DynamicHandler(db, contexts));
 		server.createContext("/getfriends", new DynamicHandler(db, contexts));
 		server.createContext("/logouthandler", new DynamicHandler(db, contexts));
+		server.createContext("/dynamichandler", new DynamicHandler(db, contexts));
+		StaticLoginHandler staticLoginHandler = new StaticLoginHandler();
+		// Special Case Login
+		server.createContext("/javascripts/HXML.js", staticLoginHandler);
+		server.createContext("/javascripts/jquery.js", staticLoginHandler);
+		server.createContext("/login/index.html", staticLoginHandler);
+		server.createContext("/login/PageStyle.css", staticLoginHandler);
+		
+		
+		
 		server.setExecutor(null);
 		server.start();
 		// server.createContext(arg0, arg1);

@@ -2,8 +2,6 @@ package org.violin.dynamic;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
@@ -21,9 +19,7 @@ import org.violin.database.generated.Status;
 import org.violin.database.generated.User;
 import org.violin.database.generated.Users;
 
-import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
-import com.sun.xml.internal.txw2.Document;
 
 public class DynamicHandler extends Handler {
 	private Database db;
@@ -31,7 +27,7 @@ public class DynamicHandler extends Handler {
 	private DBUsers dbUsers;
 
 	public DynamicHandler(Database db, AsyncHandlerManager manager) {
-		super();
+		super(db);
 		this.db = db;
 		this.manager = manager;
 		dbUsers = new DBUsers(db);
@@ -40,72 +36,103 @@ public class DynamicHandler extends Handler {
 	@Override
 	public void handle(HttpExchange exchange) {
 		System.out.println("Dynamic Handler");
-
 		HTTPUtilities.printHeaders(exchange.getRequestHeaders());
 		String exchangeContent = getExchangeContent(exchange);
 		Message msg = createMessage(exchangeContent);
-		User user = msg.getOrigin();
-		switch (msg.getType()) {
-		case LOGIN:
-			System.out.println("Dynamic Handler LOGIN");
-
-			if (dbUsers.authenticate(user)) {
-				System.out.println("AUTHENTICATED");
-				dbLogin(user); // loggar in i databasen
-				createContext(user); // skapar context
-				setCookie(user, exchange); // sätter cookie
-				try {
-					System.out.println("SENDING RESPONSE HEADERS: ");
-					HTTPUtilities.printHeaders(exchange.getResponseHeaders());
-					exchange.sendResponseHeaders(200, -1);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			} else {
-				System.out.println("NOT AUTHENTICATED");
-				try {
-					exchange.sendResponseHeaders(401, -1);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+		if (msg != null) {
+			switch (msg.getType()) {
+			case LOGIN:
+				System.out.println("Dynamic Handler LOGIN");
+				handleLogin(msg, exchange);
+				break;
+			case LOGOUT:
+				System.out.println("Dynamic Handler LOGOUT");
+				handleLogout(msg, exchange);
+				break;
+			case GET_FRIENDS: // skicka users
+				System.out.println("Dynamic Handler GET FRIENDS");
+				handleGetFriends(msg, exchange);
+				break;
+			case CHECK_CONNECTION_STATUS:
+				handleCheckConnectionStatus(msg, exchange);
+				break;
 			}
-			break;
-		case LOGOUT:
-			System.out.println("Dynamic Handler LOGOUT");
-			dbLogout(user); // loggar ut ur databaen
-			removeContext(user); // tar bort context
+		} else {
+			System.out
+					.println("DynamicHandler: Message is null,  Cannot Handle!");
+		}
+		exchange.close();
+	}
+
+	private void handleCheckConnectionStatus(Message msg, HttpExchange exchange) {
+		try {
+			boolean connected = manager.hasBinding(msg.getOrigin());
+			exchange.sendResponseHeaders(200, 0);
+			String reply = connected ? "TRUE" : "FALSE";
+			exchange.getResponseBody().write(reply.getBytes());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void handleLogin(Message msg, HttpExchange exchange) {
+		User user = msg.getOrigin();
+		if (dbUsers.authenticate(user)) {
+			System.out.println("AUTHENTICATED");
+			dbLogin(user); // loggar in i databasen
+			createContext(user); // skapar context
+			setCookie(user, exchange); // sätter cookie
 			try {
+				System.out.println("SENDING RESPONSE HEADERS: ");
+				HTTPUtilities.printHeaders(exchange.getResponseHeaders());
 				exchange.sendResponseHeaders(200, -1);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			break;
-		case GET_FRIENDS: // skicka users
-			System.out.println("Dynamic Handler GET FRIENDS");
-			if (dbUsers.authenticate(user)) {
-				Users users = getFriends(user);
-				System.out.println("GOT THEM FRIENDS!");
-				try {
-					System.out.println("SENDING RESPONSE HEADERS!");
-					HTTPUtilities.printHeaders(exchange.getResponseHeaders());
-					exchange.sendResponseHeaders(200, 0);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				OutputStream os = exchange.getResponseBody();
-				sendFriends(os, users); // gör till xml-sträng, skickar strängen
-			} else {
-				System.out.println("NOT AUTHENTICATED");
-				try {
-					exchange.sendResponseHeaders(401, -1);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+		} else {
+			System.out.println("NOT AUTHENTICATED");
+			try {
+				exchange.sendResponseHeaders(401, -1);
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-			break;
 		}
+	}
 
-		exchange.close();
+	private void handleLogout(Message msg, HttpExchange exchange) {
+		User user = msg.getOrigin();
+		dbLogout(user); // loggar ut ur databaen
+		removeContext(user); // tar bort context
+		try {
+			exchange.sendResponseHeaders(200, -1);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void handleGetFriends(Message msg, HttpExchange exchange) {
+		User user = msg.getOrigin();
+		if (dbUsers.authenticate(user)) {
+			Users users = getFriends(user);
+			System.out.println("GOT THEM FRIENDS!");
+			try {
+				System.out.println("SENDING RESPONSE HEADERS!");
+				HTTPUtilities.printHeaders(exchange.getResponseHeaders());
+				exchange.sendResponseHeaders(200, 0);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			OutputStream os = exchange.getResponseBody();
+			sendFriends(os, users); // gör till xml-sträng, skickar
+									// strängen
+		} else {
+			System.out.println("NOT AUTHENTICATED");
+			try {
+				exchange.sendResponseHeaders(401, -1);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	private void dbLogin(User user) {
@@ -124,14 +151,6 @@ public class DynamicHandler extends Handler {
 
 	private void removeContext(User user) {
 		manager.removeContext(user);
-	}
-
-	private void setCookie(User user, HttpExchange exchange) {
-		Headers headers = exchange.getResponseHeaders();
-		List<String> values = new ArrayList<String>();
-		values.add("uid=" + user.getUid());
-		values.add("pwd=" + user.getPwd());
-		headers.put("Set-Cookie", values);
 	}
 
 	private Users getFriends(User user) {

@@ -42,13 +42,22 @@ public class AsyncHandlerManager {
 		}
 	}
 
+	public boolean hasBinding(User user) {
+		synchronized (contexts) {
+			String context = "/asynch/" + user.getUid();
+			return contexts.containsKey(context);
+		}
+	}
+
 	public void distributeMessage(Message msg) {
 		ArrayList<User> users = (ArrayList<User>) msg.getDestinations()
 				.getUser();
 		for (User user : users) {
-			AsyncHandler handler = contexts.get(user.getUid());
+			String context = "/asynch/" + user.getUid();
+			System.out.println("AsynchHandler Distribute Message for context "
+					+ context);
+			AsyncHandler handler = contexts.get(context);
 			handler.receiveMessage(msg);
 		}
 	}
-
 }
