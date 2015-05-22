@@ -4,7 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+
 import org.json.JSONObject;
 import org.json.XML;
 import org.violin.database.DBUsers;
@@ -14,6 +17,7 @@ import org.violin.database.generated.Message;
 import org.violin.database.generated.ObjectFactory;
 import org.violin.database.generated.Status;
 import org.violin.database.generated.User;
+
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -33,17 +37,16 @@ public abstract class Handler implements HttpHandler {
 		if (msg.equals("")) {
 			System.out.println("EMPTY MESSAGE_1");
 			user = createUser(reqHeaders);
-		} else if (msg == null) {
-			System.out.println("EMPTY MESSAGE_2");
-			user = createUser(reqHeaders);
 		} else {
 			System.out.println("RECEIVE MESSAGE: " + msg);
 			try {
 				user = getUserData(msg);
+				setCookie(user, exchange);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
+
 		boolean authenticated = false;
 		try {
 			DBUsers dbUsers = new DBUsers(db);
@@ -59,7 +62,7 @@ public abstract class Handler implements HttpHandler {
 		String[] tmp1 = msg.split("&");
 		String uid = tmp1[0].split("=")[1];
 		String pwd = tmp1[1].split("=")[1];
-		
+
 		DBUsers dbUsers = new DBUsers(db);
 		return dbUsers.createUser(uid, pwd, Status.ONLINE);
 	}
@@ -128,8 +131,14 @@ public abstract class Handler implements HttpHandler {
 	public void setCookie(User user, HttpExchange exchange) {
 		Headers headers = exchange.getResponseHeaders();
 		List<String> values = new ArrayList<String>();
-		values.add("uid=" + user.getUid());
-		values.add("pwd=" + user.getPwd());
+		Date dt = new Date();
+		Calendar c = Calendar.getInstance();
+		c.setTime(dt);
+		c.add(Calendar.DATE, 5);
+		dt = c.getTime();
+		System.out.println("; expires 	= " + dt.toString());
+		values.add("uid=" + user.getUid() + "; expires=" + dt.toString() + ";");
+		values.add("pwd=" + user.getPwd() + "; expires=" + dt.toString() + ";");
 		headers.put("Set-Cookie", values);
 	}
 }

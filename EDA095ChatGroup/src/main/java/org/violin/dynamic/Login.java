@@ -34,7 +34,6 @@ public class Login implements Action {
 			dbLogin(user); // loggar in i databasen
 			createContext(user); // skapar context
 			handler.setCookie(user, exchange); // sätter cookie
-
 			String response = "";
 			try {
 				System.out.println("SENDING RESPONSE HEADERS AND BODY: ");

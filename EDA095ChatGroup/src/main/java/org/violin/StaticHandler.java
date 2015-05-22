@@ -45,9 +45,9 @@ public class StaticHandler extends Handler {
 			in.close();
 		} else {
 			System.out.println("Not Authenticated!");
-			Headers response = exchange.getResponseHeaders();
-			response.set("Location", "127.0.0.1:8080/chat/index.html");
-			exchange.sendResponseHeaders(301, response.size());
+			// Headers response = exchange.getResponseHeaders();
+			// response.set("Location", "127.0.0.1:8080/chat/index.html");
+			// exchange.sendResponseHeaders(301, response.size());
 		}
 		exchange.close();
 	}
