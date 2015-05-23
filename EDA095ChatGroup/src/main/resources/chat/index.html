@@ -33,7 +33,7 @@
         var uid = getCookie("uid");
 
         $("#Button_Message_Send").on('click', function () {
-            send();
+            HXML.beginSend();
         });
 
         $("#Button_Message_Logout").on('click', function () {
@@ -42,7 +42,7 @@
                             HXML.MESSAGE_TYPE.Logout,
                             HXML.createUser(getCookie("uid"), getCookie("pwd"), HXML.STATUS.OFFLINE),
                             "",
-                            HXML.createUser());
+                            HXML.createUsers());
             $.post("../logouthandler", JSON.stringify(msg)).done(function (arg) {
 
                 var newDoc = document.open("text/html", "replace");
@@ -57,7 +57,7 @@
             var msg = HXML.createMessage(HXML.MESSAGE_TYPE.GetFriends,
                     HXML.createUser(getCookie("uid"), getCookie("pwd"), HXML.STATUS.ONLINE),
                     "",
-                    HXML.createUser());
+                    HXML.createUsers());
 
             $.post("../getfriends", JSON.stringify(msg)).done(function (arg) {
                 var dom = HXML.parseXml(arg);
@@ -76,55 +76,8 @@
                 }
             });
         });
-
-        pull();
-
-        function pull() {
-            var uid = HXML.getCookie("uid"), pwd = HXML.getCookie("pwd");
-            var status = HXML.checkConnectionStatus();
-            if (status === "TRUE") {
-                console.log("TRUE");
-                console.log("Connection Status = " + status);
-            } else if (status === "FALSE") {
-                console.log("FALSE");
-                console.log("Connection Status = " + status);
-                console.log("Try establish Connection again");
-                HXML.establishConnection();
-            }
-
-
-            console.log("uid = " + uid + "pwd = " + pwd);
-            var msg = HXML.createMessage(HXML.MESSAGE_TYPE.Request_Receive_Data,
-                    HXML.createUser(uid, pwd, HXML.STATUS.ONLINE),
-                    "",
-                    HXML.createUser());
-
-            $.post("../asynch/" + getCookie("uid"), JSON.stringify(msg)).done(function (arg) {
-                var dom = HXML.parseXml(arg);
-                console.log(dom);
-                var message = dom.getElementsByTagName("data")[0].textContent;
-                var user = dom.getElementsByTagName("origin")[0];
-                var userID = user.getElementsByTagName("uid")[0].textContent;
-                displayMessage(userID, message);
-                pull();
-            });
-        }
+        HXML.beginPull();
     });
-
-    function send() {
-        var data = document.getElementById("note").value;
-        if (data !== "") {
-            var uid = HXML.getCookie("uid");
-            displayMessage(uid, data);
-            var msg =
-                    HXML.createMessage(
-                            HXML.MESSAGE_TYPE.Request_Send_Data,
-                            HXML.createUser(uid, HXML.getCookie("pwd"), HXML.STATUS.ONLINE),
-                            data, HXML.createUser());
-            $.post("../asynch/" + uid, JSON.stringify(msg));
-            document.getElementById("note").value = "";
-        }
-    }
 
     function displayMessage(userID, message) {
         var tempList = [];
@@ -223,7 +176,7 @@
     window.onkeyup = function (e) {
         var key = e.keyCode ? e.keyCode : e.which;
         if (key === 13) {
-            send();
+            HXML.beginSend();
         }
     }
 </script>

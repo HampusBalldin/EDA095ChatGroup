@@ -1,10 +1,8 @@
 org\violin\database\DBUsers.class
 org\violin\database\DBFriends.class
-org\violin\JavascriptHandler.class
 org\violin\asynchronous\Receiver.class
 org\violin\database\Database.class
 org\violin\RootHandler.class
-org\violin\ChatpageStaticHandler.class
 org\violin\HTTPUtilities$MimeResolver.class
 org\violin\database\generated\Friend.class
 org\violin\database\generated\Status.class
@@ -16,7 +14,6 @@ org\violin\database\generated\ObjectFactory.class
 org\violin\StaticHandler.class
 org\violin\asynchronous\AsyncHandler$1.class
 org\violin\database\generated\Friends.class
-org\violin\LoginHandler.class
 org\violin\database\generated\Message.class
 org\violin\database\generated\User.class
 org\violin\database\generated\Users.class

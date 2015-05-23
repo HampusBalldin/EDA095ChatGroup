@@ -10,14 +10,14 @@ h2 {
     border-radius: 5px;
     color: #ffffff;
     font-size: 25px;
-    background: #6bd1ff;
+    background: #6bd1ea;
     padding: 10px 20px 10px 10px;
     text-decoration: none;
     border: none;
 }
 
 #BT_Login:hover, button:hover, #File_Button:hover {
-    background: #6bd1ff;
+    background: #6bd1ea;
 }
 
 .content {
@@ -47,7 +47,7 @@ h2 {
     font-family: Arial;
     color: #ffffff;
     font-size: 25px;
-    background: #6bd1ff;
+    background: #6bd1ea;
     padding: 5px 15px 5px 15px;
     text-decoration: none;
     border: none;
@@ -58,7 +58,7 @@ td {
     -moz-border-radius: 5;
     border-radius: 5px;
     font-family: Arial;
-    color: #6bd1ff;;
+    color: #6bd1ea;;
     font-size: 14px;
     background: #ffffff;
     padding: 5px 15px 5px 15px;
@@ -111,7 +111,7 @@ td {
 }
 
 h {
-    color: #6bd1ff;
+    color: #6bd1ea;
     font-size: 100px;
     font-family: Lucida Console;
 }

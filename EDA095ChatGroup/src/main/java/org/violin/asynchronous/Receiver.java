@@ -24,55 +24,53 @@ public class Receiver implements Runnable {
 	public void run() {
 		running = true;
 		while (running) {
-			
 
-				
 			HttpExchange exchange = getReplyExchange();
 			OutputStream os = exchange.getResponseBody();
 			Message msg = retrieveFromReplyQueue();
-			
-			if(msg != null){
 
-			try {
-				exchange.sendResponseHeaders(200, 0);
-			} catch (IOException e) {
-				e.printStackTrace();
+			if (msg != null) {
+				try {
+					exchange.sendResponseHeaders(200, 0);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				System.out.println("RECEIVER REPLY: to "
+						+ exchange.getRequestURI() + "with message "
+						+ msg.getData());
+				sendToClient(os, msg);
+				exchange.close();
 			}
-			System.out.println("RECEIVER REPLY: to " + exchange.getRequestURI()
-					+ "with message " + msg.getData());
-			sendToClient(os, msg);
-			exchange.close();
-			}
-		}		
+		}
 	}
 
 	public void terminate() {
-		
-		running = false; 
-		
+
+		running = false;
+
 		synchronized (messageQueue) {
-			
-			try{
-				
+
+			try {
+
 				messageQueue.notifyAll();
-				
-			}catch(Exception e){
-				
+
+			} catch (Exception e) {
+
 				e.printStackTrace();
 			}
 		}
 		synchronized (exchanges) {
-			
-			try{
+
+			try {
 
 				exchanges.notifyAll();
 
-			}catch(Exception e){
-				
+			} catch (Exception e) {
+
 				e.printStackTrace();
 			}
 		}
-	
+
 	}
 
 	public void addToReplyQueue(Message msg) {

@@ -158,7 +158,7 @@ HXML.parseXml = function (xml) {
     return dom;
 }
 
-HXML.establishConnection = function () {
+HXML.establishConnection = function (onSuccess) {
     console.log("establishConnection");
     var usr = HXML.getUser();
     uid = usr.uid;
@@ -173,14 +173,15 @@ HXML.establishConnection = function () {
             HXML.createUsers());
 
     $.post("../loginhandler", JSON.stringify(msg)).done(function (arg) {
-});
+    });
+    HXML.checkConnectionStatus(onSuccess);
 }
 
 /**
  *
  * @returns {string}
  */
-HXML.checkConnectionStatus = function () {
+HXML.checkConnectionStatus = function (onSuccess) {
     console.log("checkConnectionStatus");
     var usr = HXML.getUser();
     var msg =
@@ -189,13 +190,17 @@ HXML.checkConnectionStatus = function () {
             HXML.createUser(usr.uid, usr.pwd, HXML.STATUS.ONLINE),
             "Test Data",
             HXML.createUsers());
-
-    return $.ajax({
-        type: "POST",
-        url: "../dynamichandler",
-        data: JSON.stringify(msg),
-        async: false
-    }).responseText;
+    HXML.postXMLDoc("../dynamichandler", function (xhttp) {
+        if (xhttp.responseText === "TRUE") {
+            console.log("Success!");
+            onSuccess();
+        } else if (xhttp.responseText === "FALSE") {
+            console.log("establishConnection!");
+            HXML.establishConnection(onSuccess);
+        } else {
+            console.log("BAD RESULT at checkConnectionStatus");
+        }
+    }, JSON.stringify(msg));
 }
 
 HXML.getUser = function () {
@@ -222,4 +227,46 @@ HXML.getCookie = function (cname) {
             return c.substring(name.length, c.length);
     }
     return "";
+}
+HXML.pull = function () {
+    console.log("PULL!")
+    var uid = HXML.getCookie("uid"), pwd = HXML.getCookie("pwd");
+    var msg = HXML.createMessage(HXML.MESSAGE_TYPE.Request_Receive_Data,
+        HXML.createUser(uid, pwd, HXML.STATUS.ONLINE),
+        "",
+        HXML.createUsers());
+
+    $.post("../asynch/" + HXML.getCookie("uid"), JSON.stringify(msg)).done(function (arg) {
+        var dom = HXML.parseXml(arg);
+        console.log(dom);
+        var message = dom.getElementsByTagName("data")[0].textContent;
+        var user = dom.getElementsByTagName("origin")[0];
+        var userID = user.getElementsByTagName("uid")[0].textContent;
+        displayMessage(userID, message);
+        HXML.beginPull();
+    });
+}
+HXML.send = function () {
+    console.log("Send");
+    var data = document.getElementById("note").value;
+    if (data !== "") {
+        var uid = HXML.getCookie("uid"), pwd = HXML.getCookie("pwd");
+        displayMessage(uid, data);
+        var msg =
+            HXML.createMessage(
+                HXML.MESSAGE_TYPE.Request_Send_Data,
+                HXML.createUser(uid, pwd, HXML.STATUS.ONLINE),
+                data, HXML.createUsers());
+        $.post("../asynch/" + uid, JSON.stringify(msg));
+        document.getElementById("note").value = "";
+    }
+}
+
+HXML.beginSend = function() {
+    console.log("beginSend");
+    HXML.checkConnectionStatus(HXML.send);
+}
+HXML.beginPull = function() {
+    console.log("beginPull");
+    HXML.checkConnectionStatus(HXML.pull);
 }
