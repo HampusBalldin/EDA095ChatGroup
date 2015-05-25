@@ -19,7 +19,7 @@ public class DynamicHandler extends Handler {
 
 	public DynamicHandler(Database db, AsyncHandlerManager manager) {
 		super(db);
-		login = new Login(db, this, manager);
+		login = new Login(db, manager);
 		logout = new Logout(db, manager);
 		checkConnection = new CheckConnection(manager);
 		getFriends = new GetFriends(db);

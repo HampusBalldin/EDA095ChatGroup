@@ -158,7 +158,7 @@ HXML.parseXml = function (xml) {
     return dom;
 }
 
-HXML.establishConnection = function () {
+HXML.establishConnection = function (onSuccess) {
     console.log("establishConnection");
     var usr = HXML.getUser();
     uid = usr.uid;
@@ -174,6 +174,7 @@ HXML.establishConnection = function () {
 
     $.post("../loginhandler", JSON.stringify(msg)).done(function (arg) {
     });
+    HXML.checkConnectionStatus(onSuccess);
 }
 
 /**
@@ -195,7 +196,7 @@ HXML.checkConnectionStatus = function (onSuccess) {
             onSuccess();
         } else if (xhttp.responseText === "FALSE") {
             console.log("establishConnection!");
-            HXML.establishConnection();
+            HXML.establishConnection(onSuccess);
         } else {
             console.log("BAD RESULT at checkConnectionStatus");
         }

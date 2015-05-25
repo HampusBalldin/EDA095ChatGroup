@@ -17,11 +17,14 @@ public class DBUsers extends DBObject<Users> {
 	}
 
 	public boolean authenticate(User user) {
+		if (user == null) {
+			return false;
+		}
 		String sql = "SELECT * FROM Users WHERE uid = ? AND pwd = ?";
-		System.out.println("Authenticateing: " + user.getUid() + user.getPwd() + " against database");
+		System.out.println("Authenticateing: " + user.getUid() + user.getPwd()
+				+ " against database");
 		Users users = query(sql, user.getUid(), user.getPwd());
-		System.out.println(users.getUser().size());
-		return users.getUser().size() != 0;
+		return users == null ? false : users.getUser().size() != 0;
 	}
 
 	public User createUser(String uid, String pwd, Status status) {

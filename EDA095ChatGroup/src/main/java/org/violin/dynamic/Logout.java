@@ -5,8 +5,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import org.violin.Cookies;
 import org.violin.HTTPUtilities;
-import org.violin.Handler;
 import org.violin.asynchronous.AsyncHandlerManager;
 import org.violin.database.DBUsers;
 import org.violin.database.Database;
@@ -19,6 +19,7 @@ import com.sun.net.httpserver.HttpExchange;
 public class Logout implements Action {
 	private Database db;
 	private AsyncHandlerManager manager;
+	private Cookies cookieHandler = new Cookies();
 
 	public Logout(Database db, AsyncHandlerManager manager) {
 		this.db = db;
@@ -30,10 +31,11 @@ public class Logout implements Action {
 		User user = msg.getOrigin();
 		dbLogout(user); // loggar ut ur databaen
 		removeContext(user); // tar bort context
+		cookieHandler.deleteCookies(user,
+				exchange.getResponseHeaders());
 		try {
 			StringBuilder contentBuilder = new StringBuilder();
 			try {
-
 				String path = System.getProperty("user.dir")
 						+ "/src/main/resources/logout/logout.html";
 				BufferedReader in = new BufferedReader(new FileReader(path));
@@ -43,15 +45,13 @@ public class Logout implements Action {
 				}
 				in.close();
 			} catch (IOException e) {
+				e.printStackTrace();
 			}
 			String response = contentBuilder.toString();
-			System.out.println("SENDING RESPONSE HEADERS AND BODY: ");
-			HTTPUtilities.printHeaders(exchange.getResponseHeaders());
 			exchange.sendResponseHeaders(200, response.length());
 			OutputStream os = exchange.getResponseBody();
 			os.write(response.getBytes());
 			os.close();
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

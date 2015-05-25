@@ -8,7 +8,6 @@ import javax.xml.bind.JAXBException;
 import javax.xml.namespace.QName;
 
 import org.violin.HTTPUtilities;
-import org.violin.asynchronous.AsyncHandlerManager;
 import org.violin.database.DBUsers;
 import org.violin.database.Database;
 import org.violin.database.XMLUtilities;

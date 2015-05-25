@@ -3,8 +3,8 @@ package org.violin.dynamic;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import org.violin.Cookies;
 import org.violin.HTTPUtilities;
-import org.violin.Handler;
 import org.violin.asynchronous.AsyncHandlerManager;
 import org.violin.database.DBUsers;
 import org.violin.database.Database;
@@ -15,14 +15,14 @@ import org.violin.database.generated.User;
 import com.sun.net.httpserver.HttpExchange;
 
 public class Login implements Action {
-	private Handler handler;
 	private Database db;
 	private AsyncHandlerManager manager;
+	private Cookies cookies = new Cookies();
 
-	public Login(Database db, Handler handler, AsyncHandlerManager manager) {
-		this.handler = handler;
+	public Login(Database db, AsyncHandlerManager manager) {
 		this.db = db;
 		this.manager = manager;
+
 	}
 
 	@Override
@@ -33,7 +33,8 @@ public class Login implements Action {
 			System.out.println("AUTHENTICATED");
 			dbLogin(user); // loggar in i databasen
 			createContext(user); // skapar context
-			handler.setCookie(user, exchange.getResponseHeaders()); // sätter cookie
+			cookies.setCookie(user, exchange.getResponseHeaders()); // sätter
+																	// cookie
 			String response = "";
 			try {
 				System.out.println("SENDING RESPONSE HEADERS AND BODY: ");

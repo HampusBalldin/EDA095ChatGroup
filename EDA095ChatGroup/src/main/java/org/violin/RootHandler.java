@@ -2,7 +2,6 @@ package org.violin;
 
 import java.io.IOException;
 import java.net.Inet4Address;
-import java.net.InetAddress;
 
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
