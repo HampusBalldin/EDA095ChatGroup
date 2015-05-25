@@ -44,11 +44,7 @@ public abstract class Handler implements HttpHandler {
 	private User extractUserFromCookies(Headers reqHeaders, DBUsers dbUsers) {
 		System.out.println("EMPTY MESSAGE");
 		User user = null;
-		try {
-			user = cookieHandler.extractUserFromCookies(reqHeaders, dbUsers);
-		} catch (NullPointerException e) {
-
-		}
+		user = cookieHandler.extractUserFromCookies(reqHeaders, dbUsers);
 		return user;
 	}
 

@@ -24,19 +24,15 @@ public class Server {
 		server.createContext("/", rootHandler);
 		server.createContext("/chat", new StaticHandler(db));
 		server.createContext("/javascripts", new StaticHandler(db));
-		// server.createContext("/login", new StaticHandler());
 		server.createContext("/loginhandler", new DynamicHandler(db, contexts));
 		server.createContext("/getfriends", new DynamicHandler(db, contexts));
 		server.createContext("/logouthandler", new DynamicHandler(db, contexts));
 		server.createContext("/dynamichandler",
 				new DynamicHandler(db, contexts));
-		StaticLoginHandler staticLoginHandler = new StaticLoginHandler();
-		
-		// Special Case Login
-		server.createContext("/login/", staticLoginHandler);
 
+		StaticLoginHandler staticLoginHandler = new StaticLoginHandler();
+		server.createContext("/login/", staticLoginHandler);
 		server.setExecutor(null);
 		server.start();
-		// server.createContext(arg0, arg1);
 	}
 }

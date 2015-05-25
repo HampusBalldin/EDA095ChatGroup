@@ -5,7 +5,6 @@
 // Generated on: 2015.05.22 at 02:08:47 AM CEST 
 //
 
-
 package org.violin.database.generated;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -14,11 +13,13 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for User complex type.
+ * <p>
+ * Java class for User complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="User">
@@ -37,91 +38,78 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "User", propOrder = {
-    "uid",
-    "pwd",
-    "status"
-})
+@XmlType(name = "User", propOrder = { "uid", "pwd", "status" })
 public class User {
 
-    @XmlElement(required = true)
-    protected String uid;
-    @XmlElement(required = true)
-    protected String pwd;
-    @XmlElement(required = true)
-    @XmlSchemaType(name = "string")
-    protected Status status;
+	@XmlElement(required = true)
+	protected String uid;
+	@XmlElement(required = true)
+	protected String pwd;
+	@XmlElement(required = true)
+	@XmlSchemaType(name = "string")
+	protected Status status;
 
-    /**
-     * Gets the value of the uid property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getUid() {
-        return uid;
-    }
+	/**
+	 * Gets the value of the uid property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getUid() {
+		return uid;
+	}
 
-    /**
-     * Sets the value of the uid property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setUid(String value) {
-        this.uid = value;
-    }
+	/**
+	 * Sets the value of the uid property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setUid(String value) {
+		this.uid = value;
+	}
 
-    /**
-     * Gets the value of the pwd property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getPwd() {
-        return pwd;
-    }
+	/**
+	 * Gets the value of the pwd property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getPwd() {
+		return pwd;
+	}
 
-    /**
-     * Sets the value of the pwd property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setPwd(String value) {
-        this.pwd = value;
-    }
+	/**
+	 * Sets the value of the pwd property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setPwd(String value) {
+		this.pwd = value;
+	}
 
-    /**
-     * Gets the value of the status property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Status }
-     *     
-     */
-    public Status getStatus() {
-        return status;
-    }
+	/**
+	 * Gets the value of the status property.
+	 * 
+	 * @return possible object is {@link Status }
+	 * 
+	 */
+	public Status getStatus() {
+		return status;
+	}
 
-    /**
-     * Sets the value of the status property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Status }
-     *     
-     */
-    public void setStatus(Status value) {
-        this.status = value;
-    }
+	/**
+	 * Sets the value of the status property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link Status }
+	 * 
+	 */
+	public void setStatus(Status value) {
+		this.status = value;
+	}
 
 }

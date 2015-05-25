@@ -2,11 +2,9 @@ package org.violin.dynamic;
 
 import java.io.IOException;
 import java.io.OutputStream;
-
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.namespace.QName;
-
 import org.violin.HTTPUtilities;
 import org.violin.database.DBUsers;
 import org.violin.database.Database;

@@ -4,9 +4,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-
 import org.violin.HTTPUtilities.MimeResolver;
-
 import com.sun.net.httpserver.HttpExchange;
 
 public class StaticLoginHandler implements com.sun.net.httpserver.HttpHandler {

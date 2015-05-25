@@ -33,6 +33,7 @@ INSERT INTO Users (uid, pwd, status) VALUES ('Hampus', 'h', 'OFFLINE');
 INSERT INTO Users (uid, pwd, status) VALUES ('David', 'd', 'OFFLINE');
 INSERT INTO Users (uid, pwd, status) VALUES ('Joel', 'j', 'OFFLINE');
 INSERT INTO Users (uid, pwd, status) VALUES ('Natali', 'n', 'OFFLINE');
+INSERT INTO Users (uid, pwd, status) VALUES ('Test', 't', 'OFFLINE');
 
 INSERT INTO Friends (uid_1, uid_2) VALUES ('Hampus', 'David');
 INSERT INTO Friends (uid_1, uid_2) VALUES ('Hampus', 'Natali');
@@ -41,3 +42,8 @@ INSERT INTO Friends (uid_1, uid_2) VALUES ('David', 'Joel');
 INSERT INTO Friends (uid_1, uid_2) VALUES ('David', 'Natali');
 INSERT INTO Friends (uid_1, uid_2) VALUES ('Joel', 'Natali');
 
+
+INSERT INTO Friends (uid_1, uid_2) VALUES ('Test', 'Natali');
+INSERT INTO Friends (uid_1, uid_2) VALUES ('Test', 'David');
+INSERT INTO Friends (uid_1, uid_2) VALUES ('Test', 'Joel');
+INSERT INTO Friends (uid_1, uid_2) VALUES ('Test', 'Hampus');

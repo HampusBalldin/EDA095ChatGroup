@@ -9,8 +9,8 @@
 		<file-ending>html</file-ending>
 		<content-type>text/html</content-type>
 	</mime>
-	
-		<mime>
+
+	<mime>
 		<file-ending>png</file-ending>
 		<content-type>image/png</content-type>
 	</mime>
@@ -24,5 +24,11 @@
 		<file-ending>xml</file-ending>
 		<content-type>application/xml</content-type>
 	</mime>
+	
+	<mime>
+		<file-ending>ico</file-ending>
+		<content-type>image/x-icon</content-type>
+	</mime>
+
 
 </mimes>

@@ -67,17 +67,17 @@ public class Cookies {
 	 * @return
 	 * @throws NullPointerException
 	 */
-	public User extractUserFromCookies(Headers reqHeaders, DBUsers dbUsers)
-			throws NullPointerException {
-		List<String> tmp= reqHeaders.get("Cookie");
+	public User extractUserFromCookies(Headers reqHeaders, DBUsers dbUsers) {
+		List<String> tmp = reqHeaders.get("Cookie");
 		String cookies = "";
-		if(tmp != null){
+		User usr = null;
+		if (tmp != null) {
 			cookies = tmp.get(0);
 		}
 		if (!"".equals(cookies)) {
-			return dbUsers.createUser(getCookie("uid", cookies),
+			usr = dbUsers.createUser(getCookie("uid", cookies),
 					getCookie("pwd", cookies), Status.ONLINE);
 		}
-		throw new NullPointerException();
+		return usr;
 	}
 }

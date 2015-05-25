@@ -16,7 +16,7 @@ public class RootHandler implements HttpHandler {
 		response.set("Host", Inet4Address.getLocalHost().getHostAddress()
 				+ ":8080");
 		response.set("Location", Inet4Address.getLocalHost().getHostAddress()
-				+ ":8080/chat/index.html");
+				+ ":8080/login/index.html");
 		exchange.sendResponseHeaders(301, response.size());
 	}
 }

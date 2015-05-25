@@ -25,29 +25,21 @@ public class Sender implements Runnable {
 	@Override
 	public void run() {
 		running = true;
-		
 		while (running) {
-							
 			Message msg = retrieveFromMessageQueue();
-			if(msg != null){
-			setDestination(msg);
-			distributeMessage(msg);
+			if (msg != null) {
+				setDestination(msg);
+				distributeMessage(msg);
 			}
 		}
 	}
 
 	public void terminate() {
-		
-		running = false; 
-		
+		running = false;
 		synchronized (messageQueue) {
-			
-			try{
-				
+			try {
 				messageQueue.notifyAll();
-				
-			}catch(Exception e){
-				
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
@@ -61,7 +53,7 @@ public class Sender implements Runnable {
 	}
 
 	private Message retrieveFromMessageQueue() {
-		
+
 		synchronized (messageQueue) {
 			while (messageQueue.size() == 0 && running) {
 				try {

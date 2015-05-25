@@ -1,10 +1,8 @@
 package org.violin.dynamic;
 
 import java.io.IOException;
-
 import org.violin.asynchronous.AsyncHandlerManager;
 import org.violin.database.generated.Message;
-
 import com.sun.net.httpserver.HttpExchange;
 
 public class CheckConnection implements Action {

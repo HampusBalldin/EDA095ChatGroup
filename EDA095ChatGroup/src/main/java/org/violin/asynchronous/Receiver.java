@@ -4,15 +4,12 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.LinkedList;
 import java.util.Queue;
-
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.namespace.QName;
-
 import org.violin.database.XMLUtilities;
 import org.violin.database.generated.Message;
 import org.violin.database.generated.ObjectFactory;
-
 import com.sun.net.httpserver.HttpExchange;
 
 public class Receiver implements Runnable {
@@ -24,11 +21,9 @@ public class Receiver implements Runnable {
 	public void run() {
 		running = true;
 		while (running) {
-
 			HttpExchange exchange = getReplyExchange();
 			OutputStream os = exchange.getResponseBody();
 			Message msg = retrieveFromReplyQueue();
-
 			if (msg != null) {
 				try {
 					exchange.sendResponseHeaders(200, 0);
@@ -45,32 +40,21 @@ public class Receiver implements Runnable {
 	}
 
 	public void terminate() {
-
 		running = false;
-
 		synchronized (messageQueue) {
-
 			try {
-
 				messageQueue.notifyAll();
-
 			} catch (Exception e) {
-
 				e.printStackTrace();
 			}
 		}
 		synchronized (exchanges) {
-
 			try {
-
 				exchanges.notifyAll();
-
 			} catch (Exception e) {
-
 				e.printStackTrace();
 			}
 		}
-
 	}
 
 	public void addToReplyQueue(Message msg) {

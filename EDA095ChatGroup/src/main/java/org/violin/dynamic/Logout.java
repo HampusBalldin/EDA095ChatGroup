@@ -4,16 +4,13 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStream;
-
 import org.violin.Cookies;
-import org.violin.HTTPUtilities;
 import org.violin.asynchronous.AsyncHandlerManager;
 import org.violin.database.DBUsers;
 import org.violin.database.Database;
 import org.violin.database.generated.Message;
 import org.violin.database.generated.Status;
 import org.violin.database.generated.User;
-
 import com.sun.net.httpserver.HttpExchange;
 
 public class Logout implements Action {
@@ -31,8 +28,7 @@ public class Logout implements Action {
 		User user = msg.getOrigin();
 		dbLogout(user); // loggar ut ur databaen
 		removeContext(user); // tar bort context
-		cookieHandler.deleteCookies(user,
-				exchange.getResponseHeaders());
+		cookieHandler.deleteCookies(user, exchange.getResponseHeaders());
 		try {
 			StringBuilder contentBuilder = new StringBuilder();
 			try {
