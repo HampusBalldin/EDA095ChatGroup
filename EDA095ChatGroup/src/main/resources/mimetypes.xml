@@ -29,6 +29,11 @@
 		<file-ending>ico</file-ending>
 		<content-type>image/x-icon</content-type>
 	</mime>
+	
+		<mime>
+		<file-ending>jpg</file-ending>
+		<content-type>image/jpg</content-type>
+	</mime>
 
 
 </mimes>

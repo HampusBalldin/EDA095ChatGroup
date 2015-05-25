@@ -53,19 +53,6 @@ h2 {
     border: none;
 }
 
-td {
-    -webkit-border-radius: 5;
-    -moz-border-radius: 5;
-    border-radius: 5px;
-    font-family: Arial;
-    color: #6bd1ea;;
-    font-size: 14px;
-    background: #ffffff;
-    padding: 5px 15px 5px 15px;
-    text-decoration: none;
-    border: none;
-}
-
 #table-wrapper_1 #table-wrapper_2 {
     position: relative;
 }
@@ -109,17 +96,3 @@ td {
     color: #000000;
     font-size: 60px;
 }
-
-h {
-    color: #6bd1ea;
-    font-size: 100px;
-    font-family: Lucida Console;
-}
-
-.uglytext {
-    color: #000000;
-    font-size: 20px;
-    font-family: Lucida Console;
-}
-
-  

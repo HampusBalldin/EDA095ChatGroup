@@ -54,7 +54,9 @@ public abstract class Handler implements HttpHandler {
 		User user = null;
 		try {
 			user = getUserData(msg, dbUsers);
-			cookieHandler.setCookie(user, exchange.getResponseHeaders());
+			if (user != null) {
+				cookieHandler.setCookie(user, exchange.getResponseHeaders());
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -69,10 +71,27 @@ public abstract class Handler implements HttpHandler {
 	 * @throws IOException
 	 */
 	private User getUserData(String msg, DBUsers dbUsers) throws IOException {
-		String[] tmp1 = msg.split("&");
-		String uid = tmp1[0].split("=")[1];
-		String pwd = tmp1[1].split("=")[1];
-		return dbUsers.createUser(uid, pwd, Status.ONLINE);
+		User user = null;
+		if (msg != null) {
+			String[] tmp = msg.split("&");
+			if (tmp.length >= 2) {
+				String[] tmp1 = tmp[0].split("=");
+				String uid = "";
+				if (tmp1.length >= 2) {
+					uid = tmp1[1];
+				}
+
+				String[] tmp2 = tmp[1].split("=");
+				String pwd = "";
+				if (tmp2.length >= 2) {
+					pwd = tmp2[1];
+				}
+				if (!"".equals(uid) && !"".equals(pwd)) {
+					user = dbUsers.createUser(uid, pwd, Status.ONLINE);
+				}
+			}
+		}
+		return user;
 	}
 
 	protected String getExchangeContent(HttpExchange exchange) {
