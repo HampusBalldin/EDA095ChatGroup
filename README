@@ -9,10 +9,11 @@ Client_A Send------------------>|             |------------------> Client_B Rece
 Client_A Receive  <-------------|_____________| <----------------- Client_B Send  
 
 Note worthy web technologies and solutions in the project:
-  a) Java Architecture for XML Binding (JAXB) to
+  a) Push technologies through sustained HTTP Connections and delayed (asynchronous) responses.
+  b) Java Architecture for XML Binding (JAXB) to
    i) marshal: Java Object -> XML
    ii) unmarshal: XML -> Java Object
-  b) XJC used to <generate> java classes from xml schema used in a) to marshal / unmarshal.
-  b) A (self-made) database abstraction which makes handling database insertions, queries, and updates transparent to the programmer.
-  c) 
+  c) XJC used to <generate> java classes from xml schema used in a) to marshal / unmarshal.
+  d) A (self-made) database abstraction which makes handling database insertions, queries, 
+      and updates transparent to the programmer.
   
