@@ -1,4 +1,5 @@
-Using <a common server relay>, two different users may <using a browser of their choice> connect to each other.
+Using <a common server relay>, two different users may <using a browser of their choice> connect to each other in order to 
+(for example) send chat messages. Note however that the technology could be used for any <Browser Push> solution.
 The server may of course handle multiple simultaneous connections using multiple threads.
 The server is implemented in Java. The client side is written in JavaScript.
 
